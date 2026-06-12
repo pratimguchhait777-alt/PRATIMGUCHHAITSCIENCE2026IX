@@ -55,7 +55,7 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1; pointer-events: none;
         }
-        #celebration-canvas { z-index: 2999; } /* Sits right below the dialog overlays */
+        #celebration-canvas { z-index: 2999; }
 
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
@@ -68,6 +68,55 @@
             100% { transform: scale(1); }
         }
         .xp-animate { animation: xpPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4); }
+
+        /* --- LIVE TOAST NOTIFICATION CONTAINER --- */
+        #notification-toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 90%;
+            max-width: 360px;
+        }
+
+        .toast-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--pw-accent);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25);
+            backdrop-filter: blur(16px);
+            padding: 16px;
+            border-radius: 14px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--pw-accent);
+        }
+
+        .toast-header { font-size: 0.8rem; font-weight: 800; color: #818cf8; text-transform: uppercase; letter-spacing: 0.5px; }
+        .toast-body { font-size: 0.88rem; font-weight: 600; line-height: 1.4; color: #f1f5f9; }
+        .toast-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+        @keyframes toastIn {
+            from { transform: translateY(40px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes toastOut {
+            to { transform: translateX(120%) opacity: 0; }
+        }
 
         /* --- LOGIN PORTAL --- */
         #welcome-screen {
@@ -180,7 +229,6 @@
         
         .chapter-list { display: flex; flex-direction: column; gap: 14px; }
         
-        /* Dark Mode Chapter Dropdowns */
         .chapter-row { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--pw-border); border-radius: 16px; overflow: hidden; backdrop-filter: blur(10px); }
         .chapter-trigger { padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
         .chapter-trigger:hover { background: rgba(30, 41, 59, 0.5); }
@@ -193,7 +241,6 @@
         .chevron-down { color: #475569; font-size: 1rem; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .chapter-row.active .chevron-down { transform: rotate(180deg); color: #fff; }
 
-        /* Expanded Studio Buckets */
         .chapter-content-pool { display: none; padding: 25px; background: #090d16; border-top: 1px solid var(--pw-border); }
         .chapter-row.active .chapter-content-pool { display: block; }
         
@@ -241,6 +288,8 @@
     <canvas id="celebration-canvas"></canvas>
     
     <div class="bg-glow-1"></div><div class="bg-glow-2"></div>
+
+    <div id="notification-toast-container"></div>
 
     <div id="welcome-screen">
         <div class="welcome-box">
@@ -343,6 +392,7 @@
         let currentXP = 0;
         let readLog = [];
         let selectedSubjectCode = "";
+        let initialNotificationsLoadCompleted = false;
 
         // Particle System Simulation
         const canvas = document.getElementById('particle-canvas');
@@ -364,130 +414,128 @@
         function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
         animateParticles();
 
-
-        /* =========================================================================
-           🎉 NEW FEATURE: HIGH-PERFORMANCE AUDIO CONFETTI PARTY ENGINE
-           ========================================================================= */
+        /* Confetti Canvas Engine */
         const celCanvas = document.getElementById('celebration-canvas');
         const celCtx = celCanvas.getContext('2d');
         let confettiArray = [];
         let runningCelebration = false;
-
         function resizeCelCanvas() { celCanvas.width = window.innerWidth; celCanvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCelCanvas); resizeCelCanvas();
 
         class Confetti {
             constructor() {
-                this.x = Math.random() * celCanvas.width;
-                this.y = Math.random() * -celCanvas.height - 20;
-                this.size = Math.random() * 6 + 6;
-                this.speedY = Math.random() * 4 + 3;
-                this.speedX = Math.random() * 3 - 1.5;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 4 - 2;
-                const colors = ['#6366f1', '#10b981', '#ec4899', '#f59e0b', '#3b82f6', '#8b5cf6'];
+                this.x = Math.random() * celCanvas.width; this.y = Math.random() * -celCanvas.height - 20;
+                this.size = Math.random() * 6 + 6; this.speedY = Math.random() * 4 + 3; this.speedX = Math.random() * 3 - 1.5;
+                this.rotation = Math.random() * 360; this.rotationSpeed = Math.random() * 4 - 2;
+                const colors = ['#6366f1', '#10b981', '#ec4899', '#f59e0b', '#3b82f6'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
-            update() {
-                this.y += this.speedY;
-                this.x += this.speedX;
-                this.rotation += this.rotationSpeed;
-            }
-            draw() {
-                celCtx.save();
-                celCtx.translate(this.x, this.y);
-                celCtx.rotate(this.rotation * Math.PI / 180);
-                celCtx.fillStyle = this.color;
-                celCtx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
-                celCtx.restore();
-            }
+            update() { this.y += this.speedY; this.x += this.speedX; this.rotation += this.rotationSpeed; }
+            draw() { celCtx.save(); celCtx.translate(this.x, this.y); celCtx.rotate(this.rotation * Math.PI / 180); celCtx.fillStyle = this.color; celCtx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size); celCtx.restore(); }
         }
+        function triggerConfettiBurst() { confettiArray = []; for (let i = 0; i < 150; i++) confettiArray.push(new Confetti()); if (!runningCelebration) { runningCelebration = true; animateConfetti(); } }
+        function animateConfetti() { if (confettiArray.length === 0) { celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height); runningCelebration = false; return; } celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height); for (let i = confettiArray.length - 1; i >= 0; i--) { confettiArray[i].update(); confettiArray[i].draw(); if (confettiArray[i].y > celCanvas.height) confettiArray.splice(i, 1); } requestAnimationFrame(animateConfetti); }
 
-        function triggerConfettiBurst() {
-            confettiArray = [];
-            for (let i = 0; i < 150; i++) {
-                confettiArray.push(new Confetti());
-            }
-            if (!runningCelebration) {
-                runningCelebration = true;
-                animateConfetti();
-            }
-        }
-
-        function animateConfetti() {
-            if (confettiArray.length === 0) {
-                celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
-                runningCelebration = false;
-                return;
-            }
-            celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
-            for (let i = confettiArray.length - 1; i >= 0; i--) {
-                confettiArray[i].update();
-                confettiArray[i].draw();
-                if (confettiArray[i].y > celCanvas.height) {
-                    confettiArray.splice(i, 1);
-                }
-            }
-            requestAnimationFrame(animateConfetti);
-        }
-
-        // Native synthesized digital chip melody pop sound (No host tracking required!)
         function playPartyPopSound() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Note 1: Bass pop anchor
-                let osc1 = audioCtx.createOscillator();
-                let gain1 = audioCtx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(150, audioCtx.currentTime);
+                let osc1 = audioCtx.createOscillator(); let gain1 = audioCtx.createGain();
+                osc1.type = 'sine'; osc1.frequency.setValueAtTime(150, audioCtx.currentTime);
                 osc1.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
-                gain1.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc1.connect(gain1);
-                gain1.connect(audioCtx.destination);
-                osc1.start();
-                osc1.stop(audioCtx.currentTime + 0.2);
-
-                // Note 2: Harmonic Chime ring helper
+                gain1.gain.setValueAtTime(0.3, audioCtx.currentTime); gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc1.connect(gain1); gain1.connect(audioCtx.destination); osc1.start(); osc1.stop(audioCtx.currentTime + 0.2);
                 setTimeout(() => {
-                    let osc2 = audioCtx.createOscillator();
-                    let gain2 = audioCtx.createGain();
-                    osc2.type = 'triangle';
-                    osc2.frequency.setValueAtTime(523.25, audioCtx.currentTime); // High C Chime
+                    let osc2 = audioCtx.createOscillator(); let gain2 = audioCtx.createGain();
+                    osc2.type = 'triangle'; osc2.frequency.setValueAtTime(523.25, audioCtx.currentTime);
                     osc2.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.2);
-                    gain2.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                    osc2.connect(gain2);
-                    gain2.connect(audioCtx.destination);
-                    osc2.start();
-                    osc2.stop(audioCtx.currentTime + 0.3);
+                    gain2.gain.setValueAtTime(0.2, audioCtx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc2.connect(gain2); gain2.connect(audioCtx.destination); osc2.start(); osc2.stop(audioCtx.currentTime + 0.3);
                 }, 80);
-            } catch (e) {
-                console.log("Audio node context blocked by standard security interact lifecycle headers.");
-            }
+            } catch (e) {}
         }
 
-        // Monitors profile updates to fire celebrations on specific milestones
+        /* Synthesized Alert Chime for newly arrived documents */
+        function playIncomingDocumentChime() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime); // A4 Note
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime + 0.1); // Jumps to D5
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+            } catch (e) {}
+        }
+
         function processMilestoneEvaluator(newXp) {
             const milestones = [200, 400, 800];
             const storageKey = `notified_milestone_${activeUser.toUpperCase()}_`;
-            
             milestones.forEach(target => {
                 if (newXp >= target && !localStorage.getItem(storageKey + target)) {
                     localStorage.setItem(storageKey + target, "true");
-                    
-                    // Fire the components!
-                    setTimeout(() => {
-                        playPartyPopSound();
-                        triggerConfettiBurst();
-                        showCustomAlert(
-                            "🎉 Level Up Celebration!", 
-                            `Congratulations <strong>${activeUser}</strong>! You have reached a massive milestone of <strong>${target} XP</strong>! Keep grinding! 🔥`
-                        );
-                    }, 800);
+                    setTimeout(() => { playPartyPopSound(); triggerConfettiBurst(); showCustomAlert("🎉 Level Up Celebration!", `Congratulations <strong>${activeUser}</strong>! You have reached a massive milestone of <strong>${target} XP</strong>! Keep grinding! 🔥`); }, 800);
                 }
             });
+        }
+
+
+        /* =========================================================================
+           🚀 NEW FEATURE: REAL-TIME GLOBAL STUDENT NOTIFICATION PIPELINE
+           ========================================================================= */
+        function broadcastGlobalNotification(messageText) {
+            // Fired by Admin upload tracks to populate Firestore collection cluster
+            db.collection('notifications').add({
+                text: messageText,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                sender: activeUser || "Admin"
+            }).catch(err => console.error("Notification broadcast dropped: ", err));
+        }
+
+        function listenToLiveNotificationFeed() {
+            // Listens for any additions to document collections in real-time
+            db.collection('notifications')
+              .orderBy('timestamp', 'desc')
+              .limit(5)
+              .onSnapshot(snapshot => {
+                  if (!initialNotificationsLoadCompleted) {
+                      // Skip historic items already on document timeline on cold boot initialization
+                      initialNotificationsLoadCompleted = true;
+                      return;
+                  }
+                  
+                  snapshot.docChanges().forEach(change => {
+                      if (change.type === "added") {
+                          const alertData = change.doc.data();
+                          // Prevent triggering audio chime for the admin who uploaded it
+                          if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
+                              spawnNotificationToast(alertData.text);
+                          }
+                      }
+                  });
+              });
+        }
+
+        function spawnNotificationToast(message) {
+            playIncomingDocumentChime();
+            const container = document.getElementById('notification-toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-card';
+            
+            toast.innerHTML = `
+                <div class="toast-header">🔔 Workspace Update</div>
+                <div class="toast-body">${message}</div>
+                <div class="toast-time">Just Now</div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto-cleanup toast element after 6.5 seconds
+            setTimeout(() => {
+                toast.style.animation = "toastOut 0.4s forwards";
+                setTimeout(() => toast.remove(), 400);
+            }, 6500);
         }
         /* ========================================================================= */
 
@@ -546,6 +594,7 @@
             }
             listenToGlobalCurriculum();
             listenToActiveRoster();
+            listenToLiveNotificationFeed(); // Turn on push-relay listener pipeline
         });
 
         function entrySetup() {
@@ -595,11 +644,7 @@
                         const previousXP = currentXP;
                         currentXP = profile.xp || 0; readLog = profile.readLog || [];
                         document.getElementById('xp-count').innerText = currentXP;
-                        
-                        // Check if XP actually grew before checking milestone triggers
-                        if (currentXP > previousXP && activeUser.toUpperCase() !== "PRATIM") {
-                            processMilestoneEvaluator(currentXP);
-                        }
+                        if (currentXP > previousXP && activeUser.toUpperCase() !== "PRATIM") { processMilestoneEvaluator(currentXP); }
                     }
                 });
             });
@@ -610,13 +655,10 @@
                 const indicator = document.getElementById('sync-status');
                 indicator.className = "sync-indicator sync-connected";
                 indicator.innerHTML = "<span></span> Cloud Synced";
-                
                 window.latestCloudPayload = doc.exists ? doc.data() : { phy: [], chem: [], bio: [] };
-                
                 document.getElementById('count-phy').innerText = (window.latestCloudPayload.phy || []).length;
                 document.getElementById('count-chem').innerText = (window.latestCloudPayload.chem || []).length;
                 document.getElementById('count-bio').innerText = (window.latestCloudPayload.bio || []).length;
-
                 if (selectedSubjectCode) { refreshDirectoryUI(); }
             });
         }
@@ -625,21 +667,13 @@
             selectedSubjectCode = subjectCode;
             document.getElementById('subject-hub-view').style.display = 'none';
             document.getElementById('directory-view').style.display = 'block';
-            
             const titleMap = { phy: 'Physics Studio', chem: 'Chemistry Studio', bio: 'Biology Studio' };
             document.getElementById('directory-title-text').innerText = titleMap[subjectCode];
             refreshDirectoryUI();
         }
 
-        function closeSubjectDirectory() {
-            selectedSubjectCode = "";
-            document.getElementById('directory-view').style.display = 'none';
-            document.getElementById('subject-hub-view').style.display = 'grid';
-        }
-
-        function toggleChapterDropdown(element) {
-            element.closest('.chapter-row').classList.toggle('active');
-        }
+        function closeSubjectDirectory() { selectedSubjectCode = ""; document.getElementById('directory-view').style.display = 'none'; document.getElementById('subject-hub-view').style.display = 'grid'; }
+        function toggleChapterDropdown(element) { element.closest('.chapter-row').classList.toggle('active'); }
 
         function refreshDirectoryUI() {
             const targetList = document.getElementById('chapter-list-target');
@@ -652,7 +686,6 @@
             chapters.forEach((chapter, index) => {
                 const row = document.createElement('div');
                 row.className = 'chapter-row';
-                
                 const cNotesCount = (chapter.notes || []).length;
                 const cDppCount = (chapter.dpps || []).length;
                 const cTestCount = (chapter.tests || []).length;
@@ -725,9 +758,7 @@
             arr.forEach((item, itemIndex) => {
                 const li = document.createElement('li');
                 li.className = 'content-item';
-                let icon = '📁';
-                if (item.type === 'html') icon = '🌐';
-                if (item.type === 'link') icon = '🔗';
+                let icon = '📁'; if (item.type === 'html') icon = '🌐'; if (item.type === 'link') icon = '🔗';
                 
                 li.innerHTML = `
                     <span>${icon} ${item.name}</span>
@@ -745,7 +776,10 @@
                 let copy = window.latestCloudPayload;
                 if (!copy[selectedSubjectCode]) copy[selectedSubjectCode] = [];
                 copy[selectedSubjectCode].push({ title: title, notes: [], dpps: [], tests: [] });
-                db.collection('curriculum').doc('nested_master_folders').set(copy);
+                db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                    const subNames = {phy: "Physics", chem: "Chemistry", bio: "Biology"};
+                    broadcastGlobalNotification(`New Chapter Created: "${title}" has been introduced to the ${subNames[selectedSubjectCode]} portfolio!`);
+                });
             });
         }
 
@@ -770,8 +804,13 @@
                 showCustomPrompt("Paste Destination URL Link", "Paste Google Drive/Web URL path link:", (linkUrl) => {
                     let copy = window.latestCloudPayload;
                     const id = "file-" + Date.now();
+                    const currentChapterTitle = copy[selectedSubjectCode][chIndex].title;
                     copy[selectedSubjectCode][chIndex][bucketKey].push({ id: id, name: label, data: linkUrl, type: 'link' });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy);
+                    
+                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                        const bucketNames = {notes: "Class Notes 📚", dpps: "Practice Paper 📝", tests: "Monthly Test 🏆"};
+                        broadcastGlobalNotification(`New ${bucketNames[bucketKey]} Link Added: "${label}" has been uploaded under "${currentChapterTitle}".`);
+                    });
                 });
             });
         }
@@ -790,9 +829,13 @@
                     }
                     let copy = window.latestCloudPayload;
                     const id = "file-" + Date.now() + "-" + Math.floor(Math.random()*100);
+                    const currentChapterTitle = copy[selectedSubjectCode][chIndex].title;
                     copy[selectedSubjectCode][chIndex][bucketKey].push({ id: id, name: label, data: rawData, type: ext });
                     
-                    db.collection('curriculum').doc('nested_master_folders').set(copy).catch(() => {
+                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                        const bucketNames = {notes: "Class Notes 📚", dpps: "Practice Paper 📝", tests: "Monthly Test 🏆"};
+                        broadcastGlobalNotification(`New ${bucketNames[bucketKey]} Document Added: "${label}" has been uploaded under "${currentChapterTitle}".`);
+                    }).catch(() => {
                         showCustomAlert("Storage Cap Limit reached", "File too heavy for direct inline sync string configuration! Please upload to Google Drive and use 'Paste Link' instead.");
                     });
                 };
@@ -802,23 +845,14 @@
 
         function launchViewer(chIndex, bucketKey, itemIndex) {
             const item = window.latestCloudPayload[selectedSubjectCode][chIndex][bucketKey][itemIndex];
-            if (item.type === 'link') {
-                window.open(item.data, '_blank');
-            } else {
-                document.getElementById('view-frame').src = item.data;
-                document.getElementById('viewer-modal').style.display = 'flex';
-            }
+            if (item.type === 'link') { window.open(item.data, '_blank'); } else { document.getElementById('view-frame').src = item.data; document.getElementById('viewer-modal').style.display = 'flex'; }
 
             if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
                 const uniqueId = item.id || `${selectedSubjectCode}-${chIndex}-${bucketKey}-${itemIndex}`;
                 if (!readLog.includes(uniqueId)) {
                     readLog.push(uniqueId);
-                    db.collection('students').doc(activeUser.toUpperCase()).update({
-                        xp: firebase.firestore.FieldValue.increment(15),
-                        readLog: readLog
-                    }).then(() => {
-                        const b = document.getElementById('xp-badge-wrapper');
-                        b.classList.add('xp-animate'); setTimeout(() => b.classList.remove('xp-animate'), 600);
+                    db.collection('students').doc(activeUser.toUpperCase()).update({ xp: firebase.firestore.FieldValue.increment(15), readLog: readLog }).then(() => {
+                        const b = document.getElementById('xp-badge-wrapper'); b.classList.add('xp-animate'); setTimeout(() => b.classList.remove('xp-animate'), 600);
                     });
                 }
             }
