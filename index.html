@@ -15,7 +15,8 @@
             --pw-accent: #1e1b4b;  
             --pw-accent-glow: rgba(30, 27, 75, 0.05);
             --text-main: #0f172a;  
-            --text-muted: #64748b;     --pw-green: #10b981;  
+            --text-muted: #64748b; 
+            --pw-green: #10b981;  
             --pw-purple: #8b5cf6;
             --pw-red: #ef4444;
             --pw-border: #f1f5f9; 
@@ -33,7 +34,8 @@
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
             user-select: none;
             -webkit-user-select: none;
-            /* Prevents the default blue semi-transparent tap overlay highlight on touchscreens */
+            
+            /* Removes the blue semi-transparent tap overlay highlight on all elements */
             -webkit-tap-highlight-color: transparent !important;
             tap-highlight-color: transparent !important;
         }
@@ -109,21 +111,20 @@
         .toast-header { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--neon-blue); text-transform: uppercase; }
         .toast-body { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-        /* --- MODERN SYMMETRICAL HEADER & UTILITY BAR --- */
+        /* --- SYMMETRICAL RESPONSIVE HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(241, 245, 249, 0.6); padding: 12px 20px;
-            display: flex; flex-direction: column; gap: 12px;
+            border-bottom: 1px solid rgba(241, 245, 249, 0.6); padding: 12px 16px;
+            display: flex; flex-direction: column; gap: 10px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.01);
         }
         .header-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 900; color: #0f172a; letter-spacing: -0.5px; }
         .logo span { color: var(--neon-blue); opacity: 0.8; }
 
-        /* Fluid, Responsive, Non-Overlapping Utility Bar */
         .header-utility-grid {
             display: flex;
             align-items: center;
@@ -152,7 +153,7 @@
             white-space: nowrap; 
             letter-spacing: -0.2px; 
         }
-        
+
         .header-controls-group {
             display: flex;
             align-items: center;
@@ -160,7 +161,7 @@
             flex-shrink: 0;
             flex-wrap: nowrap;
         }
-
+        
         .xp-badge, .streak-badge { 
             background: #ffffff; 
             color: #1e293b; 
@@ -180,17 +181,17 @@
         }
         .xp-badge:active, .streak-badge:active { transform: scale(0.96); }
 
+        /* ANIMATED BURNING STREAK DESIGN */
         .streak-badge { 
-            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); 
-            color: #c53030; 
-            border: 1px solid #feb2b2;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%); 
+            color: #c53030; border: 1px solid #feb2b2;
         }
         .streak-fire-icon {
             animation: burnEffect 0.8s infinite alternate steps(4);
             display: inline-block;
         }
         @keyframes burnEffect {
-            0% { transform: scale(1); filter: drop-shadow(0 0 1px #f56565); }
+            0% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 1px #f56565); }
             100% { transform: scale(1.15) translateY(-1px); filter: drop-shadow(0 0 4px #ed8936); }
         }
 
@@ -303,7 +304,6 @@
         .directory-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--dark-blue-line); padding-bottom: 12px; }
         .directory-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 900; color: #0f172a; letter-spacing: -0.5px; }
         
-        /* HIDDEN BY DEFAULT FOR STUDENTS - GRANTED ONLY TO ADMINS ON LOG IN */
         .btn-create-chapter { background: #ffffff; border: 1px solid #e2e8f0; color: #0f172a; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; display: none; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         
         .chapter-list { display: flex; flex-direction: column; gap: 12px; }
@@ -371,7 +371,6 @@
         .inline-attach-btn { position: absolute; right: 8px; width: 36px; height: 36px; border-radius: 8px; border: 1px dashed var(--neon-blue); background: #f0f6ff; color: var(--neon-blue); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; }
     </style>
 
-    <!-- Compatibility Firebase SDK (Original SDK version used in original template) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -403,7 +402,7 @@
         <div class="welcome-box">
             <h1>SCIENCE_<span>IX</span></h1>
             <p>Sign in to access your batch classroom</p>
-            <input type="text" id="username-input" autocomplete="off" placeholder="Enter Name..."><br>
+            <input type="text" id="username-input" autocomplete="off" placeholder="Enter name..."><br>
             <button id="auth-submit-btn" onclick="entrySetup()">Let's Study</button>
         </div>
     </div>
@@ -458,22 +457,22 @@
             <table class="subject-table-view">
                 <tr onclick="enterSubjectWorkspace('PHY')">
                     <td style="width: 60px;"><div class="subject-icon-box" style="color:#3b82f6; background:#eff6ff;">⚛️</div></td>
-                    <td><div class="subject-name">Physics Workspace </div></td>
+                    <td><div class="subject-name">Physics Workspace Engine</div></td>
                     <td style="text-align: right;"><div class="progress-text" id="prog-PHY">0%</div></td>
                 </tr>
                 <tr onclick="enterSubjectWorkspace('CHEM')">
                     <td><div class="subject-icon-box" style="color:#10b981; background:#ecfdf5;">🧪</div></td>
-                    <td><div class="subject-name">Chemistry Workspace </div></td>
+                    <td><div class="subject-name">Chemistry Workspace Engine</div></td>
                     <td style="text-align: right;"><div class="progress-text" id="prog-CHEM">0%</div></td>
                 </tr>
                 <tr onclick="enterSubjectWorkspace('BIO')">
                     <td><div class="subject-icon-box" style="color:#ec4899; background:#fdf2f8;">🧬</div></td>
-                    <td><div class="subject-name">Biology Workspace </div></td>
+                    <td><div class="subject-name">Biology Workspace Engine</div></td>
                     <td style="text-align: right;"><div class="progress-text" id="prog-BIO">0%</div></td>
                 </tr>
                 <tr onclick="enterSubjectWorkspace('MATH')">
                     <td><div class="subject-icon-box" style="color:#8b5cf6; background:#f5f3ff;">📐</div></td>
-                    <td><div class="subject-name">Mathematics Workspace </div></td>
+                    <td><div class="subject-name">Mathematics Workspace Engine</div></td>
                     <td style="text-align: right;"><div class="progress-text" id="prog-MATH">0%</div></td>
                 </tr>
             </table>
@@ -483,15 +482,15 @@
             <button class="back-btn" onclick="exitToSubjectBoard()">← Back to Subject Core</button>
             <div class="directory-header">
                 <h2 class="directory-title" id="directory-title-label">Subject Folders</h2>
-                <button class="btn-create-chapter" id="btn-admin-add-ch" onclick="handleCreateChapterClick()">➕ Drop New Chapter Link</button>
+                <button class="btn-create-chapter" id="btn-admin-add-ch" onclick="handleCreateChapterClick()">+ Create Chapter</button>
             </div>
             <div class="chapter-list" id="chapter-list-target"></div>
         </div>
 
         <div id="subfolders-workspace-view">
-            <button class="back-btn" onclick="exitToChaptersDirectoryView()">← Back to Chapter Root</button>
-            <div class="subfolder-chapter-title" id="subfolder-chapter-header-label">Chapter Contents</div>
-            <div class="subfolder-meta-text">Select a pipeline asset slot node layout sequence from the index matrix below</div>
+            <button class="back-btn" onclick="exitToChaptersDirectory()">← Back to Chapters</button>
+            <h2 class="subfolder-chapter-title" id="subfolder-ch-title-label">CHAPTER TITLE</h2>
+            <div class="subfolder-meta-text" id="subfolder-meta-label">Subject • Folders Breakdown Map</div>
             
             <div class="top-slots-nav-bar">
                 <button class="slot-tab-btn active" id="tab-dppModules" onclick="switchActiveSlotTab('dppModules')">DPPs</button>
@@ -507,7 +506,7 @@
                     </div>
                     <ul class="content-list" id="active-slot-list-target"></ul>
                 </div>
-
+                
                 <div class="admin-upload-panel" id="admin-notes-upload-block" style="display:none;">
                     <label class="native-pdf-label" for="file-notes-upload">📤 Upload PDF / HTML Asset</label>
                     <button class="native-pdf-label" style="background:#ffffff; border-style:solid;" onclick="handleLinkUploadTrigger()">🔗 Add Static HTTPS Address Link</button>
@@ -524,7 +523,6 @@
                 <h2 id="quiz-portal-title" style="font-family:'Space Grotesk', sans-serif; color:#111827;">Assessment</h2>
                 <button class="back-btn" id="btn-exit-quiz-portal" style="margin-bottom:0;" onclick="closeQuizPortal()">Exit Board</button>
             </div>
-
             <div id="quiz-admin-creator" style="display:none; margin-bottom:20px; background:#ffffff; padding:18px; border-radius:14px; border:1px solid #e2e8f0;">
                 <h4 style="margin-bottom:10px; color: var(--neon-blue);">Add Question to this Board Block</h4>
                 <input type="text" id="q-input-text" placeholder="Question Text Stem">
@@ -534,70 +532,27 @@
                     <input type="file" id="q-native-img-file" accept="image/*" style="display:none;" onchange="handleNativeQuestionImageUpload(this)">
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
-                    <input type="text" id="q-opt-A" placeholder="Option A">
-                    <input type="text" id="q-opt-B" placeholder="Option B">
-                    <input type="text" id="q-opt-C" placeholder="Option C">
-                    <input type="text" id="q-opt-D" placeholder="Option D">
+                    <input type="text" id="q-opt-A" placeholder="Option A"><input type="text" id="q-opt-B" placeholder="Option B">
+                    <input type="text" id="q-opt-C" placeholder="Option C"><input type="text" id="q-opt-D" placeholder="Option D">
                 </div>
-                <select id="q-correct-ans" style="width:100%; padding:12px; border-radius:10px; border:1px solid #e2e8f0; font-weight:600; margin-bottom:14px; background:#f8fafc;">
-                    <option value="A">Correct Answer Option: A</option>
-                    <option value="B">Correct Answer Option: B</option>
-                    <option value="C">Correct Answer Option: C</option>
-                    <option value="D">Correct Answer Option: D</option>
+                <select id="q-correct-ans" style="width:100%; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:14px; font-weight:600;">
+                    <option value="A">Correct Token: A</option><option value="B">Correct Token: B</option>
+                    <option value="C">Correct Token: C</option><option value="D">Correct Token: D</option>
                 </select>
-                <button class="welcome-box button" style="padding:10px;" onclick="submitCustomQuestionItem()">Push New Question Row</button>
+                <button class="btn-dialog-primary" style="width:100%;" onclick="submitCustomQuestionItem()">Push New Question to Live Block</button>
             </div>
-
             <div id="quiz-questions-render-target"></div>
         </div>
     </div>
 
-    <div id="notice-overlay-modal">
-        <div class="notice-board-box">
-            <h2 style="font-family:'Space Grotesk', sans-serif; margin-bottom:12px; color:#111827;">System Broadcasts</h2>
-            <div class="notice-board-content" id="notice-board-message-text">No message logs.</div>
-            <div style="display:flex; gap:10px; justify-content:center;">
-                <button class="btn-edit-notice" id="btn-admin-edit-notice-trigger" onclick="handleAdminNoticeMutation()">Mutate Billboard</button>
-                <button class="btn-dialog-secondary" style="border-radius:10px; padding:8px 16px;" onclick="closeNoticeModal()">Dismiss</button>
-            </div>
-        </div>
-    </div>
+    <div id="notice-overlay-modal"><div class="notice-board-box"><h2 style="font-family:'Space Grotesk', sans-serif; color:var(--neon-blue);">📢 Main Notice Board</h2><div class="notice-board-content" id="announcement-display">Loading notices...</div><div style="display:flex; gap:10px; justify-content:center;"><button class="btn-dialog-secondary" onclick="closeNoticeModal()">Dismiss</button><button class="btn-edit-notice" id="btn-admin-edit-notice" onclick="handleModifyAnnouncement()">📝 Rewrite</button></div></div></div>
+    <div id="leaderboard-overlay-modal"><div class="notice-board-box"><h2 style="font-family:'Space Grotesk', sans-serif; color:var(--pw-purple);">📊 Performance Metrics</h2><div class="notice-board-content" id="leaderboard-metrics-target"></div><button class="btn-dialog-secondary" onclick="closeLeaderboardModal()">Close View</button></div></div>
+    
+    <div id="global-dpp-leaderboard-modal"><div class="notice-board-box" style="max-width:500px;"><h2 style="font-family:'Space Grotesk', sans-serif; color:#0f172a; margin-bottom:12px; letter-spacing: -0.5px;">🏆 Classroom Rankings</h2><div class="notice-board-content" id="global-dpp-leaderboard-target"></div><button class="btn-dialog-secondary" onclick="closeGlobalDppLeaderboard()">Close Rankings</button></div></div>
+    
+    <div id="custom-dialog-modal"><div class="dialog-box" id="dialog-box-content"></div></div>
+    <div id="viewer-modal"><div class="modal-content"><span class="close-modal" onclick="closeViewer()">✕ Close Stream</span><iframe id="view-frame" src="about:blank"></iframe></div></div>
 
-    <div id="leaderboard-overlay-modal">
-        <div class="notice-board-box" style="max-width:500px;">
-            <h3 style="font-family:'Space Grotesk', sans-serif; margin-bottom:4px; text-align:left;">Module Metrics Log</h3>
-            <p style="color:var(--text-muted); font-size:0.8rem; text-align:left; margin-bottom:16px;">Real-time profile performance vectors</p>
-            <div class="notice-board-content" style="max-height:350px;" id="leaderboard-metrics-target"></div>
-            <button class="btn-dialog-secondary" style="width:100%; border-radius:12px;" onclick="document.getElementById('leaderboard-overlay-modal').style.display='none'">Exit Log Overlay</button>
-        </div>
-    </div>
-
-    <div id="global-dpp-leaderboard-modal">
-        <div class="notice-board-box" style="max-width:550px; text-align:left;">
-            <h2 style="font-family:'Space Grotesk', sans-serif; color:#111827; margin-bottom:4px;">Continuous Learning Leaderboard</h2>
-            <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:16px;">Live batch synchronization rankings generated dynamically across active nodes.</p>
-            <div style="max-height:380px; overflow-y:auto; border:1px solid #f1f5f9; border-radius:14px; padding:4px; background:#f8fafc; margin-bottom:16px;">
-                <div id="global-dpp-leaderboard-target"></div>
-            </div>
-            <button class="btn-dialog-secondary" style="width:100%; border-radius:12px;" onclick="document.getElementById('global-dpp-leaderboard-modal').style.display='none'">Return to Desktop Core</button>
-        </div>
-    </div>
-
-    <div id="viewer-modal">
-        <div class="close-modal" onclick="closeViewer()">CLOSE RESOURCE SCREEN</div>
-        <div class="modal-content"><iframe id="view-frame" src=""></iframe></div>
-    </div>
-
-    <div id="custom-dialog-modal">
-        <div class="dialog-box">
-            <h3 id="custom-dialog-title" style="font-family:'Space Grotesk', sans-serif; margin-bottom:8px;">Prompt</h3>
-            <p id="custom-dialog-message" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;"></p>
-            <div id="custom-dialog-input-wrapper"><input type="text" id="custom-dialog-field" autocomplete="off"></div>
-            <div class="dialog-actions" id="custom-dialog-buttons-blueprint"></div>
-        </div>
-    </div>
-
-    <!-- MAIN CORE APPLICATION ARCHITECTURE SCRIPT -->
     <script>
         // Original Template Database Configuration parameters
         const firebaseConfig = {
@@ -608,15 +563,16 @@
             messagingSenderId: "364508216393",
             appId: "1:364508216393:web:bda878bc90069cb23214da"
         };
-        
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.firestore();
 
-        let activeUser = localStorage.getItem('science_ix_cached_user') || null;
+        let activeUser = localStorage.getItem('science_ix_session');
         window.latestCloudPayload = {};
         let selectedSubjectCode = "";
         let selectedChapterIndex = null;
-        let activeSlotTabKey = "dppModules"; 
+        let activeSlotTabKey = "dppModules";
+        let lastSeenNoticeText = localStorage.getItem('science_ix_last_notice') || "";
         
         let currentXP = 0;
         let userStreak = 1;
@@ -626,1065 +582,34 @@
         let examActiveState = false;
         let proGuardCountdownInterval = null;
         let timeRemainingSeconds = 0;
+        let currentAppStateView = "SUBJECTS"; 
 
-        let navigationContextStack = ["SUBJECTS"];
-        
-        // Security guard prevents premature lockout before profile record write
-        window.profileReadyState = false;
+        // Background note viewing XP interval reference
+        let activeNotesTimerInterval = null;
 
-        /* --- GREY NEON DOTS BACKGROUND PARTICLE SYSTEM ENGINE --- */
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 2; 
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * 0.4 - 0.2;
-                this.opacity = Math.random() * 0.4 + 0.2;
-                this.glowDirection = Math.random() > 0.5 ? 0.005 : -0.005;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.opacity += this.glowDirection;
-
-                if (this.opacity > 0.65 || this.opacity < 0.15) {
-                    this.glowDirection *= -1;
-                }
-
-                // Smooth Boundary Collisions
-                if (this.x < -10 || this.x > canvas.width + 10) this.speedX *= -1;
-                if (this.y < -10 || this.y > canvas.height + 10) this.speedY *= -1;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(148, 163, 184, ${this.opacity})`; // Neon Slate Grey Core
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = 'rgba(100, 116, 139, 0.4)'; // Distinctive Grey Glow Aura
-                ctx.fill();
-                ctx.shadowBlur = 0; // Reset canvas context state
-            }
-        }
-
-        function initParticles() {
-            particlesArray = [];
-            let count = Math.min(Math.floor((canvas.width * canvas.height) / 14000), 75);
-            for (let i = 0; i < count; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        /* --- CELEBRATION EFFECTS --- */
-        const celCanvas = document.getElementById('celebration-canvas');
-        const celCtx = celCanvas.getContext('2d');
-        let confettiArray = [];
-        window.addEventListener('resize', () => { celCanvas.width = window.innerWidth; celCanvas.height = window.innerHeight; });
-        celCanvas.width = window.innerWidth; celCanvas.height = window.innerHeight;
-
-        class Confetti {
-            constructor() {
-                this.x = Math.random() * celCanvas.width;
-                this.y = Math.random() * -celCanvas.height - 20;
-                this.size = Math.random() * 6 + 6;
-                this.speedY = Math.random() * 4 + 4;
-                this.speedX = Math.random() * 3 - 1.5;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 4 - 2;
-                this.color = ['#3b82f6', '#60a5fa', '#10b981', '#ec4899', '#f59e0b', '#a855f7'][Math.floor(Math.random() * 6)];
-            }
-            update() {
-                this.y += this.speedY;
-                this.x += this.speedX;
-                this.rotation += this.rotationSpeed;
-            }
-            draw() {
-                celCtx.save();
-                celCtx.translate(this.x, this.y);
-                celCtx.rotate(this.rotation * Math.PI / 180);
-                celCtx.fillStyle = this.color;
-                celCtx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-                celCtx.restore();
-            }
-        }
-
-        function triggerConfettiBurst() {
-            confettiArray = [];
-            for (let i = 0; i < 60; i++) confettiArray.push(new Confetti());
-            animateConfetti();
-        }
-
-        function animateConfetti() {
-            if (confettiArray.length === 0) {
-                celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
-                return;
-            }
-            celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
-            for (let i = confettiArray.length - 1; i >= 0; i--) {
-                confettiArray[i].update();
-                confettiArray[i].draw();
-                if (confettiArray[i].y > celCanvas.height + 20) {
-                    confettiArray.splice(i, 1);
-                }
-            }
-            requestAnimationFrame(animateConfetti);
-        }
-
-        /* --- MASTER BACK-BUTTON NAVIGATION LOGIC --- */
-        function updateNavigationHistoryState(targetViewName) {
-            if (navigationContextStack[navigationContextStack.length - 1] !== targetViewName) {
-                navigationContextStack.push(targetViewName);
-            }
-        }
-
-        function setupHardwareBackButtonEngine() {
-            window.history.pushState({ view: "CORE" }, "");
-            window.addEventListener('popstate', (e) => {
-                window.history.pushState({ view: "CORE" }, "");
-                handleSystemHardwareBackAction();
-            });
-        }
-
-        function handleSystemHardwareBackAction() {
-            if (examActiveState) {
-                spawnNotificationToast("🚫 Focus restriction: ProGuard locked active navigation container.");
-                return;
-            }
-            if (navigationContextStack.length <= 1) return;
-            navigationContextStack.pop(); 
-            const fallbackView = navigationContextStack[navigationContextStack.length - 1] || "SUBJECTS";
-            processStateNavigationTransition(fallbackView);
-        }
-
-        function processStateNavigationTransition(view) {
-            if (view === "SUBJECTS") {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('directory-workspace-view').style.display = 'none';
-                document.getElementById('subfolders-workspace-view').style.display = 'none';
-                document.getElementById('subject-selection-board').style.display = 'block';
-                selectedSubjectCode = "";
-                selectedChapterIndex = null;
-                recalculateCompletionProgressBars();
-            } else if (view === "CHAPTERS") {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('subject-selection-board').style.display = 'none';
-                document.getElementById('subfolders-workspace-view').style.display = 'none';
-                document.getElementById('directory-workspace-view').style.display = 'block';
-                selectedChapterIndex = null;
-                if (selectedSubjectCode) renderChapterFolderWorkspace(selectedSubjectCode);
-            } else if (view === "SUBFOLDERS") {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('subject-selection-board').style.display = 'none';
-                document.getElementById('directory-workspace-view').style.display = 'none';
-                document.getElementById('subfolders-workspace-view').style.display = 'block';
-                if (selectedChapterIndex !== null) renderActiveSubFolderBucketView();
-            }
-        }
-
-        /* --- LIVE AUTH ENGINE CORE --- */
-        function entrySetup() {
-            const val = document.getElementById('username-input').value.trim();
-            if (!val) return;
-            localStorage.setItem('science_ix_cached_user', val);
-            activeUser = val;
-            document.getElementById('welcome-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('welcome-screen').style.display = 'none';
-                initializeAuthenticatedSession(activeUser);
-            }, 1000);
-        }
-
-        function initializeAuthenticatedSession(username) {
-            const parsedName = username.toUpperCase();
-            const isAdmin = (parsedName === "PRATIM");
-            window.profileReadyState = false; 
-            
-            document.getElementById('welcome-user').innerText = parsedName;
-            document.getElementById('admin-indicator').style.display = isAdmin ? 'inline-flex' : 'none';
-            document.getElementById('btn-admin-add-ch').style.display = isAdmin ? 'inline-block' : 'none'; 
-
-            db.collection('curriculum').doc('nested_master_folders').onSnapshot(doc => {
-                if (doc.exists) {
-                    window.latestCloudPayload = doc.data();
-                    const statusNode = document.getElementById('sync-status');
-                    statusNode.className = "sync-indicator sync-connected";
-                    statusNode.innerHTML = "<span></span> Cloud Core Synced";
-                    
-                    recalculateCompletionProgressBars();
-                    if (selectedSubjectCode && selectedChapterIndex === null) {
-                        renderChapterFolderWorkspace(selectedSubjectCode);
-                    } else if (selectedSubjectCode && selectedChapterIndex !== null) {
-                        renderActiveSubFolderBucketView();
-                    }
-                }
-            }, error => {
-                console.warn("Folder sync bypass.", error);
-            });
-
-            syncStudentCloudProfile(parsedName);
-            listenToActiveRoster();
-            listenToGlobalAnnouncements();
-            listenToLiveSyncNotifications();
-        }
-
-        function syncStudentCloudProfile(username) {
-            const keyName = username.toUpperCase();
-            const todayStr = new Date().toDateString();
-            
-            db.collection('students').doc(keyName).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    currentXP = data.xp || 0;
-                    readLog = data.readLog || [];
-                    solvedQuestionsLog = data.solvedQuestionsLog || {};
-                    userStreak = data.streak || 1;
-                    
-                    if (keyName !== "PRATIM" && data.lastActiveDate !== todayStr) {
-                        userStreak = (data.lastActiveDate === new Date(Date.now() - 86400000).toDateString()) ? userStreak + 1 : 1;
-                        db.collection('students').doc(keyName).update({ streak: userStreak, lastActiveDate: todayStr }).then(() => {
-                            window.profileReadyState = true; 
-                        });
-                    } else {
-                        window.profileReadyState = true; 
-                    }
-                    document.getElementById('xp-count').innerText = currentXP;
-                    document.getElementById('streak-count').innerText = userStreak;
-                    
-                    if (userStreak >= 5 && keyName !== "PRATIM") {
-                        setTimeout(() => {
-                            triggerConfettiBurst();
-                            playRewardChimeSound('streak');
-                            showCustomAlert("🔥 Phenomenal Streak!", `Holding a <strong>${userStreak} Day Streak</strong>!`);
-                        }, 1200);
-                    }
-                } else {
-                    db.collection('students').doc(keyName).set({
-                        name: username, xp: 0, streak: 1, lastActiveDate: todayStr,
-                        readLog: [], solvedQuestionsLog: {}, joined: new Date().toLocaleDateString()
-                    }).then(() => {
-                        window.profileReadyState = true; 
-                    });
-                }
-            }).catch(e => {
-                console.warn("Primary profile build triggered.", e);
-                window.profileReadyState = true;
-            });
-        }
-
-        function listenToActiveRoster() {
-            db.collection('students').onSnapshot(snapshot => {
-                window.globalCachedRosterSubmits = [];
-                let activeProfileExisted = false;
-                snapshot.forEach(doc => { 
-                    const profileData = doc.data();
-                    window.globalCachedRosterSubmits.push(profileData); 
-                    if (activeUser && profileData.name.toUpperCase() === activeUser.toUpperCase()) {
-                        activeProfileExisted = true;
-                    }
-                });
-
-                // Student lockout triggers ONLY if they were explicitly removed by the administrator
-                if (window.profileReadyState && activeUser && activeUser.toUpperCase() !== "PRATIM" && !activeProfileExisted) {
-                    localStorage.removeItem('science_ix_cached_user');
-                    activeUser = null;
-                    location.reload();
-                }
-            }, error => {
-                console.warn("Roster listener bypassed.");
-            });
-        }
-
-        function listenToGlobalAnnouncements() {
-            db.collection('curriculum').doc('billboard_announcement').onSnapshot(doc => {
-                if (doc.exists) {
-                    const currentNotice = doc.data().message;
-                    document.getElementById('notice-board-message-text').innerHTML = currentNotice;
-                    const cachedNotice = localStorage.getItem('science_ix_seen_notice');
-                    if (cachedNotice !== currentNotice) {
-                        document.getElementById('notice-unread-dot').style.display = 'block';
-                    }
-                    if (activeUser && activeUser.toUpperCase() === "PRATIM") {
-                        document.getElementById('btn-admin-edit-notice-trigger').style.display = 'inline-block';
-                    }
-                }
-            }, error => {
-                console.warn("Announcements fetch error bypass.");
-            });
-        }
-
-        function listenToLiveSyncNotifications() {
-            let lastNotificationTimestamp = Date.now();
-            
-            // Real-time sorted notifications array built in-memory
-            db.collection('sync_notifications').onSnapshot(snapshot => {
-                let docs = [];
-                snapshot.forEach(doc => {
-                    docs.push({ id: doc.id, ...doc.data() });
-                });
-                
-                docs.sort((a, b) => {
-                    const tA = a.timestamp ? (a.timestamp.toMillis ? a.timestamp.toMillis() : 0) : 0;
-                    const tB = b.timestamp ? (b.timestamp.toMillis ? b.timestamp.toMillis() : 0) : 0;
-                    return tB - tA;
-                });
-
-                if (docs.length > 0) {
-                    const latest = docs[0];
-                    if (latest.timestamp) {
-                        const notificationTime = latest.timestamp.toMillis();
-                        const timeDiff = Date.now() - notificationTime;
-                        if (timeDiff < 10000 && notificationTime > lastNotificationTimestamp) {
-                            spawnNotificationToast(latest.text);
-                            lastNotificationTimestamp = notificationTime;
-                        }
-                    }
-                }
-            }, error => {
-                console.warn("Notification listener bypass.");
-            });
-        }
-
-        function recalculateCompletionProgressBars() {
-            if (!window.latestCloudPayload) return;
-            const keys = ['PHY', 'CHEM', 'BIO', 'MATH'];
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-
-            keys.forEach(k => {
-                const chapters = window.latestCloudPayload[k] || [];
-                let overallItemsCount = 0, activeReadCount = 0;
-                
-                chapters.forEach((ch, chIdx) => {
-                    const lists = [ch.notes, ch.dppModules, ch.testModules];
-                    lists.forEach(l => { if (l) overallItemsCount += l.length; });
-                    
-                    if (ch.notes) ch.notes.forEach((item, itemIdx) => {
-                        if (readLog.includes(`${k}-${chIdx}-notes-${itemIdx}`)) activeReadCount++;
-                    });
-                    if (ch.dppModules) ch.dppModules.forEach(mod => {
-                        if (solvedQuestionsLog[`${k}_${chIdx}_${mod.id}_BLOCKED_STATUS`]) activeReadCount++;
-                    });
-                    if (ch.testModules) ch.testModules.forEach(mod => {
-                        if (solvedQuestionsLog[`${k}_${chIdx}_${mod.id}_BLOCKED_STATUS`]) activeReadCount++;
-                    });
-                });
-
-                const percentage = overallItemsCount > 0 ? Math.round((activeReadCount / overallItemsCount) * 100) : 0;
-                const progressDisplay = document.getElementById(`prog-${k}`);
-                if (progressDisplay) {
-                    progressDisplay.innerText = `${percentage}%`;
-                    progressDisplay.style.display = isAdmin ? 'none' : 'inline-block';
-                }
-            });
-        }
-
-        /* --- DIRECTORY GENERATORS --- */
-        function enterSubjectWorkspace(subjectCode) {
-            selectedSubjectCode = subjectCode;
-            document.getElementById('subject-selection-board').style.display = 'none';
-            document.getElementById('directory-workspace-view').style.display = 'block';
-            
-            const mapping = { PHY: "Physics Core", CHEM: "Chemistry Core", BIO: "Biology Core", MATH: "Mathematics Core" };
-            document.getElementById('directory-title-label').innerText = mapping[subjectCode] || "Subject Core";
-            
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            document.getElementById('btn-admin-add-ch').style.display = isAdmin ? 'inline-block' : 'none'; 
-            
-            renderChapterFolderWorkspace(subjectCode);
-            updateNavigationHistoryState("CHAPTERS");
-        }
-
-        function exitToSubjectBoard() { processStateNavigationTransition("SUBJECTS"); }
-
-        function renderChapterFolderWorkspace(subCode) {
-            const container = document.getElementById('chapter-list-target');
-            if (!container) return;
-            container.innerHTML = "";
-            
-            const chapters = window.latestCloudPayload[subCode] || [];
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-
-            chapters.forEach((chapter, index) => {
-                const row = document.createElement('div');
-                row.className = 'chapter-row';
-                row.onclick = () => launchDetailedSubfolderWorkspace(index);
-                row.innerHTML = `
-                    <div>
-                        <span class="chapter-label">CH - ${String(index + 1).padStart(2, '0')}</span>
-                        <div class="chapter-title-text">${chapter.title}</div>
-                        <div class="chapter-counters">DPPs: ${(chapter.dppModules||[]).length} • Notes: ${(chapter.notes||[]).length} • Tests: ${(chapter.testModules||[]).length}</div>
-                    </div>
-                    <div onclick="event.stopPropagation();">
-                        <button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : 'display:none;'}" onclick="deleteChapterRow(${index})">🗑 Drop Chapter</button>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-            if (chapters.length === 0) {
-                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px 0; font-size:0.9rem; font-weight:500;">No operational chapter directories logged here yet.</p>`;
-            }
-        }
-
-        function launchDetailedSubfolderWorkspace(chapterIndex) {
-            selectedChapterIndex = chapterIndex;
-            document.getElementById('directory-workspace-view').style.display = 'none';
-            document.getElementById('subfolders-workspace-view').style.display = 'block';
-            
-            const chapterContextObj = window.latestCloudPayload[selectedSubjectCode][chapterIndex];
-            document.getElementById('subfolder-chapter-header-label').innerText = chapterContextObj.title || "Selected Sub-Folder Core";
-            
-            switchActiveSlotTab("dppModules");
-            updateNavigationHistoryState("SUBFOLDERS");
-        }
-
-        function exitToChaptersDirectoryView() { processStateNavigationTransition("CHAPTERS"); }
-
-        function switchActiveSlotTab(tabKey) {
-            activeSlotTabKey = tabKey;
-            ['tab-dppModules', 'tab-notes', 'tab-testModules'].forEach(id => {
-                document.getElementById(id).classList.remove('active');
-            });
-            
-            const dynamicIdMapping = { dppModules: 'tab-dppModules', notes: 'tab-notes', testModules: 'tab-testModules' };
-            document.getElementById(dynamicIdMapping[tabKey]).classList.add('active');
-            
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            const creatorButton = document.getElementById('btn-admin-add-slot-item');
-            
-            if (isAdmin && (tabKey === 'dppModules' || tabKey === 'testModules')) {
-                creatorButton.style.display = 'inline-block';
-            } else {
-                creatorButton.style.display = 'none';
-            }
-
-            document.getElementById('admin-notes-upload-block').style.display = (isAdmin && tabKey === 'notes') ? 'flex' : 'none';
-            renderActiveSubFolderBucketView();
-        }
-
-        function renderActiveSubFolderBucketView() {
-            const listContainer = document.getElementById('active-slot-list-target');
-            if (!listContainer) return;
-            listContainer.innerHTML = "";
-
-            const targetChapterObj = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex];
-            if (!targetChapterObj) return;
-
-            const arr = targetChapterObj[activeSlotTabKey] || [];
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            const titleElement = document.getElementById('bucket-panel-title');
-            
-            const titlesMapping = { dppModules: "Daily Practice Matrices", notes: "Verified Class Notes Archive", testModules: "ProGuard Examination Blocks" };
-            titleElement.innerHTML = `<svg style="width:18px; height:18px; fill:#94a3b8;" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#64748b" stroke-width="8"/><ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#64748b" stroke-width="4" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="8" fill="#111827"/></svg> ${titlesMapping[activeSlotTabKey]}`;
-
-            if (arr.length === 0) {
-                listContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px 0; font-size:0.85rem;">Empty sub-folder slot node framework.</p>`;
-                return;
-            }
-
-            arr.forEach((item, itemIndex) => {
-                const li = document.createElement('li');
-                li.className = 'content-item';
-                if (activeSlotTabKey === 'notes') {
-                    let icon = item.type === 'html' ? '🌐' : item.type === 'link' ? '🔗' : '📄';
-                    li.innerHTML = `<span>${icon} ${item.name}</span><div><button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : ''} margin-right:4px;" onclick="deleteFileAsset(${itemIndex})">🗑</button><button class="btn-view" onclick="launchViewer(${itemIndex})">Open</button></div>`;
-                } else {
-                    li.innerHTML = `
-                        <div style="display:flex; flex-direction:column; gap:2px;">
-                            <span style="font-weight:700;">📝 ${item.title}</span>
-                            <span style="font-size:0.72rem; color:var(--text-muted); font-weight:500;">Config: ${item.duration}m • ${(item.questions||[]).length} Questions Attached</span>
-                        </div>
-                        <div style="display:flex; gap:4px;">
-                            <button class="btn-view btn-stats" style="${isAdmin ? 'display:inline-block;' : 'display:none;'} background:#f0fdf4; color:var(--pw-green); border-color:var(--pw-green);" onclick="openModuleLeaderboard('${item.id}')">📊 Stats</button>
-                            <button class="btn-view" style="background:#eff6ff; color:var(--neon-blue); border-color:var(--neon-blue);" onclick="launchQuizWorkspace('${item.id}')">Open</button>
-                            <button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : ''}" onclick="deleteQuizModuleSlot('${item.id}')">🗑</button>
-                        </div>`;
-                }
-                listContainer.appendChild(li);
-            });
-        }
-
-        function handleAddSlotItemClick() {
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            if (!isAdmin) {
-                showCustomAlert("❌ Access Revoked", "Security override blocked: Only admin handles can execute assessment spawning vectors.");
-                return;
-            }
-            showCustomPrompt("Create Assessment Block", "Enter Title Name:", (title) => {
-                showCustomPrompt("Set Timer Duration", "Enter duration period (in minutes):", (mins) => {
-                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                    if (!copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey]) copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey] = [];
-                    copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].push({
-                        id: "mod-" + Date.now(), title: title, duration: parseInt(mins) || 0, questions: []
-                    });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy);
-                });
-            });
-        }
-
-        function deleteQuizModuleSlot(modId) {
-            showCustomConfirm("Drop Assessment Unit?", "Permanently purges this data block from ledger?", () => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                const targetIdx = copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].findIndex(m => m.id === modId);
-                if (targetIdx !== -1) {
-                    copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].splice(targetIdx, 1);
-                    db.collection('curriculum').doc('nested_master_folders').set(copy);
-                }
-            });
-        }
-
-        /* --- CLOUD ASSETS STORAGE LOGISTICS --- */
-        function handleLinkUploadTrigger() {
-            showCustomPrompt("Attach HTTPS Link", "Provide name string text:", (name) => {
-                showCustomPrompt("Asset Endpoint", "Paste external resource address URL:", (url) => {
-                    if (!name || !url) return;
-                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                    if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
-                    copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "link-" + Date.now(), name: name, value: url, type: "link" });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => broadcastGlobalNotification(`Resource updated: "${name}" link pinned.`));
-                });
-            });
-        }
-
-        function handleNotesAssetUpload(inputElement) {
-            const file = inputElement.files[0];
-            if (!file) return;
-            const ext = file.name.split('.').pop().toLowerCase();
-            const originalTitleName = file.name.replace(/\.[^/.]+$/, "");
-
-            showCustomPrompt("Formulate Ledger Title", "Assign clear layout name to asset:", (customTitle) => {
-                const finalTitleName = customTitle.trim() || originalTitleName;
-                const r = new FileReader();
-                r.onload = function(e) {
-                    let payloadDataString = e.target.result;
-                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                    if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
-                    
-                    if (ext === 'html' || ext === 'txt') {
-                        let decoder = new TextDecoder('utf-8');
-                        payloadDataString = decoder.decode(payloadDataString);
-                    }
-                    copy[selectedSubjectCode][selectedChapterIndex].notes.push({
-                        id: "file-" + Date.now(), name: finalTitleName, value: payloadDataString, type: ext
-                    });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
-                        broadcastGlobalNotification(`📢 Document Matrix Updated: "${finalTitleName}" is now active.`);
-                        inputElement.value = "";
-                    });
-                };
-                if (ext === 'html' || ext === 'txt') r.readAsArrayBuffer(file);
-                else r.readAsDataURL(file);
-            });
-        }
-
-        function deleteFileAsset(itemIndex) {
-            showCustomConfirm("Delete Asset?", "Drop this resource from database?", () => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                copy[selectedSubjectCode][selectedChapterIndex].notes.splice(itemIndex, 1);
-                db.collection('curriculum').doc('nested_master_folders').set(copy);
-            });
-        }
-
-        function handleCreateChapterClick() {
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            if (!isAdmin) {
-                showCustomAlert("❌ Access Revoked", "Security block: Student privileges do not contain chapter pipeline creation permissions.");
-                return;
-            }
-            showCustomPrompt("New Chapter Dropdown", "Enter unique chapter heading title name:", (title) => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                if (!copy[selectedSubjectCode]) copy[selectedSubjectCode] = [];
-                copy[selectedSubjectCode].push({ title: title, notes: [], dppModules: [], testModules: [] });
-                db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => broadcastGlobalNotification(`New Chapter Formed: "${title}"`));
-            });
-        }
-
-        function deleteChapterRow(index) {
-            showCustomConfirm("Delete Entire Chapter Context?", "Drops all inner assessments completely.", () => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                copy[selectedSubjectCode].splice(index, 1);
-                db.collection('curriculum').doc('nested_master_folders').set(copy);
-            });
-        }
-
-        /* --- ASSESSMENT EVALUATION ENVIRONMENT WORKSPACE --- */
-        window.activeModuleIdReference = null;
-        function launchQuizWorkspace(modId) {
-            window.activeModuleIdReference = modId;
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === modId);
-            document.getElementById('quiz-portal-title').innerText = targetedMod.title;
-            
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            document.getElementById('quiz-admin-creator').style.display = isAdmin ? 'block' : 'none';
-
-            const examBlockoutKey = `${selectedSubjectCode}_${selectedChapterIndex}_${modId}_BLOCKED_STATUS`;
-            if (solvedQuestionsLog[examBlockoutKey] === "BLOCKED" && !isAdmin) {
-                showCustomAlert("❌ Access Revoked", "Security lock triggered or profile already committed finalized responses.");
-                return;
-            }
-
-            renderQuizQuestionsToViewport();
-            document.getElementById('quiz-portal-modal').style.display = 'flex';
-            if (!isAdmin && targetedMod.duration > 0) initiateProGuardExamTimer(targetedMod.duration);
-            updateNavigationHistoryState("QUIZ");
-        }
-
-        function renderQuizQuestionsToViewport() {
-            const targetContainer = document.getElementById('quiz-questions-render-target');
-            targetContainer.innerHTML = "";
-            
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
-            if (!targetedMod || !targetedMod.questions || targetedMod.questions.length === 0) {
-                targetContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px 0;">No active layout mapped here yet.</p>`;
-                return;
-            }
-
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            targetedMod.questions.forEach((q, qIndex) => {
-                const card = document.createElement('div');
-                card.className = 'question-card';
-                
-                let imageTagBlueprint = q.image ? `<img class="question-image" src="${q.image}">` : "";
-                let adminDeleteHook = isAdmin ? `<button class="btn-delete-chapter" style="display:inline-block; margin-top:14px;" onclick="removeQuestionItem(${qIndex})">🗑 Drop Question</button>` : "";
-                
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                        <span style="font-size:0.75rem; font-weight:800; color:var(--neon-blue); text-transform:uppercase;">Question Node #${qIndex+1}</span>
-                        <div id="score-status-${qIndex}"></div>
-                    </div>
-                    <p style="font-weight:700; margin-top:8px; font-size:1rem; line-height:1.5;">${q.text}</p>
-                    ${imageTagBlueprint}
-                    <div class="options-grid">
-                        <button class="option-button" id="opt-${qIndex}-A" onclick="registerSelectedOptionVector(${qIndex}, 'A')"><strong>A.</strong> ${q.A}</button>
-                        <button class="option-button" id="opt-${qIndex}-B" onclick="registerSelectedOptionVector(${qIndex}, 'B')"><strong>B.</strong> ${q.B}</button>
-                        <button class="option-button" id="opt-${qIndex}-C" onclick="registerSelectedOptionVector(${qIndex}, 'C')"><strong>C.</strong> ${q.C}</button>
-                        <button class="option-button" id="opt-${qIndex}-D" onclick="registerSelectedOptionVector(${qIndex}, 'D')"><strong>D.</strong> ${q.D}</button>
-                    </div>
-                    ${adminDeleteHook}
-                `;
-                targetContainer.appendChild(card);
-                
-                const savedSelectionToken = solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`];
-                if (savedSelectionToken) {
-                    lockVisualOptionState(qIndex, q.answer, savedSelectionToken);
-                }
-            });
-        }
-
-        function registerSelectedOptionVector(qIndex, selectionToken) {
-            if (activeUser.toUpperCase() === "PRATIM") {
-                showCustomAlert("🛡️ Admin Context active", "Response logs bypass write operations for admin profiles.");
-                return;
-            }
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
-            const questionObj = targetedMod.questions[qIndex];
-            
-            const logIdStr = `${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${questionObj.id}`;
-            solvedQuestionsLog[logIdStr] = selectionToken;
-
-            const isCorrect = (selectionToken === questionObj.answer);
-            if (isCorrect) currentXP += 25;
-            document.getElementById('xp-count').innerText = currentXP;
-
-            db.collection('students').doc(activeUser.toUpperCase()).update({
-                solvedQuestionsLog: solvedQuestionsLog, xp: currentXP
-            }).then(() => {
-                lockVisualOptionState(qIndex, questionObj.answer, selectionToken);
-                if (isCorrect) { triggerConfettiBurst(); playRewardChimeSound('xp'); }
-                
-                let solvedCount = 0;
-                targetedMod.questions.forEach(q => {
-                    if (solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`]) solvedCount++;
-                });
-
-                if (solvedCount === targetedMod.questions.length) {
-                    clearInterval(proGuardCountdownInterval);
-                    examActiveState = false;
-                    document.getElementById('btn-exit-quiz-portal').style.display = 'inline-block';
-                    document.getElementById('security-timer-banner').style.display = 'none';
-                    
-                    solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_BLOCKED_STATUS`] = "COMPLETED";
-                    db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog });
-                    showCustomAlert("🎓 Assessment Finalized", "All response vectors have been updated cleanly.");
-                }
-            });
-        }
-
-        function lockVisualOptionState(qIndex, correctToken, savedSelection) {
-            ['A', 'B', 'C', 'D'].forEach(tok => {
-                const btn = document.getElementById(`opt-${qIndex}-${tok}`);
-                if (btn) {
-                    btn.disabled = true;
-                    if (tok === correctToken) btn.classList.add('correct');
-                    if (tok === savedSelection && savedSelection !== correctToken) btn.classList.add('wrong');
-                }
-            });
-            const indicator = document.getElementById(`score-status-${qIndex}`);
-            if (indicator) indicator.innerHTML = savedSelection === correctToken ? `<span style="color:#059669; font-weight:700;">✓ Correct Verified</span>` : `<span style="color:#dc2626; font-weight:700;">✕ Response Locked</span>`;
-        }
-
-        function submitCustomQuestionItem() {
-            const stem = document.getElementById('q-input-text').value.trim();
-            const imgUrl = document.getElementById('q-input-img').value.trim();
-            const optA = document.getElementById('q-opt-A').value.trim();
-            const optB = document.getElementById('q-opt-B').value.trim();
-            const optC = document.getElementById('q-opt-C').value.trim();
-            const optD = document.getElementById('q-opt-D').value.trim();
-            const answerToken = document.getElementById('q-correct-ans').value;
-
-            if (!stem || !optA || !optB || !optC || !optD) { alert("Missing arguments."); return; }
-
-            let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-            const targetMod = copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
-            
-            if (!targetMod.questions) targetMod.questions = [];
-            targetMod.questions.push({
-                id: "q-" + Date.now(), text: stem, image: imgUrl, A: optA, B: optB, C: optC, D: optD, answer: answerToken
-            });
-
-            db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
-                renderQuizQuestionsToViewport();
-                ['q-input-text', 'q-input-img', 'q-opt-A', 'q-opt-B', 'q-opt-C', 'q-opt-D'].forEach(id => {
-                    document.getElementById(id).value = "";
-                });
-            });
-        }
-
-        function handleNativeQuestionImageUpload(inputNode) {
-            const file = inputNode.files[0];
-            if (!file) return;
-            const r = new FileReader();
-            r.onload = function(e) {
-                document.getElementById('q-input-img').value = e.target.result;
-                spawnNotificationToast("📸 Graphic matrix serialized to internal cache string blueprint.");
-            };
-            r.readAsDataURL(file);
-        }
-
-        function removeQuestionItem(qIndex) {
-            let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-            copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference).questions.splice(qIndex, 1);
-            db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => renderQuizQuestionsToViewport());
-        }
-
-        function openModuleLeaderboard(modId) {
-            if (activeUser.toUpperCase() !== "PRATIM") return;
-            const modal = document.getElementById('leaderboard-overlay-modal');
-            const container = document.getElementById('leaderboard-metrics-target');
-            container.innerHTML = "";
-
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === modId);
-            const targetQuestionsArray = targetedMod.questions || [];
-            let performanceRows = [];
-
-            (window.globalCachedRosterSubmits || []).forEach(student => {
-                if (student.name.toUpperCase() === "PRATIM") return;
-                let correct = 0, cheated = (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_BLOCKED_STATUS`] === "BLOCKED");
-                
-                targetQuestionsArray.forEach(q => {
-                    if (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_${q.id}`] === q.answer) correct++;
-                });
-                performanceRows.push({ name: student.name, score: correct, total: targetQuestionsArray.length, cheated: cheated });
-            });
-
-            performanceRows.sort((a, b) => b.score - a.score);
-            performanceRows.forEach((row, idx) => {
-                const el = document.createElement('div');
-                el.className = 'content-item';
-                if(row.cheated) { el.style.background = '#fef2f2'; el.style.borderColor = '#fca5a5'; }
-                el.innerHTML = `<span>${idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"👤"} <strong>${row.name}</strong></span> <span style="font-weight:700; color:${row.cheated?'var(--pw-red)':'var(--pw-green)'};">${row.cheated?'DISQUALIFIED 🚨':`${row.score} / ${row.total}`}</span>`;
-                container.appendChild(el);
-            });
-            modal.style.display = 'flex';
-        }
-
-        /* --- CLASSROOM ROSTER PROGRESS RANKINGS --- */
-        function openGlobalDppLeaderboard() {
-            const modal = document.getElementById('global-dpp-leaderboard-modal');
-            const container = document.getElementById('global-dpp-leaderboard-target');
-            container.innerHTML = "";
-            let rosterList = [];
-
-            (window.globalCachedRosterSubmits || []).forEach(st => {
-                if (st.name.toUpperCase() === "PRATIM") return;
-                rosterList.push({ name: st.name, xp: st.xp || 0, streak: st.streak || 1 });
-            });
-            rosterList.sort((a, b) => b.xp - a.xp);
-
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-
-            let tableHTML = `
-                <table class="roster-table">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Candidate Student Profile</th>
-                            <th style="text-align:center;">Streak</th>
-                            <th style="text-align:right;">Total Credit Matrix</th>
-                            ${isAdmin ? '<th style="text-align:center; padding-right: 12px;">Action</th>' : ''}
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            rosterList.forEach((r, idx) => {
-                let badge = idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"👤";
-                let actionBtnHTML = isAdmin ? `
-                    <td style="text-align:center; padding-right: 12px;">
-                        <button class="btn-delete-chapter" style="display:inline-block; padding: 6px 12px; margin: 0; font-size: 0.72rem; border-radius:6px;" onclick="event.stopPropagation(); removeStudentProfile('${r.name}')">🗑 Remove</button>
-                    </td>` : '';
-
-                tableHTML += `<tr>
-                    <td style="font-weight:800; color:var(--text-muted); padding-left:12px;">${idx+1}</td>
-                    <td style="font-weight:700; color:#1e293b;">${badge} ${r.name}</td>
-                    <td style="text-align:center; font-weight:800; color:#dc2626;">🔥 ${r.streak}d</td>
-                    <td style="text-align:right; font-weight:800; color:var(--neon-blue); padding-right:12px;">✨ ${r.xp} XP</td>
-                    ${actionBtnHTML}
-                </tr>`;
-            });
-            tableHTML += `</tbody></table>`;
-            container.innerHTML = rosterList.length > 0 ? tableHTML : `<p style="padding:20px; color:var(--text-muted); text-align:center;">No students registered</p>`;
-            modal.style.display = 'flex';
-        }
-
-        /* --- ADMIN STUDENT REMOVAL FUNCTION --- */
-        function removeStudentProfile(studentName) {
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            if (!isAdmin) return;
-
-            showCustomConfirm(
-                "Decommission Student?", 
-                `Are you sure you want to permanently erase student profile <strong>"${studentName}"</strong>? This will wipe their XP achievements, active streak log, and lock them out of the classroom immediately.`, 
-                () => {
-                    db.collection('students').doc(studentName.toUpperCase()).delete().then(() => {
-                        spawnNotificationToast(`Student profile "${studentName}" successfully deleted.`);
-                        broadcastGlobalNotification(`📢 Profile Purge: ${studentName} was removed from the continuous learning roster by Administrator.`);
-                        openGlobalDppLeaderboard(); 
-                    }).catch(err => {
-                        spawnNotificationToast("❌ Error occurred during profile decommission process.");
-                        console.error(err);
-                    });
-                }
-            );
-        }
-
-        /* --- PROGUARD EXAM TIME SECURITY SYSTEM --- */
-        function initiateProGuardExamTimer(durationMins) {
-            examActiveState = true;
-            timeRemainingSeconds = durationMins * 60;
-            
-            document.getElementById('btn-exit-quiz-portal').style.display = 'none';
-            const banner = document.getElementById('security-timer-banner');
-            const clock = document.getElementById('timer-countdown-clock');
-            
-            banner.style.display = 'block';
-            clock.innerText = `${String(durationMins).padStart(2,'0')}:00`;
-
-            clearInterval(proGuardCountdownInterval);
-            proGuardCountdownInterval = setInterval(() => {
-                timeRemainingSeconds--;
-                if (timeRemainingSeconds <= 0) {
-                    executeProGuardAutomaticLockout("EXPIRED");
-                } else {
-                    clock.innerText = `${String(Math.floor(timeRemainingSeconds / 60)).padStart(2,'0')}:${String(timeRemainingSeconds % 60).padStart(2,'0')}`;
-                }
-            }, 1000);
-        }
-
-        function setupProGuardTabProtection() {
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "hidden" && examActiveState && activeUser && activeUser.toUpperCase() !== "PRATIM") 
-                    executeProGuardAutomaticLockout("TAB_SWITCH");
-            });
-            window.addEventListener("blur", () => {
-                if (examActiveState && activeUser && activeUser.toUpperCase() !== "PRATIM") 
-                    executeProGuardAutomaticLockout("BREACH");
-            });
-        }
-
-        function executeProGuardAutomaticLockout(reason) {
-            clearInterval(proGuardCountdownInterval);
-            examActiveState = false;
-            
-            solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_BLOCKED_STATUS`] = "BLOCKED";
-            db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog }).then(() => {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('btn-exit-quiz-portal').style.display = 'inline-block';
-                document.getElementById('security-timer-banner').style.display = 'none';
-                
-                if (reason !== "EXPIRED") {
-                    showCustomAlert("🚨 Profile Locked", "Focus boundary breach or tab-switch context detected.");
-                    broadcastGlobalNotification(`⚠️ ProGuard Flag: ${activeUser} triggered lockout security.`);
-                } else {
-                    showCustomAlert("⏱️ Session Expired", "Duration window closed.");
-                }
-                processStateNavigationTransition("SUBFOLDERS");
-            });
-        }
-
-        function closeQuizPortal() {
-            examActiveState = false;
-            clearInterval(proGuardCountdownInterval);
-            processStateNavigationTransition("SUBFOLDERS");
-        }
-
-        function broadcastGlobalNotification(txt) {
-            db.collection('sync_notifications').add({ text: txt, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-        }
-
-        function spawnNotificationToast(msg) {
-            const target = document.getElementById('notification-toast-container');
-            const t = document.createElement('div');
-            t.className = 'toast-card';
-            t.innerHTML = `<div class="toast-header">🔔 Sync Update</div><div class="toast-body">${msg}</div>`;
-            target.appendChild(t);
-            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 4500);
-        }
-
-        /* --- NOTE VIEWER ENGINE MODAL --- */
-        function launchViewer(itemIndex) {
-            const item = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex].notes[itemIndex];
-            
-            // DIRECT LINK ACCESS INTEGRATION: Immediately opens links in a new window/tab without using frame containers
-            if (item.type === 'link' || item.value.startsWith('http')) {
-                window.open(item.value, '_blank');
-                
-                // Track reading completion progress and reward +10 XP instantly
-                if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
-                    const logKey = `${selectedSubjectCode}-${selectedChapterIndex}-notes-${itemIndex}`;
-                    if (!readLog.includes(logKey)) {
-                        readLog.push(logKey);
-                        currentXP += 10;
-                        document.getElementById('xp-count').innerText = currentXP;
-                        db.collection('students').doc(activeUser.toUpperCase()).update({ readLog: readLog, xp: currentXP });
-                        spawnNotificationToast("✨ Resource read verified! +10 XP added.");
-                    }
-                }
-                return; // Exits early to bypass opening the modal viewer box
-            }
-            
-            const modal = document.getElementById('viewer-modal');
-            const frame = document.getElementById('view-frame');
-            
-            if (item.type === 'html') {
-                frame.srcdoc = item.value;
-            } else {
-                frame.srcdoc = `<p style="padding:30px; font-family:sans-serif; color:#64748b;">Unsupported media: Base64 Source Embedded.</p>`;
-            }
-            modal.style.display = 'flex';
-
-            if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
-                const logKey = `${selectedSubjectCode}-${selectedChapterIndex}-notes-${itemIndex}`;
-                if (!readLog.includes(logKey)) {
-                    readLog.push(logKey);
-                    currentXP += 10;
-                    document.getElementById('xp-count').innerText = currentXP;
-                    db.collection('students').doc(activeUser.toUpperCase()).update({ readLog: readLog, xp: currentXP });
-                    spawnNotificationToast("✨ Resource read verified! +10 XP added.");
-                }
-            }
-        }
-
-        function closeViewer() {
-            document.getElementById('viewer-modal').style.display = 'none';
-            document.getElementById('view-frame').src = "";
-            document.getElementById('view-frame').srcdoc = "";
-        }
-
-        function openNoticeModal() {
-            document.getElementById('notice-unread-dot').style.display = 'none';
-            const textContent = document.getElementById('notice-board-message-text').innerHTML;
-            localStorage.setItem('science_ix_seen_notice', textContent);
-            document.getElementById('notice-overlay-modal').style.display = 'flex';
-        }
-        function closeNoticeModal() { document.getElementById('notice-overlay-modal').style.display = 'none'; }
-
-        function handleAdminNoticeMutation() {
-            if (activeUser.toUpperCase() !== "PRATIM") return;
-            showCustomPrompt("Mutate Broadcast Billboard", "Markdown text body syntax parsed:", (msg) => {
-                db.collection('curriculum').doc('billboard_announcement').set({ message: msg });
-            });
-        }
-
-        /* --- SYSTEM DIALOG BLUEPRINTS INTERFACE OVERRIDES --- */
-        function showCustomAlert(title, message) {
-            configureOverlayDialogFramework(title, message, false);
-            const container = document.getElementById('custom-dialog-buttons-blueprint');
-            container.innerHTML = `<button class="btn-dialog-primary" onclick="closeOverlayModalWindow()">Acknowledge</button>`;
-        }
-
-        function showCustomConfirm(title, message, callback) {
-            configureOverlayDialogFramework(title, message, false);
-            const container = document.getElementById('custom-dialog-buttons-blueprint');
-            window.activeDialogConfirmActionPointer = () => { closeOverlayModalWindow(); callback(); };
-            container.innerHTML = `
-                <button class="btn-dialog-secondary" onclick="closeOverlayModalWindow()">Abort</button>
-                <button class="btn-dialog-primary" onclick="window.activeDialogConfirmActionPointer()">Confirm Action</button>
-            `;
-        }
-
-        function showCustomPrompt(title, message, callback) {
-            configureOverlayDialogFramework(title, message, true);
-            const container = document.getElementById('custom-dialog-buttons-blueprint');
-            window.activeDialogPromptActionPointer = () => {
-                const val = document.getElementById('custom-dialog-field').value.trim();
-                closeOverlayModalWindow();
-                if (val) callback(val);
-            };
-            container.innerHTML = `
-                <button class="btn-dialog-secondary" onclick="closeOverlayModalWindow()">Cancel</button>
-                <button class="btn-dialog-primary" onclick="window.activeDialogPromptActionPointer()">Accept Text</button>
-            `;
-        }
-
-        function configureOverlayDialogFramework(title, message, displayInputField) {
-            document.getElementById('custom-dialog-title').innerText = title;
-            document.getElementById('custom-dialog-message').innerHTML = message;
-            document.getElementById('custom-dialog-field').value = "";
-            document.getElementById('custom-dialog-input-wrapper').style.display = displayInputField ? 'block' : 'none';
-            document.getElementById('custom-dialog-modal').style.display = 'flex';
-        }
-        function closeOverlayModalWindow() { document.getElementById('custom-dialog-modal').style.display = 'none'; }
-
-        /* --- REWARD AUDIO SYNTHESIZER --- */
+        /* --- SYNTHESIZED PROCEDURAL AUDIO REWARD ENGINE --- */
         function playRewardChimeSound(type) {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 if (type === 'xp') {
                     let osc1 = audioCtx.createOscillator(), osc2 = audioCtx.createOscillator();
                     let gainNode = audioCtx.createGain();
-                    osc1.type = 'sine'; osc1.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                    osc1.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
-                    osc2.type = 'triangle'; osc2.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.15);
+                    osc1.type = 'sine'; osc1.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                    osc1.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+                    osc2.type = 'triangle'; osc2.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.15); 
                     gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                     osc1.connect(gainNode); osc2.connect(gainNode); gainNode.connect(audioCtx.destination);
                     osc1.start(); osc2.start(); osc1.stop(audioCtx.currentTime + 0.4); osc2.stop(audioCtx.currentTime + 0.4);
                 } else if (type === 'streak') {
                     let osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-                    osc.type = 'triangle'; const notes = [440, 554, 659, 880];
-                    notes.forEach((freq, index) => { osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.08)); });
-                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    osc.type = 'triangle';
+                    const notes = [440, 554, 659, 880];
+                    notes.forEach((freq, index) => {
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.08));
+                    });
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
                     osc.connect(gain); gain.connect(audioCtx.destination);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.5);
                 }
@@ -1713,13 +638,771 @@
             }
         });
 
+        /* --- FIXED RESOLUTION LATERAL SLIDING TIMELINE TRACK --- */
         function setupContinuousInfoDrawerSlider() {
             const track = document.getElementById('horizontal-info-track');
             let currentCardOffsetIndex = 0;
             setInterval(() => {
                 currentCardOffsetIndex = (currentCardOffsetIndex + 1) % 3;
-                if (track) track.style.transform = `translateX(-${currentCardOffsetIndex * 33.333}%)`;
-            }, 6000);
+                if (track) {
+                    track.style.transform = `translateX(-${currentCardOffsetIndex * 33.333}%)`;
+                }
+            }, 4000);
+        }
+
+        function entrySetup() {
+            let input = document.getElementById('username-input').value.trim();
+            if (!input) input = "STUDENT";
+            const processedUser = input.toUpperCase();
+            localStorage.setItem('science_ix_session', processedUser);
+            document.getElementById('welcome-screen').style.display = 'none';
+            initializeAuthenticatedSession(processedUser);
+        }
+
+        function initializeAuthenticatedSession(username) {
+            activeUser = username;
+            document.getElementById('welcome-user').innerText = `👋 Welcome, ${username}`;
+            const isAdmin = (username === "PRATIM");
+            
+            if (isAdmin) {
+                document.getElementById('admin-indicator').style.display = 'inline-block';
+                document.querySelectorAll('.progress-text').forEach(el => el.style.display = 'inline-block');
+                if(document.getElementById('btn-admin-edit-notice')) document.getElementById('btn-admin-edit-notice').style.display = 'inline-block';
+                if(document.getElementById('btn-admin-add-ch')) document.getElementById('btn-admin-add-ch').style.display = 'inline-block';
+            } else {
+                document.getElementById('admin-indicator').style.display = 'none';
+                document.querySelectorAll('.progress-text').forEach(el => el.style.display = 'none');
+                if(document.getElementById('btn-admin-edit-notice')) document.getElementById('btn-admin-edit-notice').style.display = 'none';
+                if(document.getElementById('btn-admin-add-ch')) document.getElementById('btn-admin-add-ch').style.display = 'none';
+            }
+            
+            syncStudentCloudProfile(username);
+            listenToActiveRoster();
+            listenToGlobalAnnouncements();
+            listenToNestedMasterCurriculum();
+            updateNavigationHistoryState("SUBJECTS");
+        }
+
+        function updateNavigationHistoryState(viewName) {
+            currentAppStateView = viewName;
+            history.pushState({ appView: viewName }, "");
+        }
+
+        function setupHardwareBackButtonEngine() {
+            window.addEventListener('popstate', (event) => {
+                if (examActiveState) {
+                    updateNavigationHistoryState("QUIZ");
+                    spawnNotificationToast("⚠️ ProGuard Active! Use 'Exit Board' button directly.");
+                    return;
+                }
+                if (event.state && event.state.appView) {
+                    processStateNavigationTransition(event.state.appView);
+                } else {
+                    processStateNavigationTransition("SUBJECTS");
+                }
+            });
+        }
+
+        function processStateNavigationTransition(view) {
+            currentAppStateView = view;
+            if (view === "SUBJECTS") {
+                document.getElementById('quiz-portal-modal').style.display = 'none';
+                document.getElementById('subfolders-workspace-view').style.display = 'none';
+                document.getElementById('directory-workspace-view').style.display = 'none';
+                document.getElementById('subject-selection-board').style.display = 'block';
+                selectedSubjectCode = "";
+                selectedChapterIndex = null;
+                recalculateCompletionProgressBars();
+            } else if (view === "CHAPTERS") {
+                document.getElementById('quiz-portal-modal').style.display = 'none';
+                document.getElementById('subject-selection-board').style.display = 'none';
+                document.getElementById('subfolders-workspace-view').style.display = 'none';
+                document.getElementById('directory-workspace-view').style.display = 'block';
+                selectedChapterIndex = null;
+                if (selectedSubjectCode) renderChapterFolderWorkspace(selectedSubjectCode);
+            } else if (view === "SUBFOLDERS") {
+                document.getElementById('quiz-portal-modal').style.display = 'none';
+                document.getElementById('subject-selection-board').style.display = 'none';
+                document.getElementById('directory-workspace-view').style.display = 'none';
+                document.getElementById('subfolders-workspace-view').style.display = 'block';
+                if (selectedChapterIndex !== null) renderActiveSubFolderBucketView();
+            }
+        }
+
+        function syncStudentCloudProfile(username) {
+            const keyName = username.toUpperCase();
+            const todayStr = new Date().toDateString();
+            db.collection('students').doc(keyName).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    currentXP = data.xp || 0;
+                    readLog = data.readLog || [];
+                    solvedQuestionsLog = data.solvedQuestionsLog || {};
+                    userStreak = data.streak || 1;
+                    if (keyName !== "PRATIM" && data.lastActiveDate !== todayStr) {
+                        userStreak = (data.lastActiveDate === new Date(Date.now() - 86400000).toDateString()) ? userStreak + 1 : 1;
+                        db.collection('students').doc(keyName).update({ streak: userStreak, lastActiveDate: todayStr });
+                    }
+                    document.getElementById('xp-count').innerText = currentXP;
+                    document.getElementById('streak-count').innerText = userStreak;
+                    
+                    if (userStreak >= 5 && keyName !== "PRATIM") {
+                        setTimeout(() => { 
+                            triggerConfettiBurst(); 
+                            playRewardChimeSound('streak');
+                            showCustomAlert("🔥 Phenomenal Streak!", `Holding a <strong>${userStreak} Day Streak</strong>!`); 
+                        }, 1200);
+                    }
+                } else {
+                    db.collection('students').doc(keyName).set({ name: username, xp: 0, streak: 1, lastActiveDate: todayStr, readLog: [], solvedQuestionsLog: {}, joined: new Date().toLocaleDateString() });
+                }
+            });
+        }
+
+        function listenToActiveRoster() {
+            db.collection('students').onSnapshot(snapshot => {
+                window.globalCachedRosterSubmits = [];
+                let activeProfileExisted = false;
+                snapshot.forEach(doc => { 
+                    const profileData = doc.data();
+                    window.globalCachedRosterSubmits.push(profileData); 
+                    if (activeUser && profileData.name.toUpperCase() === activeUser.toUpperCase()) {
+                        activeProfileExisted = true;
+                    }
+                });
+
+                // Decommission lockout triggers ONLY if student was deleted explicitly by the admin
+                if (activeUser && activeUser.toUpperCase() !== "PRATIM" && !activeProfileExisted && window.latestCloudPayload.PHY) {
+                    localStorage.removeItem('science_ix_session');
+                    activeUser = null;
+                    location.reload();
+                }
+            });
+        }
+
+        function listenToGlobalAnnouncements() {
+            db.collection('curriculum').doc('billboard_announcement').onSnapshot(doc => {
+                if (doc.exists) {
+                    const currentNotice = doc.data().message;
+                    document.getElementById('announcement-display').innerText = currentNotice;
+                    if (currentNotice !== lastSeenNoticeText) document.getElementById('notice-unread-dot').style.display = 'block';
+                }
+            });
+        }
+
+        function openNoticeModal() { document.getElementById('notice-overlay-modal').style.display = 'flex'; document.getElementById('notice-unread-dot').style.display = 'none'; const text = document.getElementById('announcement-display').innerText; if (text && text !== "Loading notices...") { lastSeenNoticeText = text; localStorage.setItem('science_ix_last_notice', text); } }
+        function closeNoticeModal() { document.getElementById('notice-overlay-modal').style.display = 'none'; }
+        function handleModifyAnnouncement() { showCustomPrompt("Update Notice", "Type content here:", (newNotice) => { db.collection('curriculum').doc('billboard_announcement').set({ message: newNotice, updatedBy: activeUser, date: new Date().toLocaleDateString() }); }); }
+
+        function listenToNestedMasterCurriculum() {
+            db.collection('curriculum').doc('nested_master_folders').onSnapshot(doc => {
+                if (doc.exists) {
+                    window.latestCloudPayload = doc.data();
+                    document.getElementById('sync-status').className = "sync-indicator sync-connected";
+                    document.getElementById('sync-status').innerHTML = "<span></span> Synchronized";
+                    recalculateCompletionProgressBars();
+                    if (selectedSubjectCode) {
+                        if (selectedChapterIndex !== null) renderActiveSubFolderBucketView();
+                        else renderChapterFolderWorkspace(selectedSubjectCode);
+                    }
+                } else {
+                    window.latestCloudPayload = { PHY: [], CHEM: [], BIO: [], MATH: [] };
+                    db.collection('curriculum').doc('nested_master_folders').set(window.latestCloudPayload);
+                }
+            });
+        }
+
+        function recalculateCompletionProgressBars() {
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            ['PHY', 'CHEM', 'BIO', 'MATH'].forEach(k => {
+                const chapters = window.latestCloudPayload[k] || [];
+                let overallItemsCount = 0, activeReadCount = 0;
+                chapters.forEach((ch, chIdx) => {
+                    const lists = [ch.notes, ch.dppModules, ch.testModules];
+                    lists.forEach(l => { if (l) overallItemsCount += l.length; });
+                    if (ch.notes) ch.notes.forEach((item, itemIdx) => { if (readLog.includes(`${k}-${chIdx}-notes-${itemIdx}`)) activeReadCount++; });
+                    if (ch.dppModules) ch.dppModules.forEach(mod => { if (solvedQuestionsLog[`${k}_${chIdx}_${mod.id}_BLOCKED_STATUS`]) activeReadCount++; });
+                    if (ch.testModules) ch.testModules.forEach(mod => { if (solvedQuestionsLog[`${k}_${chIdx}_${mod.id}_BLOCKED_STATUS`]) activeReadCount++; });
+                });
+                const percentage = overallItemsCount > 0 ? Math.round((activeReadCount / overallItemsCount) * 100) : 0;
+                const progressDisplay = document.getElementById(`prog-${k}`);
+                if (progressDisplay) {
+                    progressDisplay.innerText = `${percentage}%`;
+                    progressDisplay.style.display = isAdmin ? 'none' : 'inline-block';
+                }
+            });
+        }
+
+        function enterSubjectWorkspace(subjectCode) {
+            selectedSubjectCode = subjectCode;
+            document.getElementById('subject-selection-board').style.display = 'none';
+            document.getElementById('directory-workspace-view').style.display = 'block';
+            const mapping = { PHY: "Physics Core", CHEM: "Chemistry Core", BIO: "Biology Core", MATH: "Mathematics Core" };
+            document.getElementById('directory-title-label').innerText = mapping[subjectCode] || "Subject Core";
+            
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            if(document.getElementById('btn-admin-add-ch')) {
+                document.getElementById('btn-admin-add-ch').style.display = isAdmin ? 'inline-block' : 'none';
+            }
+            
+            renderChapterFolderWorkspace(subjectCode);
+            updateNavigationHistoryState("CHAPTERS");
+        }
+
+        function exitToSubjectBoard() { processStateNavigationTransition("SUBJECTS"); }
+
+        function renderChapterFolderWorkspace(subCode) {
+            const container = document.getElementById('chapter-list-target');
+            if (!container) return; container.innerHTML = "";
+            const chapters = window.latestCloudPayload[subCode] || [];
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            
+            chapters.forEach((chapter, index) => {
+                const row = document.createElement('div');
+                row.className = 'chapter-row';
+                row.onclick = () => launchDetailedSubfolderWorkspace(index);
+                row.innerHTML = `
+                    <div>
+                        <span class="chapter-label">CH - ${String(index + 1).padStart(2, '0')}</span>
+                        <div class="chapter-title-text">${chapter.title}</div>
+                        <div class="chapter-counters">DPPs: ${(chapter.dppModules||[]).length} • Notes: ${(chapter.notes||[]).length} • Tests: ${(chapter.testModules||[]).length}</div>
+                    </div>
+                    <div onclick="event.stopPropagation();">
+                        <button class="btn-delete-chapter" ${isAdmin ? 'style="display:inline-block;"' : ''} onclick="deleteChapterRow(${index})">🗑</button>
+                        <span style="color:#9ca3af; font-size:0.8rem;">➔</span>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function launchDetailedSubfolderWorkspace(chIndex) {
+            selectedChapterIndex = chIndex;
+            document.getElementById('directory-workspace-view').style.display = 'none';
+            document.getElementById('subfolders-workspace-view').style.display = 'block';
+            document.getElementById('subfolder-ch-title-label').innerText = window.latestCloudPayload[selectedSubjectCode][chIndex].title;
+            switchActiveSlotTab('dppModules');
+            updateNavigationHistoryState("SUBFOLDERS");
+        }
+
+        function exitToChaptersDirectory() { processStateNavigationTransition("CHAPTERS"); }
+
+        function switchActiveSlotTab(tabKey) {
+            activeSlotTabKey = tabKey;
+            document.querySelectorAll('.slot-tab-btn').forEach(btn => { btn.classList.toggle('active', btn.id === `tab-${tabKey}`); });
+            renderActiveSubFolderBucketView();
+        }
+
+        function renderActiveSubFolderBucketView() {
+            const listContainer = document.getElementById('active-slot-list-target');
+            listContainer.innerHTML = "";
+            const chapterObj = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex];
+            const arr = chapterObj[activeSlotTabKey] || [];
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            
+            document.getElementById('btn-admin-add-slot-item').style.display = (isAdmin && activeSlotTabKey !== 'notes') ? 'inline-block' : 'none';
+            document.getElementById('admin-notes-upload-block').style.display = (isAdmin && activeSlotTabKey === 'notes') ? 'flex' : 'none';
+            
+            const titlesMapping = { dppModules: "🎯 Connected Practice Sets (DPPs)", notes: "📚 Managed Class Notes", testModules: "📅 Scheduled Evaluation Tests" };
+            document.getElementById('bucket-panel-title').innerHTML = `<svg style="width:16px; height:16px; fill:var(--neon-blue);" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(60 50 50)"/><circle cx="50" cy="50" r="8" fill="#111827"/></svg> ${titlesMapping[activeSlotTabKey]}`;
+            
+            if (arr.length === 0) {
+                listContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px 0; font-size:0.85rem;">Empty sub-folder slot node framework.</p>`; return;
+            }
+            
+            arr.forEach((item, itemIndex) => {
+                const li = document.createElement('li'); li.className = 'content-item';
+                if (activeSlotTabKey === 'notes') {
+                    let icon = item.type === 'html' ? '🌐' : item.type === 'link' ? '🔗' : '📄';
+                    li.innerHTML = `<span>${icon} ${item.name}</span><div><button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : ''} margin-right:4px;" onclick="deleteFileAsset(${itemIndex})">🗑</button><button class="btn-view" onclick="launchViewer(${itemIndex})">Open</button></div>`;
+                } else {
+                    li.innerHTML = `
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-weight:700;">📝 ${item.title}</span>
+                            <span style="font-size:0.72rem; color:var(--text-muted); font-weight:500;">Config: ${item.duration}m • ${(item.questions||[]).length} Questions Attached</span>
+                        </div>
+                        <div style="display:flex; gap:4px;">
+                            <button class="btn-view btn-stats" style="${isAdmin ? 'display:inline-block;' : 'display:none;'} background:#f0fdf4; color:var(--pw-green); border-color:var(--pw-green);" onclick="openModuleLeaderboard('${item.id}')">📊 Stats</button>
+                            <button class="btn-view" style="background:#eff6ff; color:var(--neon-blue); border-color:var(--neon-blue);" onclick="launchQuizWorkspace('${item.id}')">Open</button>
+                            <button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : ''}" onclick="deleteQuizModuleSlot('${item.id}')">🗑</button>
+                        </div>`;
+                }
+                listContainer.appendChild(li);
+            });
+        }
+
+        function handleAddSlotItemClick() {
+            showCustomPrompt("Create Assessment Block", "Enter Title Name:", (title) => {
+                showCustomPrompt("Set Timer Duration", "Enter duration period (in minutes):", (mins) => {
+                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                    if (!copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey]) copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey] = [];
+                    copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].push({ id: "mod-" + Date.now(), title: title, duration: parseInt(mins) || 0, questions: [] });
+                    db.collection('curriculum').doc('nested_master_folders').set(copy);
+                });
+            });
+        }
+
+        function deleteQuizModuleSlot(modId) {
+            showCustomConfirm("Delete This Assessment Block?", "Drops all contained context parameters.", () => {
+                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                const targetIdx = copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].findIndex(m => m.id === modId);
+                if (targetIdx !== -1) { copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].splice(targetIdx, 1); db.collection('curriculum').doc('nested_master_folders').set(copy); }
+            });
+        }
+
+        function handleLinkUploadTrigger() {
+            showCustomPrompt("Resource Header Label", "Label name:", (label) => {
+                showCustomPrompt("Destination Link", "Paste complete dynamic HTTPS URL asset link here:", (url) => {
+                    if (!url.startsWith('http')) url = 'https://' + url;
+                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                    if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
+                    copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "link-"+Date.now(), name: label, data: url, type: 'link' });
+                    db.collection('curriculum').doc('nested_master_folders').set(copy);
+                });
+            });
+        }
+
+        function handleNotesAssetUpload(input) {
+            const file = input.files[0]; if (!file) return;
+            const ext = file.name.split('.').pop().toLowerCase();
+            showCustomPrompt("Label Name", "Enter displaying asset name:", (label) => {
+                const r = new FileReader();
+                r.onload = function(e) {
+                    let rawData = e.target.result; let finalType = ext;
+                    if (ext === 'html' || ext === 'txt') {
+                        const txt = new TextDecoder("utf-8").decode(e.target.result);
+                        rawData = 'data:text/html;charset=utf-8,' + encodeURIComponent(txt); finalType = 'html';
+                    }
+                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                    if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
+                    copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "file-" + Date.now(), name: label, data: rawData, type: finalType });
+                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => { input.value = ""; });
+                };
+                if (ext === 'html' || ext === 'txt') r.readAsArrayBuffer(file); else r.readAsDataURL(file);
+            });
+        }
+
+        function deleteFileAsset(itemIndex) {
+            showCustomConfirm("Delete Asset?", "Drop this resource from database?", () => {
+                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                copy[selectedSubjectCode][selectedChapterIndex].notes.splice(itemIndex, 1);
+                db.collection('curriculum').doc('nested_master_folders').set(copy);
+            });
+        }
+
+        function handleCreateChapterClick() {
+            showCustomPrompt("New Chapter Dropdown", "Enter unique chapter heading title name:", (title) => {
+                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                if (!copy[selectedSubjectCode]) copy[selectedSubjectCode] = [];
+                copy[selectedSubjectCode].push({ title: title, notes: [], dppModules: [], testModules: [] });
+                db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => broadcastGlobalNotification(`New Chapter Formed: "${title}"`));
+            });
+        }
+
+        function deleteChapterRow(index) {
+            showCustomConfirm("Delete Entire Chapter Context?", "Drops all inner assessments completely.", () => {
+                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+                copy[selectedSubjectCode].splice(index, 1);
+                db.collection('curriculum').doc('nested_master_folders').set(copy);
+            });
+        }
+
+        window.activeModuleIdReference = null;
+        function launchQuizWorkspace(modId) {
+            window.activeModuleIdReference = modId;
+            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === modId);
+            document.getElementById('quiz-portal-title').innerText = targetedMod.title;
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            document.getElementById('quiz-admin-creator').style.display = isAdmin ? 'block' : 'none';
+            
+            const examBlockoutKey = `${selectedSubjectCode}_${selectedChapterIndex}_modId_BLOCKED_STATUS`;
+            if (solvedQuestionsLog[examBlockoutKey] === "BLOCKED" && !isAdmin) {
+                showCustomAlert("❌ Access Revoked", "Security lock triggered or profile already committed finalized responses."); return;
+            }
+            renderQuizQuestionsToViewport();
+            document.getElementById('quiz-portal-modal').style.display = 'flex';
+            if (!isAdmin && targetedMod.duration > 0) initiateProGuardExamTimer(targetedMod.duration);
+            updateNavigationHistoryState("QUIZ");
+        }
+
+        function renderQuizQuestionsToViewport() {
+            const targetContainer = document.getElementById('quiz-questions-render-target'); targetContainer.innerHTML = "";
+            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
+            if (!targetedMod || !targetedMod.questions || targetedMod.questions.length === 0) {
+                targetContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px 0;">No active layout mapped here yet.</p>`; return;
+            }
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            targetedMod.questions.forEach((q, qIndex) => {
+                const card = document.createElement('div'); card.className = "question-card";
+                const uniqueStatusKey = `${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`;
+                const hasSolved = solvedQuestionsLog[uniqueStatusKey] || null;
+                let actionHtml = isAdmin ? `<button class="btn-delete-chapter" style="display:inline-block; margin-bottom:10px;" onclick="removeQuestionItem(${qIndex})">🗑 Remove</button>` : '';
+                let imgHtml = q.img ? `<img src="${q.img}" class="question-image">` : '';
+                
+                card.innerHTML = `
+                    ${actionHtml}<p style="font-weight:700;">Q${qIndex + 1}: ${q.stem}</p>${imgHtml}
+                    <div class="options-grid">
+                        <button class="option-button" id="opt-${qIndex}-A" onclick="handleCommitOptionSelection(${qIndex}, 'A')"><strong>A:</strong> ${q.options.A}</button>
+                        <button class="option-button" id="opt-${qIndex}-B" onclick="handleCommitOptionSelection(${qIndex}, 'B')"><strong>B:</strong> ${q.options.B}</button>
+                        <button class="option-button" id="opt-${qIndex}-C" onclick="handleCommitOptionSelection(${qIndex}, 'C')"><strong>C:</strong> ${q.options.C}</button>
+                        <button class="option-button" id="opt-${qIndex}-D" onclick="handleCommitOptionSelection(${qIndex}, 'D')"><strong>D:</strong> ${q.options.D}</button>
+                    </div>
+                    <div class="correction-container" id="score-status-${qIndex}"><span style="color:var(--text-muted); font-size:0.75rem;">Status: Awaiting action...</span></div>
+                `;
+                targetContainer.appendChild(card);
+                if (hasSolved || isAdmin) lockVisualOptionState(qIndex, q.answer, hasSolved || q.answer);
+            });
+        }
+
+        function handleCommitOptionSelection(qIndex, selectionToken) {
+            if (activeUser.toUpperCase() === "PRATIM") return;
+            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
+            const questionObj = targetedMod.questions[qIndex];
+            const uniqueStatusKey = `${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${questionObj.id}`;
+            if (solvedQuestionsLog[uniqueStatusKey]) return;
+            
+            solvedQuestionsLog[uniqueStatusKey] = selectionToken;
+            const isCorrect = (selectionToken === questionObj.answer);
+            if (isCorrect) currentXP += 25; document.getElementById('xp-count').innerText = currentXP;
+            
+            db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog, xp: currentXP }).then(() => {
+                lockVisualOptionState(qIndex, questionObj.answer, selectionToken);
+                if (isCorrect) {
+                    triggerConfettiBurst();
+                    playRewardChimeSound('xp');
+                }
+                let solvedCount = 0;
+                targetedMod.questions.forEach(q => { if (solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`]) solvedCount++; });
+                if (solvedCount === targetedMod.questions.length) {
+                    clearInterval(proGuardCountdownInterval); examActiveState = false;
+                    document.getElementById('btn-exit-quiz-portal').style.display = 'inline-block';
+                    document.getElementById('security-timer-banner').style.display = 'none';
+                    solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_BLOCKED_STATUS`] = "COMPLETED";
+                    db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog });
+                    showCustomAlert("🎓 Assessment Finalized", "All response vectors have been updated cleanly.");
+                }
+            });
+        }
+
+        function lockVisualOptionState(qIndex, correctToken, savedSelection) {
+            ['A', 'B', 'C', 'D'].forEach(tok => {
+                const btn = document.getElementById(`opt-${qIndex}-${tok}`);
+                if (btn) {
+                    btn.disabled = true;
+                    if (tok === correctToken) btn.classList.add('correct');
+                    if (tok === savedSelection && savedSelection !== correctToken) btn.classList.add('wrong');
+                }
+            });
+            const indicator = document.getElementById(`score-status-${qIndex}`);
+            if (indicator) indicator.innerHTML = savedSelection === correctToken ? `<span style="color:#059669; font-weight:700;">✓ Correct Verified</span>` : `<span style="color:#dc2626; font-weight:700;">✕ Response Locked</span>`;
+        }
+
+        function submitCustomQuestionItem() {
+            const stem = document.getElementById('q-input-text').value.trim(); const imgUrl = document.getElementById('q-input-img').value.trim();
+            const optA = document.getElementById('q-opt-A').value.trim(); const optB = document.getElementById('q-opt-B').value.trim();
+            const optC = document.getElementById('q-opt-C').value.trim(); const optD = document.getElementById('q-opt-D').value.trim();
+            const answerToken = document.getElementById('q-correct-ans').value;
+            if (!stem || !optA || !optB || !optC || !optD) { alert("Missing arguments."); return; }
+            
+            let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+            const targetMod = copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
+            if (!targetMod.questions) targetMod.questions = [];
+            targetMod.questions.push({ id: "q-" + Date.now(), stem: stem, img: imgUrl || null, options: { A: optA, B: optB, C: optC, D: optD }, answer: answerToken });
+            
+            db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                document.getElementById('q-input-text').value = ""; document.getElementById('q-input-img').value = "";
+                document.getElementById('q-opt-A').value = ""; document.getElementById('q-opt-B').value = "";
+                document.getElementById('q-opt-C').value = ""; document.getElementById('q-opt-D').value = "";
+                renderQuizQuestionsToViewport();
+            });
+        }
+
+        /* --- CLASS NOTES VIEWER WITH DYNAMIC TIME-BASED XP INCREMENT --- */
+        function launchViewer(itemIndex) {
+            const item = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex].notes[itemIndex];
+            const uniqueId = item.id || `${selectedSubjectCode}-${selectedChapterIndex}-notes-${itemIndex}`;
+            
+            // 1. Initial Access Reward (First Open = +30 XP, subsequent open = 0 XP)
+            if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
+                if (!readLog.includes(uniqueId)) {
+                    readLog.push(uniqueId);
+                    currentXP += 30; // Boost XP by 30 points
+                    document.getElementById('xp-count').innerText = currentXP;
+                    
+                    // Save read progress directly in Firestore student document
+                    db.collection('students').doc(activeUser.toUpperCase()).update({ 
+                        readLog: readLog, 
+                        xp: currentXP 
+                    });
+                    
+                    triggerConfettiBurst();
+                    playRewardChimeSound('xp');
+                    spawnNotificationToast("✨ Document Unlocked! +30 XP Added.");
+                }
+            }
+
+            // 2. Active Continuous Usage Reward Loop (+5 XP per 5 minutes)
+            if (activeNotesTimerInterval) {
+                clearInterval(activeNotesTimerInterval);
+                activeNotesTimerInterval = null;
+            }
+
+            if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
+                activeNotesTimerInterval = setInterval(() => {
+                    currentXP += 5; // Reward +5 XP
+                    document.getElementById('xp-count').innerText = currentXP;
+                    
+                    db.collection('students').doc(activeUser.toUpperCase()).update({ 
+                        xp: currentXP 
+                    });
+                    
+                    playRewardChimeSound('xp');
+                    spawnNotificationToast("⏱️ Continuous Study Bonus: +5 XP Added!");
+                }, 5 * 60 * 1000); // Trigger callback loop every 5 minutes (300,000 milliseconds)
+            }
+
+            // Render note data directly depending on asset compilation
+            if (item.type === 'link' || item.data.startsWith('http')) { 
+                window.open(item.data, '_blank'); 
+            }
+            else if (item.data.startsWith('data:text/html')) {
+                const decodedMarkup = decodeURIComponent(item.data.split(',')[1]);
+                const blob = new Blob([decodedMarkup], {type: 'text/html;charset=utf-8'});
+                document.getElementById('view-frame').src = URL.createObjectURL(blob);
+                document.getElementById('viewer-modal').style.display = 'flex';
+            } else {
+                document.getElementById('view-frame').src = item.data;
+                document.getElementById('viewer-modal').style.display = 'flex';
+            }
+        }
+
+        /* --- NOTES MODAL CLOSURE CLEANUP ENGINE --- */
+        function closeViewer() {
+            document.getElementById('viewer-modal').style.display = 'none';
+            document.getElementById('view-frame').src = "about:blank";
+            
+            // Critical Safety Guard: Automatically clear active timing thread to prevent XP farming
+            if (activeNotesTimerInterval) {
+                clearInterval(activeNotesTimerInterval);
+                activeNotesTimerInterval = null;
+                spawnNotificationToast("⏹️ Study Session ended. Active duration logged.");
+            }
+        }
+
+        function handleNativeQuestionImageUpload(input) {
+            const file = input.files[0]; if (!file) return;
+            const r = new FileReader(); r.onload = (e) => { document.getElementById('q-input-img').value = e.target.result; }; r.readAsDataURL(file);
+        }
+
+        function removeQuestionItem(qIndex) {
+            let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
+            copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference).questions.splice(qIndex, 1);
+            db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => renderQuizQuestionsToViewport());
+        }
+
+        function openModuleLeaderboard(modId) {
+            if (activeUser.toUpperCase() !== "PRATIM") return; 
+            const modal = document.getElementById('leaderboard-overlay-modal');
+            const container = document.getElementById('leaderboard-metrics-target'); container.innerHTML = "";
+            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === modId);
+            const targetQuestionsArray = targetedMod.questions || [];
+            
+            let performanceRows = [];
+            (window.globalCachedRosterSubmits || []).forEach(student => {
+                if (student.name.toUpperCase() === "PRATIM") return;
+                let correct = 0, cheated = (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_BLOCKED_STATUS`] === "BLOCKED");
+                targetQuestionsArray.forEach(q => { if (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_${q.id}`] === q.answer) correct++; });
+                performanceRows.push({ name: student.name, score: correct, total: targetQuestionsArray.length, cheated: cheated });
+            });
+            performanceRows.sort((a, b) => b.score - a.score);
+            performanceRows.forEach((row, idx) => {
+                const el = document.createElement('div'); el.className = 'content-item';
+                if(row.cheated) { el.style.background = '#fef2f2'; el.style.borderColor = '#fca5a5'; }
+                el.innerHTML = `<span>${idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"👤"} <strong>${row.name}</strong></span> <span style="font-weight:700; color:${row.cheated?'var(--pw-red)':'var(--pw-green)'};">${row.cheated?'DISQUALIFIED 🚨':`${row.score} / ${row.total}`}</span>`;
+                container.appendChild(el);
+            });
+            modal.style.display = 'flex';
+        }
+
+        /* --- CLASSROOM ROSTER & LEADERS PROGRESS ENGINE --- */
+        function openGlobalDppLeaderboard() {
+            const modal = document.getElementById('global-dpp-leaderboard-modal');
+            const container = document.getElementById('global-dpp-leaderboard-target'); container.innerHTML = "";
+            
+            let rosterList = [];
+            (window.globalCachedRosterSubmits || []).forEach(st => {
+                if (st.name.toUpperCase() === "PRATIM") return;
+                rosterList.push({ name: st.name, xp: st.xp || 0, streak: st.streak || 1 });
+            });
+            rosterList.sort((a, b) => b.xp - a.xp);
+
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+
+            let markup = `
+                <table class="roster-table">
+                    <thead>
+                        <tr>
+                            <th>Rank & Member</th>
+                            <th style="text-align:center;">Streak</th>
+                            <th style="text-align:right;">XP Balance</th>
+                            ${isAdmin ? '<th style="text-align:center; padding-right:12px;">Action</th>' : ''}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            rosterList.forEach((row, idx) => {
+                let badge = idx === 0 ? "🥇 " : idx === 1 ? "🥈 " : idx === 2 ? "🥉 " : "👤 ";
+                let isCurrentUser = (row.name.toUpperCase() === activeUser.toUpperCase());
+                let styleInline = isCurrentUser ? `style="background: #f0f6ff; font-weight: 700;"` : '';
+                
+                let actionBtnHTML = isAdmin ? `
+                    <td style="text-align:center; padding-right: 12px;">
+                        <button class="btn-delete-chapter" style="display:inline-block; padding: 6px 12px; margin: 0; font-size: 0.72rem; border-radius:6px;" onclick="event.stopPropagation(); removeStudentProfile('${row.name}')">🗑 Remove</button>
+                    </td>` : '';
+
+                markup += `
+                    <tr ${styleInline}>
+                        <td><strong>${badge}${row.name} ${isCurrentUser ? '(You)' : ''}</strong></td>
+                        <td style="text-align:center; color:#b45309; font-weight: 700;">🔥 ${row.streak} d</td>
+                        <td style="text-align:right; font-weight:800; color:var(--neon-blue);">${row.xp} XP</td>
+                        ${actionBtnHTML}
+                    </tr>
+                `;
+            });
+            markup += `</tbody></table>`;
+            container.innerHTML = rosterList.length > 0 ? markup : `<p style="color:var(--text-muted); text-align:center;">No student logs indexed yet.</p>`;
+            modal.style.display = 'flex';
+        }
+
+        /* --- ADMIN student DECOMMISSION REMOVAL ACTION --- */
+        function removeStudentProfile(studentName) {
+            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
+            if (!isAdmin) return;
+
+            showCustomConfirm(
+                "Decommission Student?", 
+                `Are you sure you want to permanently erase student profile <strong>"${studentName}"</strong>? This will wipe their XP achievements, active streak log, and lock them out of the classroom immediately.`, 
+                () => {
+                    db.collection('students').doc(studentName.toUpperCase()).delete().then(() => {
+                        spawnNotificationToast(`Student profile "${studentName}" successfully deleted.`);
+                        broadcastGlobalNotification(`📢 Profile Purge: ${studentName} was removed from the continuous learning roster by Administrator.`);
+                        openGlobalDppLeaderboard(); 
+                    }).catch(err => {
+                        spawnNotificationToast("❌ Error occurred during profile decommission process.");
+                        console.error(err);
+                    });
+                }
+            );
+        }
+
+        function closeGlobalDppLeaderboard() { document.getElementById('global-dpp-leaderboard-modal').style.display = 'none'; }
+        function closeLeaderboardModal() { document.getElementById('leaderboard-overlay-modal').style.display = 'none'; }
+
+        function initiateProGuardExamTimer(mins) {
+            clearInterval(proGuardCountdownInterval); examActiveState = true; timeRemainingSeconds = mins * 60;
+            document.getElementById('security-timer-banner').style.display = 'block';
+            document.getElementById('btn-exit-quiz-portal').style.display = 'none';
+            proGuardCountdownInterval = setInterval(() => {
+                timeRemainingSeconds--;
+                if (timeRemainingSeconds <= 0) executeProGuardAutomaticLockout("EXPIRED");
+                else {
+                    document.getElementById('timer-countdown-clock').innerText = `${String(Math.floor(timeRemainingSeconds / 60)).padStart(2,'0')}:${String(timeRemainingSeconds % 60).padStart(2,'0')}`;
+                }
+            }, 1000);
+        }
+
+        function setupProGuardTabProtection() {
+            document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && examActiveState && activeUser && activeUser.toUpperCase() !== "PRATIM") executeProGuardAutomaticLockout("TAB_SWITCH"); });
+            window.addEventListener("blur", () => { if (examActiveState && activeUser && activeUser.toUpperCase() !== "PRATIM") executeProGuardAutomaticLockout("BREACH"); });
+        }
+
+        function executeProGuardAutomaticLockout(reason) {
+            clearInterval(proGuardCountdownInterval); examActiveState = false;
+            solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_BLOCKED_STATUS`] = "BLOCKED";
+            db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog }).then(() => {
+                document.getElementById('quiz-portal-modal').style.display = 'none';
+                document.getElementById('btn-exit-quiz-portal').style.display = 'inline-block';
+                document.getElementById('security-timer-banner').style.display = 'none';
+                if (reason !== "EXPIRED") {
+                    showCustomAlert("🚨 Profile Locked", "Focus boundary breach or tab-switch context detected.");
+                    broadcastGlobalNotification(`⚠️ ProGuard Flag: ${activeUser} triggered lockout security.`);
+                } else { showCustomAlert("⏱️ Session Expired", "Duration window closed."); }
+                processStateNavigationTransition("SUBFOLDERS");
+            });
+        }
+        
+        function closeQuizPortal() { examActiveState = false; clearInterval(proGuardCountdownInterval); processStateNavigationTransition("SUBFOLDERS"); }
+        function broadcastGlobalNotification(txt) { db.collection('sync_notifications').add({ text: txt, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+        
+        function spawnNotificationToast(msg) {
+            const target = document.getElementById('notification-toast-container'); const t = document.createElement('div'); t.className = 'toast-card';
+            t.innerHTML = `<div class="toast-header">🔔 Sync Update</div><div class="toast-body">${msg}</div>`; target.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000);
+        }
+
+        // Custom modal controls
+        function showCustomAlert(title, body) {
+            const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">${body}</p><button class="btn-dialog-primary" style="width:100%;" onclick="closeCustomDialog()">Understood</button>`; m.style.display = 'flex';
+        }
+        function showCustomPrompt(title, placeholder, onConfirm) {
+            const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><input type="text" id="custom-prompt-input" placeholder="${placeholder}" autocomplete="off"><div class="dialog-actions"><button class="btn-dialog-secondary" onclick="closeCustomDialog()">Cancel</button><button class="btn-dialog-primary" id="btn-dialog-confirm">Submit</button></div>`; m.style.display = 'flex';
+            document.getElementById('btn-dialog-confirm').onclick = () => { const val = document.getElementById('custom-prompt-input').value.trim(); closeCustomDialog(); if (val) onConfirm(val); };
+        }
+        function showCustomConfirm(title, msg, onConfirm) {
+            const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">${msg}</p><div class="dialog-actions"><button class="btn-dialog-secondary" onclick="closeCustomDialog()">Cancel</button><button class="btn-dialog-primary" style="background:var(--pw-red);" id="btn-dialog-confirm">Confirm</button></div>`; m.style.display = 'flex';
+            document.getElementById('btn-dialog-confirm').onclick = () => { closeCustomDialog(); onConfirm(); };
+        }
+        function closeCustomDialog() { document.getElementById('custom-dialog-modal').style.display = 'none'; }
+
+        // --- GREY NEON DOTS BACKGROUND PARTICLE SYSTEM ENGINE ---
+        const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        class Particle {
+            constructor() { 
+                this.x = Math.random() * canvas.width; 
+                this.y = Math.random() * canvas.height; 
+                this.size = Math.random() * 3 + 2; 
+                this.speedX = Math.random() * 0.4 - 0.2; 
+                this.speedY = Math.random() * 0.4 - 0.2; 
+                this.opacity = Math.random() * 0.4 + 0.2; 
+                this.glowDirection = Math.random() > 0.5 ? 0.005 : -0.005;
+            }
+            update() { 
+                this.x += this.speedX; 
+                this.y += this.speedY; 
+                this.opacity += this.glowDirection;
+                if (this.opacity > 0.75 || this.opacity < 0.15) this.glowDirection *= -1;
+                if (this.x < -10 || this.x > canvas.width + 10) this.speedX *= -1; 
+                if (this.y < -10 || this.y > canvas.height + 10) this.speedY *= -1; 
+            }
+            draw() { 
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                ctx.fillStyle = `rgba(148, 163, 184, ${this.opacity})`; // Neon Slate Grey Core
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(100, 116, 139, 0.4)'; // Distinctive Grey Glow Aura
+                ctx.fill(); 
+                ctx.shadowBlur = 0; // Reset canvas context state
+            }
+        }
+        for (let i = 0; i < 75; i++) particles.push(new Particle());
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
+        animateParticles();
+
+        const celCanvas = document.getElementById('celebration-canvas'); const celCtx = celCanvas.getContext('2d'); let confettiArray = [];
+        class Confetti {
+            constructor() { this.x = Math.random() * celCanvas.width; this.y = Math.random() * -celCanvas.height - 20; this.size = Math.random() * 5 + 5; this.speedY = Math.random() * 4 + 3; this.speedX = Math.random() * 3 - 1.5; this.rotation = Math.random() * 360; this.color = ['#3b82f6', '#60a5fa', '#10b981', '#ec4899', '#f59e0b'][Math.floor(Math.random() * 5)]; }
+            update() { this.y += this.speedY; this.x += this.speedX; }
+            draw() { celCtx.save(); celCtx.translate(this.x, this.y); celCtx.fillStyle = this.color; celCtx.fillRect(-this.size/2, -this.size/2, this.size, this.size); celCtx.restore(); }
+        }
+        function triggerConfettiBurst() { confettiArray = []; for (let i = 0; i < 40; i++) confettiArray.push(new Confetti()); animateConfetti(); }
+        function animateConfetti() {
+            if (confettiArray.length === 0) { celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height); return; }
+            celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
+            for (let i = confettiArray.length - 1; i >= 0; i--) { confettiArray[i].update(); confettiArray[i].draw(); if (confettiArray[i].y > celCanvas.height) confettiArray.splice(i, 1); }
+            requestAnimationFrame(animateConfetti);
         }
     </script>
 </body>
