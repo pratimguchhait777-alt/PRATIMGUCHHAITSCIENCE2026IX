@@ -1,46 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
-
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-  // Paste your exact Firebase Config details here:
-  const firebaseConfig = {
-  apiKey: "AIzaSyCZVe4wuhnXD4vs5NxSz9yhKtzNpa6Sivg",
-  authDomain: "science-ix-87252.firebaseapp.com",
-  projectId: "science-ix-87252",
-  storageBucket: "science-ix-87252.firebasestorage.app",
-  messagingSenderId: "387959998990",
-  appId: "1:387959998990:web:753ed5aeb94f79235cca5f",
-  measurementId: "G-BJ5SSGX74L"
-};
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
-
-  // Request browser permission
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-      
-      // Get the registration token for your device
-      messaging.getToken({ vapidKey: 'BHsFtgpGe8FQUQIevpOcBVYuZf4vwg2pmKQYnXJCRAMkDdXfAF0OuXLANBPPnHAxz_HbyhTYXhAIchU71MPDHHE' }).then((currentToken) => {
-        if (currentToken) {
-          console.log("YOUR DEVICE TOKEN IS:", currentToken);
-          // ALERT: You need this token to send yourself a message!
-          alert("Token generated! Check your console.");
-        } else {
-          console.log('No registration token available. Request permission to generate one.');
-        }
-      }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-      });
-    }
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "543bf1ab-ee7b-4331-9026-f4947bddba17",
+    });
   });
 </script>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SCIENCE_IX | Pro-Guard Sync Portal</title>
     
