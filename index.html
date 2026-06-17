@@ -371,6 +371,7 @@
         .inline-attach-btn { position: absolute; right: 8px; width: 36px; height: 36px; border-radius: 8px; border: 1px dashed var(--neon-blue); background: #f0f6ff; color: var(--neon-blue); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; }
     </style>
 
+    <!-- Compatibility Firebase SDK (Original SDK version used in original template) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -381,9 +382,9 @@
         <div class="splash-logo-container">
             <svg class="atom-branding-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="44" fill="#231d4f" stroke="#38bdf8" stroke-width="2"/>
-                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="2.5" transform="rotate(0 50 50)"/>
-                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="2.5" transform="rotate(60 50 50)"/>
-                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="2.5" transform="rotate(120 50 50)"/>
+                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(0 50 50)"/>
+                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(60 50 50)"/>
+                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(120 50 50)"/>
                 <circle cx="50" cy="50" r="5" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
                 <circle cx="14" cy="50" r="3" fill="#ffffff"/>
                 <circle cx="68" cy="19" r="3" fill="#ffffff"/>
@@ -620,6 +621,7 @@
             setupProGuardTabProtection();
             setupHardwareBackButtonEngine();
             setupContinuousInfoDrawerSlider();
+            requestNativeNotificationPermissionsOnLoad();
             
             setTimeout(() => {
                 const splash = document.getElementById('startup-splash');
@@ -637,6 +639,19 @@
                 document.getElementById('welcome-screen').style.display = 'flex';
             }
         });
+
+        /* --- NATIVE LOCK SCREEN PUSH NOTIFICATION REQUEST --- */
+        async function requestNativeNotificationPermissionsOnLoad() {
+            if ("Notification" in window) {
+                try {
+                    if (Notification.permission === "default") {
+                        await Notification.requestPermission();
+                    }
+                } catch (e) {
+                    console.warn("Notification engine bypass context.");
+                }
+            }
+        }
 
         /* --- FIXED RESOLUTION LATERAL SLIDING TIMELINE TRACK --- */
         function setupContinuousInfoDrawerSlider() {
@@ -790,10 +805,6 @@
             });
         }
 
-        function openNoticeModal() { document.getElementById('notice-overlay-modal').style.display = 'flex'; document.getElementById('notice-unread-dot').style.display = 'none'; const text = document.getElementById('announcement-display').innerText; if (text && text !== "Loading notices...") { lastSeenNoticeText = text; localStorage.setItem('science_ix_last_notice', text); } }
-        function closeNoticeModal() { document.getElementById('notice-overlay-modal').style.display = 'none'; }
-        function handleModifyAnnouncement() { showCustomPrompt("Update Notice", "Type content here:", (newNotice) => { db.collection('curriculum').doc('billboard_announcement').set({ message: newNotice, updatedBy: activeUser, date: new Date().toLocaleDateString() }); }); }
-
         function listenToNestedMasterCurriculum() {
             db.collection('curriculum').doc('nested_master_folders').onSnapshot(doc => {
                 if (doc.exists) {
@@ -831,6 +842,12 @@
                     progressDisplay.style.display = isAdmin ? 'none' : 'inline-block';
                 }
             });
+        }
+
+        /* --- SUBJECT HELPER STRING TRANSLATOR --- */
+        function getSubjectNameString(code) {
+            const mapping = { PHY: "Physics", CHEM: "Chemistry", BIO: "Biology", MATH: "Mathematics" };
+            return mapping[code] || "Subject Core";
         }
 
         function enterSubjectWorkspace(subjectCode) {
@@ -937,7 +954,12 @@
                     let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
                     if (!copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey]) copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey] = [];
                     copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].push({ id: "mod-" + Date.now(), title: title, duration: parseInt(mins) || 0, questions: [] });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy);
+                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                        const subjectName = getSubjectNameString(selectedSubjectCode);
+                        const chapterTitle = copy[selectedSubjectCode][selectedChapterIndex].title;
+                        const typeName = activeSlotTabKey === 'dppModules' ? "DPP Set" : "Monthly Test Block";
+                        broadcastGlobalNotification(`🆕 ${typeName} Created: "${title}" added in [${subjectName} ➔ ${chapterTitle} ➔ ${typeName}s]`);
+                    });
                 });
             });
         }
@@ -957,7 +979,11 @@
                     let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
                     if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
                     copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "link-"+Date.now(), name: label, data: url, type: 'link' });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy);
+                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                        const subjectName = getSubjectNameString(selectedSubjectCode);
+                        const chapterTitle = copy[selectedSubjectCode][selectedChapterIndex].title;
+                        broadcastGlobalNotification(`🆕 Class Notes Link Added: "${label}" pinned in [${subjectName} ➔ ${chapterTitle} ➔ Class Notes]`);
+                    });
                 });
             });
         }
@@ -976,7 +1002,12 @@
                     let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
                     if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
                     copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "file-" + Date.now(), name: label, data: rawData, type: finalType });
-                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => { input.value = ""; });
+                    db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => { 
+                        input.value = ""; 
+                        const subjectName = getSubjectNameString(selectedSubjectCode);
+                        const chapterTitle = copy[selectedSubjectCode][selectedChapterIndex].title;
+                        broadcastGlobalNotification(`🆕 Class Notes File Uploaded: "${label}" posted in [${subjectName} ➔ ${chapterTitle} ➔ Class Notes]`);
+                    });
                 };
                 if (ext === 'html' || ext === 'txt') r.readAsArrayBuffer(file); else r.readAsDataURL(file);
             });
@@ -995,7 +1026,10 @@
                 let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
                 if (!copy[selectedSubjectCode]) copy[selectedSubjectCode] = [];
                 copy[selectedSubjectCode].push({ title: title, notes: [], dppModules: [], testModules: [] });
-                db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => broadcastGlobalNotification(`New Chapter Formed: "${title}"`));
+                db.collection('curriculum').doc('nested_master_folders').set(copy).then(() => {
+                    const subjectName = getSubjectNameString(selectedSubjectCode);
+                    broadcastGlobalNotification(`🆕 Chapter Created: "${title}" formed in Subject [${subjectName}]`);
+                });
             });
         }
 
@@ -1037,15 +1071,24 @@
                 const uniqueStatusKey = `${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`;
                 const hasSolved = solvedQuestionsLog[uniqueStatusKey] || null;
                 let actionHtml = isAdmin ? `<button class="btn-delete-chapter" style="display:inline-block; margin-bottom:10px;" onclick="removeQuestionItem(${qIndex})">🗑 Remove</button>` : '';
-                let imgHtml = q.img ? `<img src="${q.img}" class="question-image">` : '';
                 
+                // BACKWARD-COMPATIBLE SCHEMAS PARSER IN THE QUIZ RENDERING ENGINE (Prevents undefined property crashes)
+                const stemText = q.stem || q.text || "No question text stems logged";
+                const imgUrl = q.img || q.image || null;
+                let imgHtml = imgUrl ? `<img src="${imgUrl}" class="question-image">` : '';
+                
+                const optionA = (q.options && q.options.A) ? q.options.A : (q.A || "Option A");
+                const optionB = (q.options && q.options.B) ? q.options.B : (q.B || "Option B");
+                const optionC = (q.options && q.options.C) ? q.options.C : (q.C || "Option C");
+                const optionD = (q.options && q.options.D) ? q.options.D : (q.D || "Option D");
+
                 card.innerHTML = `
-                    ${actionHtml}<p style="font-weight:700;">Q${qIndex + 1}: ${q.stem}</p>${imgHtml}
+                    ${actionHtml}<p style="font-weight:700;">Q${qIndex + 1}: ${stemText}</p>${imgHtml}
                     <div class="options-grid">
-                        <button class="option-button" id="opt-${qIndex}-A" onclick="handleCommitOptionSelection(${qIndex}, 'A')"><strong>A:</strong> ${q.options.A}</button>
-                        <button class="option-button" id="opt-${qIndex}-B" onclick="handleCommitOptionSelection(${qIndex}, 'B')"><strong>B:</strong> ${q.options.B}</button>
-                        <button class="option-button" id="opt-${qIndex}-C" onclick="handleCommitOptionSelection(${qIndex}, 'C')"><strong>C:</strong> ${q.options.C}</button>
-                        <button class="option-button" id="opt-${qIndex}-D" onclick="handleCommitOptionSelection(${qIndex}, 'D')"><strong>D:</strong> ${q.options.D}</button>
+                        <button class="option-button" id="opt-${qIndex}-A" onclick="handleCommitOptionSelection(${qIndex}, 'A')"><strong>A:</strong> ${optionA}</button>
+                        <button class="option-button" id="opt-${qIndex}-B" onclick="handleCommitOptionSelection(${qIndex}, 'B')"><strong>B:</strong> ${optionB}</button>
+                        <button class="option-button" id="opt-${qIndex}-C" onclick="handleCommitOptionSelection(${qIndex}, 'C')"><strong>C:</strong> ${optionC}</button>
+                        <button class="option-button" id="opt-${qIndex}-D" onclick="handleCommitOptionSelection(${qIndex}, 'D')"><strong>D:</strong> ${optionD}</button>
                     </div>
                     <div class="correction-container" id="score-status-${qIndex}"><span style="color:var(--text-muted); font-size:0.75rem;">Status: Awaiting action...</span></div>
                 `;
@@ -1299,6 +1342,7 @@
         function closeGlobalDppLeaderboard() { document.getElementById('global-dpp-leaderboard-modal').style.display = 'none'; }
         function closeLeaderboardModal() { document.getElementById('leaderboard-overlay-modal').style.display = 'none'; }
 
+        // ProGuard Exam Protection Timer
         function initiateProGuardExamTimer(mins) {
             clearInterval(proGuardCountdownInterval); examActiveState = true; timeRemainingSeconds = mins * 60;
             document.getElementById('security-timer-banner').style.display = 'block';
@@ -1326,19 +1370,69 @@
                 document.getElementById('security-timer-banner').style.display = 'none';
                 if (reason !== "EXPIRED") {
                     showCustomAlert("🚨 Profile Locked", "Focus boundary breach or tab-switch context detected.");
-                    broadcastGlobalNotification(`⚠️ ProGuard Flag: ${activeUser} triggered lockout security.`);
+                    broadcastGlobalNotification("⚠️ ProGuard Flag: Tab breach triggered lockout security.");
                 } else { showCustomAlert("⏱️ Session Expired", "Duration window closed."); }
                 processStateNavigationTransition("SUBFOLDERS");
             });
         }
         
         function closeQuizPortal() { examActiveState = false; clearInterval(proGuardCountdownInterval); processStateNavigationTransition("SUBFOLDERS"); }
-        function broadcastGlobalNotification(txt) { db.collection('sync_notifications').add({ text: txt, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }
+        
+        /* --- NATIVE LOCK SCREEN PUSH NOTIFICATION DISPATCH ENGINE --- */
+        function triggerNativePushNotification(headline, payloadBody) {
+            // Check if Web Notifications are supported in user's mobile/desktop browser
+            if (!("Notification" in window)) return;
+
+            // Trigger fallback toast alert if permission wasn't previously granted
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+
+            // Utilize Service Workers for background native push alerts if supported
+            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification(headline, {
+                        body: payloadBody,
+                        icon: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png", // Atoms branding graphic
+                        badge: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png",
+                        vibrate: [200, 100, 200], // Native vibration sequence haptics
+                        requireInteraction: true,
+                        tag: "new-upload"
+                    });
+                });
+            } else {
+                // Compatible Web Notification API Fallback for standard system popup tray
+                try {
+                    new Notification(headline, {
+                        body: payloadBody,
+                        icon: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png",
+                        requireInteraction: true
+                    });
+                } catch (err) {
+                    console.warn("Direct notification constructor bypass.");
+                }
+            }
+        }
+
+        /* --- MULTI-CLIENT CLOUD BROADCAST PIPELINE --- */
+        function broadcastGlobalNotification(txt) { 
+            db.collection('sync_notifications').add({ 
+                text: txt, 
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+            }); 
+        }
         
         function spawnNotificationToast(msg) {
-            const target = document.getElementById('notification-toast-container'); const t = document.createElement('div'); t.className = 'toast-card';
-            t.innerHTML = `<div class="toast-header">🔔 Sync Update</div><div class="toast-body">${msg}</div>`; target.appendChild(t);
+            // 1. Trigger the standard internal UI toast card
+            const target = document.getElementById('notification-toast-container'); 
+            const t = document.createElement('div'); 
+            t.className = 'toast-card';
+            t.innerHTML = `<div class="toast-header">🔔 Sync Update</div><div class="toast-body">${msg}</div>`; 
+            target.appendChild(t);
             setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000);
+
+            // 2. Dispatch TRUE Native Mobile Lock Screen Notification (if app is running/backgrounded)
+            triggerNativePushNotification("SCIENCE_IX Update", msg);
         }
 
         // Custom modal controls
