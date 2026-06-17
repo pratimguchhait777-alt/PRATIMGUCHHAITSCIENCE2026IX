@@ -3,12 +3,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-comp
 
 // Must match the exact config from your index.html
 firebase.initializeApp({
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCZVe4wuhnXD4vs5NxSz9yhKtzNpa6Sivg",
+  authDomain: "science-ix-87252.firebaseapp.com",
+  projectId: "science-ix-87252",
+  storageBucket: "science-ix-87252.firebasestorage.app",
+  messagingSenderId: "387959998990",
+  appId: "1:387959998990:web:83e19bec709349035cca5f",
 });
 
 const messaging = firebase.messaging();
