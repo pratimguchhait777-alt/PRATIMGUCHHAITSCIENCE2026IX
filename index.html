@@ -371,7 +371,6 @@
         .inline-attach-btn { position: absolute; right: 8px; width: 36px; height: 36px; border-radius: 8px; border: 1px dashed var(--neon-blue); background: #f0f6ff; color: var(--neon-blue); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; }
     </style>
 
-    <!-- Compatibility Firebase SDK (Original SDK version used in original template) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -555,7 +554,6 @@
     <div id="viewer-modal"><div class="modal-content"><span class="close-modal" onclick="closeViewer()">✕ Close Stream</span><iframe id="view-frame" src="about:blank"></iframe></div></div>
 
     <script>
-        // Original Template Database Configuration parameters
         const firebaseConfig = {
             apiKey: "AIzaSyAs8wT64q-7fP9p787q_qG89_L0wD4fA",
             authDomain: "science-ix-87252.firebaseapp.com",
@@ -622,6 +620,7 @@
             setupHardwareBackButtonEngine();
             setupContinuousInfoDrawerSlider();
             requestNativeNotificationPermissionsOnLoad();
+            registerLocalServiceWorker();
             
             setTimeout(() => {
                 const splash = document.getElementById('startup-splash');
@@ -640,6 +639,24 @@
             }
         });
 
+        /* --- REGISTER SERVICE WORKER FOR BACKGROUND NOTIFICATIONS --- */
+        function registerLocalServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                // Safeguard against registering service workers on blob:, data: or non-http protocols
+                if (window.location.protocol === 'blob:' || window.location.protocol === 'data:' || !window.location.protocol.startsWith('http')) {
+                    console.warn('Service Worker registration skipped: unsupported URL protocol (' + window.location.protocol + ')');
+                    return;
+                }
+                navigator.serviceWorker.register('sw.js')
+                .then((registration) => {
+                    console.log('Service Worker registered successfully:', registration.scope);
+                })
+                .catch((error) => {
+                    console.error('Service Worker registration failed:', error);
+                });
+            }
+        }
+
         /* --- NATIVE LOCK SCREEN PUSH NOTIFICATION REQUEST --- */
         async function requestNativeNotificationPermissionsOnLoad() {
             if ("Notification" in window) {
@@ -648,7 +665,7 @@
                         await Notification.requestPermission();
                     }
                 } catch (e) {
-                    console.warn("Notification engine bypass context.");
+                    console.warn("Notification engine permission block or bypass.");
                 }
             }
         }
@@ -857,6 +874,7 @@
             const mapping = { PHY: "Physics Core", CHEM: "Chemistry Core", BIO: "Biology Core", MATH: "Mathematics Core" };
             document.getElementById('directory-title-label').innerText = mapping[subjectCode] || "Subject Core";
             
+            // FIXED: DISPLAY STABILITY FOR THE CHAPTER ACTION HOOK BUTTON
             const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
             if(document.getElementById('btn-admin-add-ch')) {
                 document.getElementById('btn-admin-add-ch').style.display = isAdmin ? 'inline-block' : 'none';
@@ -1380,28 +1398,24 @@
         
         /* --- NATIVE LOCK SCREEN PUSH NOTIFICATION DISPATCH ENGINE --- */
         function triggerNativePushNotification(headline, payloadBody) {
-            // Check if Web Notifications are supported in user's mobile/desktop browser
             if (!("Notification" in window)) return;
 
-            // Trigger fallback toast alert if permission wasn't previously granted
             if (Notification.permission !== "granted") {
                 Notification.requestPermission();
             }
 
-            // Utilize Service Workers for background native push alerts if supported
             if (navigator.serviceWorker && navigator.serviceWorker.ready) {
                 navigator.serviceWorker.ready.then((registration) => {
                     registration.showNotification(headline, {
                         body: payloadBody,
-                        icon: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png", // Atoms branding graphic
+                        icon: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png", 
                         badge: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png",
-                        vibrate: [200, 100, 200], // Native vibration sequence haptics
+                        vibrate: [200, 100, 200], 
                         requireInteraction: true,
                         tag: "new-upload"
                     });
                 });
             } else {
-                // Compatible Web Notification API Fallback for standard system popup tray
                 try {
                     new Notification(headline, {
                         body: payloadBody,
@@ -1431,7 +1445,7 @@
             target.appendChild(t);
             setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000);
 
-            // 2. Dispatch TRUE Native Mobile Lock Screen Notification (if app is running/backgrounded)
+            // 2. Dispatch TRUE Native Mobile Lock Screen Notification
             triggerNativePushNotification("SCIENCE_IX Update", msg);
         }
 
