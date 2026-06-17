@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "543bf1ab-ee7b-4331-9026-f4947bddba17",
-      // This forces OneSignal to find the worker file inside your GitHub repository folder!
+      // Forces OneSignal to find your service worker inside GitHub subfolders
       serviceWorkerParam: { scope: "./" },
       serviceWorkerPath: "OneSignalSDKWorker.js"
     });
     
-    // This forces the prompt to pop up on your phone screen right away
+    // Forces the native notification prompt to pop up
     await OneSignal.Notifications.requestPermission();
   });
 </script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SCIENCE_IX | Pro-Guard Sync Portal</title>
