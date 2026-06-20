@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,8 +44,6 @@
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
             user-select: none;
             -webkit-user-select: none;
-            
-            /* Removes the blue semi-transparent tap overlay highlight on all elements */
             -webkit-tap-highlight-color: transparent !important;
             tap-highlight-color: transparent !important;
         }
@@ -67,7 +66,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- STARTUP SPLASH SCREEN WITH BRAND LOGO --- */
         #startup-splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #ffffff; display: flex; flex-direction: column;
@@ -101,7 +99,6 @@
             100% { left: 100%; width: 30%; }
         }
 
-        /* --- TOAST NOTIFICATIONS --- */
         #notification-toast-container {
             position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 5000;
             display: flex; flex-direction: column; gap: 12px; width: 92%; max-width: 360px;
@@ -120,7 +117,6 @@
         .toast-header { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--neon-blue); text-transform: uppercase; }
         .toast-body { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-        /* --- SYMMETRICAL RESPONSIVE HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
@@ -190,7 +186,6 @@
         }
         .xp-badge:active, .streak-badge:active { transform: scale(0.96); }
 
-        /* ANIMATED BURNING STREAK DESIGN */
         .streak-badge { 
             background: linear-gradient(135deg, #fff5f5 0%, #fff 100%); 
             color: #c53030; border: 1px solid #feb2b2;
@@ -258,7 +253,6 @@
         .bell-svg { width: 16px; height: 16px; fill: #475569; }
         .bell-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background-color: var(--pw-red); border-radius: 50%; display: none; }
 
-        /* --- MODERN AESTHETIC WHITE TOP BANNER --- */
         .info-drawer {
             background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 16px; margin-top: 16px; overflow: hidden; 
             box-shadow: 0 10px 30px rgba(148, 163, 184, 0.05); width: 100%; width: -webkit-fill-available;
@@ -285,7 +279,6 @@
         .info-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.1px; }
         .info-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; word-break: break-word; font-weight: 500; }
 
-        /* --- LOGIN PORTAL --- */
         #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f8fafc; display: none; justify-content: center; align-items: center; z-index: 1000; }
         .welcome-box { text-align: center; padding: 36px 28px; border-radius: 20px; background: #ffffff; border: 1px solid #e2e8f0; width: 92%; max-width: 360px; box-shadow: 0 20px 40px rgba(148,163,184,0.08); }
         .welcome-box h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 900; color: #0f172a; letter-spacing: -1.5px; margin-bottom: 6px; }
@@ -296,7 +289,6 @@
 
         .container { max-width: 1200px; margin: 12px auto 24px auto; padding: 0 16px; }
 
-        /* --- SUBJECT TABLE LAYOUT --- */
         .subject-table-view { width: 100%; border-collapse: separate; border-spacing: 0 12px; margin-top: 8px; animation: slideUpFade 0.4s ease; }
         .subject-table-view tr { background: #ffffff; border: 1px solid var(--pw-border); cursor: pointer; box-shadow: 0 4px 14px rgba(148,163,184,0.03); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .subject-table-view tr:active { transform: scale(0.99); }
@@ -307,7 +299,6 @@
         .subject-name { font-weight: 700; font-size: 1.05rem; color: #1e293b; letter-spacing: -0.2px; }
         .progress-text { font-size: 0.85rem; font-weight: 700; color: var(--neon-blue); text-align: right; background: #f0f6ff; padding: 4px 10px; border-radius: 8px; display: none; } 
 
-        /* --- CHAPTER DIRECTORY VIEW --- */
         .directory-view { display: none; animation: slideUpFade 0.3s ease; }
         .back-btn { background: #ffffff; color: var(--text-main); border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; margin-bottom: 16px; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .directory-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--dark-blue-line); padding-bottom: 12px; }
@@ -322,17 +313,14 @@
         .chapter-counters { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
         .btn-delete-chapter { background: #fef2f2; border: none; color: var(--pw-red); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; display: none; font-weight: bold; margin-right: 8px; }
 
-        /* --- SUB-FOLDERS WORKSPACE VIEW --- */
         #subfolders-workspace-view { display: none; animation: slideUpFade 0.3s ease; }
         .subfolder-chapter-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 900; color: #0f172a; margin-top: 6px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: -0.5px; }
         .subfolder-meta-text { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 18px; font-weight: 500; }
         
-        /* Top Slots Configuration */
         .top-slots-nav-bar { display: flex; gap: 8px; margin-bottom: 20px; background: #f1f5f9; padding: 4px; border-radius: 12px; }
         .slot-tab-btn { flex: 1; text-align: center; padding: 10px 14px; font-size: 0.88rem; font-weight: 700; border: none; border-radius: 10px; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; }
         .slot-tab-btn.active { background: #ffffff; color: #0f172a; box-shadow: 0 4px 10px rgba(148,163,184,0.08); }
 
-        /* Main Display Bucket Slot */
         .active-slot-bucket-panel { background: #ffffff; border: 1px solid rgba(241,245,249,0.8); border-radius: 16px; padding: 22px; box-shadow: 0 10px 30px rgba(148,163,184,0.02); min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; }
         .bucket-panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 16px; }
         .bucket-panel-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; color: #0f172a; display: flex; align-items: center; gap: 6px; letter-spacing: -0.2px; }
@@ -342,13 +330,11 @@
         .admin-upload-panel { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; border-top: 1px dashed #e2e8f0; padding-top: 16px; }
         .native-pdf-label { display: block; background: #ffffff; color: var(--neon-blue); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; border: 1px dashed var(--neon-blue); text-align: center; }
         
-        /* Modals & Popups styling */
         #notice-overlay-modal, #leaderboard-overlay-modal, #global-dpp-leaderboard-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.15); display: none; justify-content: center; align-items: center; z-index: 4500; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .notice-board-box { width: 92%; max-width: 480px; background: #ffffff; border-radius: 20px; padding: 26px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 25px 50px rgba(15,23,42,0.08); }
         .notice-board-content { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 14px; padding: 18px; color: var(--text-main); font-size: 0.92rem; text-align: left; margin-bottom: 20px; max-height: 300px; overflow-y: auto; }
         .btn-edit-notice { background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; display: none; cursor: pointer; }
 
-        /* Custom Roster Table configuration for Admin Leaderboards */
         .roster-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         .roster-table th { padding: 10px 8px; font-weight: 800; border-bottom: 2px solid #f1f5f9; color: var(--text-muted); }
         .roster-table td { padding: 12px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
@@ -389,7 +375,7 @@
             background: #ffffff;
             border-radius: 50%;
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-            display: none; /* Controlled dynamically by visibility functions */
+            display: none; 
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
@@ -402,7 +388,6 @@
             transform: scale(0.92);
         }
         
-        /* UNREAD NOTIFICATION RED DOT */
         .chat-unread-badge {
             position: absolute;
             top: 2px;
@@ -422,7 +407,6 @@
             100% { transform: scale(0.9); }
         }
 
-        /* --- CHAT LOGO NOTIFICATION POPUP (Floating point style, 30s display) --- */
         .chat-logo-popup-banner {
             position: fixed;
             bottom: 90px;
@@ -586,7 +570,6 @@
             border: 1px solid rgba(226, 232, 240, 0.6);
         }
         
-        /* Inline media objects in chat bubble */
         .chat-inline-media {
             width: 100%;
             max-width: 220px;
@@ -641,10 +624,9 @@
             align-items: center;
         }
         
-        /* --- DYNAMIC MULTI-LINE COMPATIBLE CHAT TEXTAREA FIELD --- */
         .chat-input-field {
             width: 100%;
-            padding: 10px 14px 10px 38px; /* Extra padding on left for the + button */
+            padding: 10px 14px 10px 38px; 
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             font-size: 0.88rem;
@@ -663,7 +645,6 @@
             background: #ffffff;
         }
         
-        /* --- MODERN ROUND PLUS ICON ON THE LEFT --- */
         .chat-attach-trigger {
             position: absolute;
             left: 12px;
@@ -702,11 +683,9 @@
         }
     </style>
 
-    <!-- Compatibility Firebase SDK (Original SDK version used in original template) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <!-- FCM Compatibility SDK additions -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
 </head>
 <body>
@@ -917,7 +896,6 @@
     <div id="viewer-modal"><div class="modal-content"><span class="close-modal" onclick="closeViewer()">✕ Close Stream</span><iframe id="view-frame" src="about:blank"></iframe></div></div>
 
     <script>
-        // Original Template Database Configuration parameters
         const firebaseConfig = {
             apiKey: "AIzaSyAs8wT64q-7fP9p787q_qG89_L0wD4fA",
             authDomain: "science-ix-87252.firebaseapp.com",
@@ -948,14 +926,11 @@
         let timeRemainingSeconds = 0;
         let currentAppStateView = "SUBJECTS"; 
 
-        // Background note viewing XP interval reference
         let activeNotesTimerInterval = null;
 
-        // Active chat listener unsubscribe reference
         let chatUnsubscribe = null;
         let chatInitialized = false;
 
-        // Rule 1 & 3: Ensure anonymous authentication for Firestore access prior to queries
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -970,13 +945,11 @@
         };
         initAuth();
 
-        // Get strict public path collection ref for chats as per Storage Rules
         const getChatCollection = () => {
             const currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'science-ix-87252';
             return db.collection('artifacts').doc(currentAppId).collection('public').doc('data').collection('chats');
         };
 
-        /* --- SYNTHESIZED PROCEDURAL AUDIO REWARD ENGINE --- */
         function playRewardChimeSound(type) {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1012,7 +985,6 @@
             requestNativeNotificationPermissionsOnLoad();
             registerLocalServiceWorker();
             
-            // Textarea keydown hook: Send on Enter, newline on Shift+Enter
             const chatBoxInput = document.getElementById('chat-message-input');
             if (chatBoxInput) {
                 chatBoxInput.addEventListener('keydown', (e) => {
@@ -1040,7 +1012,6 @@
             }
         });
 
-        /* --- REGISTER SERVICE WORKER FOR BACKGROUND NOTIFICATIONS --- */
         function registerLocalServiceWorker() {
             if ('serviceWorker' in navigator) {
                 if (window.location.protocol === 'blob:' || window.location.protocol === 'data:' || !window.location.protocol.startsWith('http')) {
@@ -1057,7 +1028,6 @@
             }
         }
 
-        /* --- NATIVE LOCK SCREEN PUSH NOTIFICATION REQUEST --- */
         async function requestNativeNotificationPermissionsOnLoad() {
             if ("Notification" in window) {
                 try {
@@ -1070,7 +1040,6 @@
             }
         }
 
-        /* --- FIXED RESOLUTION LATERAL SLIDING TIMELINE TRACK --- */
         function setupContinuousInfoDrawerSlider() {
             const track = document.getElementById('horizontal-info-track');
             let currentCardOffsetIndex = 0;
@@ -1087,11 +1056,8 @@
             if (!input) input = "STUDENT";
             const processedUser = input.toUpperCase();
 
-            // EXTREMELY IMPORTANT SECURITY SHIELD FOR THE ADMIN PROFILE ("PRATIM")
-            // Prompt the administrator for the master portal security validation key to prevent spoofing
             if (processedUser === "PRATIM") {
                 showCustomPrompt("Verification Required", "Enter Admin Security Key Code:", (key) => {
-                    // Safe verification token: 2026_IX_ADMIN
                     if (key === "2026_IX_ADMIN") {
                         localStorage.setItem('science_ix_session', processedUser);
                         document.getElementById('welcome-screen').style.display = 'none';
@@ -1131,13 +1097,11 @@
             updateNavigationHistoryState("SUBJECTS");
             setupFCMRegistrationToken(username);
 
-            // Establish real-time classroom chat sync
             setupChatListener();
             updateChatButtonVisibility();
             setupChatPopupScheduler();
         }
 
-        /* --- REAL-TIME CLASSROOM CHAT SYNC (RULE 2: MEMORY SORT) --- */
         function setupChatListener() {
             if (chatUnsubscribe) chatUnsubscribe();
             
@@ -1145,27 +1109,28 @@
             chatUnsubscribe = chatColl.onSnapshot(snapshot => {
                 let messages = [];
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    messages.push({
-                        id: doc.id,
-                        sender: data.sender || 'Anonymous',
-                        text: data.text || '',
-                        media: data.media || null,
-                        mediaType: data.mediaType || null,
-                        mediaName: data.mediaName || null,
-                        timestamp: data.timestamp ? data.timestamp.toDate() : new Date()
-                    });
+                    try {
+                        const data = doc.data();
+                        messages.push({
+                            id: doc.id,
+                            sender: data.sender || 'Anonymous',
+                            text: data.text || '',
+                            media: data.media || null,
+                            mediaType: data.mediaType || null,
+                            mediaName: data.mediaName || null,
+                            timestamp: data.timestamp ? data.timestamp.toDate() : new Date()
+                        });
+                    } catch(err) {
+                        console.warn("Skipped corrupted message index entry safely.");
+                    }
                 });
                 
-                // Rule 2: NEVER use orderBy in Firestore. Fetch and sort in JS memory.
                 messages.sort((a, b) => a.timestamp - b.timestamp);
                 
-                // Keep only the latest 40 messages to avoid DOM bloat
                 if (messages.length > 40) {
                     messages = messages.slice(messages.length - 40);
                 }
                 
-                // RED DOT NOTIFICATION LOGIC: Trigger unread dot if a new message arrives and chat window is closed
                 const chatWindow = document.getElementById('chat-window-container');
                 const isChatClosed = !chatWindow || !chatWindow.classList.contains('active');
                 
@@ -1203,13 +1168,11 @@
                 
                 const timeString = msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
-                // Construct text & dynamic inline media elements based on file triggers
                 let mediaHtml = '';
                 if (msg.media) {
                     if (msg.mediaType && msg.mediaType.startsWith('image/')) {
-                        mediaHtml = `<img src="${msg.media}" class="chat-inline-media" onclick="openMediaPreview('${msg.media}')">`;
+                        mediaHtml = `<img src="${msg.media}" class="chat-inline-media" onclick="openMediaPreview('${msg.media}')" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'40\'><text x=\'10\' y=\'25\' fill=\'red\'>Corrupted Image</text></svg>';">`;
                     } else {
-                        // Render generic click-to-view layout portal for other media formats like PDFs
                         mediaHtml = `
                             <a href="${msg.media}" download="${msg.mediaName || 'attachment'}" class="chat-inline-file">
                                 📂 <span>${msg.mediaName || 'Shared Document'}</span>
@@ -1259,42 +1222,91 @@
             });
         }
 
-        /* --- COLLABORATIVE ＋ MEDIA ATTACHMENTS ENCODER SYSTEM --- */
+        /* --- CRASH-PROOF COMPRESSION & SIZE GUARD SYSTEM --- */
         function handleChatMediaAttachment(input) {
             const file = input.files[0];
             if (!file) return;
 
-            // Maximum file transfer boundary guard (2.5MB max payload size to preserve database index quotas)
-            if (file.size > 2.5 * 1024 * 1024) {
-                showCustomAlert("Upload Rejected", "File payload exceeds the 2.5MB storage size safety quota.");
-                input.value = "";
-                return;
+            // Strict Non-Image/PDF Guard (Hard boundary at 500KB to safely prevent 1MB document crashes)
+            if (file.size > 500 * 1024) {
+                if (!file.type.startsWith('image/')) {
+                    showCustomAlert("Upload Limit Exceeded", "To prevent database crashes, non-image files like PDFs are strictly limited to 500KB. Please compress your PDF before uploading.");
+                    input.value = "";
+                    return;
+                }
             }
 
             const r = new FileReader();
             r.onload = function(e) {
-                const base64Data = e.target.result;
-                const chatColl = getChatCollection();
-
-                chatColl.add({
-                    sender: activeUser || 'Student',
-                    text: `📎 Shared a file:`,
-                    media: base64Data,
-                    mediaType: file.type,
-                    mediaName: file.name,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
+                const rawResult = e.target.result;
+                
+                // If it is an image, compress it aggressively in-browser
+                if (file.type.startsWith('image/')) {
+                    compressImageFile(rawResult, (compressedBase64) => {
+                        uploadMediaToFirestore(compressedBase64, file.type, file.name);
+                        input.value = "";
+                    });
+                } else {
+                    // Regular PDF or safe sized document
+                    uploadMediaToFirestore(rawResult, file.type, file.name);
                     input.value = "";
-                    const list = document.getElementById('chat-messages-list');
-                    if (list) list.scrollTop = list.scrollHeight;
-                }).catch(err => {
-                    console.error("Base64 media commit dropped: ", err);
-                });
+                }
             };
             r.readAsDataURL(file);
         }
 
-        // Inline image preview function
+        // Heavy-weight in-browser image compressor shrinking dimensions and quality
+        function compressImageFile(base64Str, callback) {
+            const img = new Image();
+            img.src = base64Str;
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Keep dimensions small to fit standard viewport perfectly
+                let width = img.width;
+                let height = img.height;
+                const maxDim = 800;
+                
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Compress quality extremely high to hit a safe ~40-60KB target range
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.4);
+                callback(compressedBase64);
+            };
+        }
+
+        function uploadMediaToFirestore(base64Payload, mimeType, fileName) {
+            const chatColl = getChatCollection();
+            chatColl.add({
+                sender: activeUser || 'Student',
+                text: `📎 Shared a file:`,
+                media: base64Payload,
+                mediaType: mimeType,
+                mediaName: fileName,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                const list = document.getElementById('chat-messages-list');
+                if (list) list.scrollTop = list.scrollHeight;
+                spawnNotificationToast("📁 File shared successfully!");
+            }).catch(err => {
+                console.error("Firestore Upload Error: ", err);
+                showCustomAlert("Upload Failed", "Could not complete sharing. The file structure might be too complex or corrupt.");
+            });
+        }
+
         function openMediaPreview(src) {
             document.getElementById('view-frame').src = src;
             document.getElementById('viewer-modal').style.display = 'flex';
@@ -1309,11 +1321,7 @@
                 container.classList.remove('active');
             } else {
                 container.classList.add('active');
-                
-                // Clear the unread crimson indicator dot when user opens the channel
                 document.getElementById('chat-unread-dot').style.display = 'none';
-                
-                // Ensure floating points do not overlap active panels
                 document.getElementById('chat-btn-popup').classList.remove('active');
                 
                 setTimeout(() => {
@@ -1323,7 +1331,6 @@
             }
         }
 
-        /* --- SCHEDULE CHAT BUBBLE POPUP EVERY 10 MINUTES FOR 30 SECONDS --- */
         function setupChatPopupScheduler() {
             const triggerPopup = () => {
                 const popup = document.getElementById('chat-btn-popup');
@@ -1332,25 +1339,19 @@
                 const chatBtn = document.getElementById('floating-chat-btn');
                 const isChatBtnVisible = chatBtn && chatBtn.style.display !== 'none';
 
-                // Only show if chat window is closed, chat button is visible, and exam is not active
                 if (popup && !isChatOpen && isChatBtnVisible && !examActiveState) {
                     popup.classList.add('active');
                     
-                    // Automatically dismiss after exactly 30 seconds
                     setTimeout(() => {
                         popup.classList.remove('active');
                     }, 30000);
                 }
             };
 
-            // First trigger 5 seconds after session loads
             setTimeout(triggerPopup, 5000);
-
-            // Repeat every 10 minutes (10 * 60 * 1000 ms)
             setInterval(triggerPopup, 600000);
         }
 
-        /* --- VISIBILITY CONTROL EXCLUDE IN PROGUARD/EXAMS --- */
         function updateChatButtonVisibility() {
             const chatBtn = document.getElementById('floating-chat-btn');
             const chatWindow = document.getElementById('chat-window-container');
@@ -1373,7 +1374,6 @@
             }
         }
 
-        /* --- FETCH & ROTATE FCM BACKGROUND REGISTRATION TOKEN --- */
         function setupFCMRegistrationToken(username) {
             if (!('serviceWorker' in navigator) || window.location.protocol === 'blob:' || window.location.protocol === 'data:') return;
             
@@ -1509,7 +1509,6 @@
             });
         }
 
-        // Rule 1: Master curriculum path mapping
         function listenToNestedMasterCurriculum() {
             db.collection('curriculum').doc('nested_master_folders').onSnapshot(doc => {
                 if (doc.exists) {
@@ -1549,7 +1548,6 @@
             });
         }
 
-        /* --- SUBJECT HELPER STRING TRANSLATOR --- */
         function getSubjectNameString(code) {
             const mapping = { PHY: "Physics", CHEM: "Chemistry", BIO: "Biology", MATH: "Mathematics" };
             return mapping[code] || "Subject Core";
@@ -1571,7 +1569,6 @@
             updateNavigationHistoryState("CHAPTERS");
         }
 
-        // Action button handles
         function exitToSubjectBoard() { processStateNavigationTransition("SUBJECTS"); }
 
         function renderChapterFolderWorkspace(subCode) {
@@ -1763,7 +1760,7 @@
             document.getElementById('quiz-portal-modal').style.display = 'flex';
             if (!isAdmin && targetedMod.duration > 0) initiateProGuardExamTimer(targetedMod.duration);
             updateNavigationHistoryState("QUIZ");
-            updateChatButtonVisibility(); // Hide chat button instantly when starting Monthly Tests/DPP quiz
+            updateChatButtonVisibility();
         }
 
         function renderQuizQuestionsToViewport() {
@@ -1866,7 +1863,6 @@
             });
         }
 
-        /* --- CLASS NOTES VIEWER WITH DYNAMIC TIME-BASED XP INCREMENT --- */
         function launchViewer(itemIndex) {
             const item = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex].notes[itemIndex];
             const uniqueId = item.id || `${selectedSubjectCode}-${selectedChapterIndex}-notes-${itemIndex}`;
@@ -1921,7 +1917,6 @@
             }
         }
 
-        /* --- NOTES MODAL CLOSURE CLEANUP ENGINE --- */
         function closeViewer() {
             document.getElementById('viewer-modal').style.display = 'none';
             document.getElementById('view-frame').src = "about:blank";
@@ -1955,6 +1950,8 @@
             (window.globalCachedRosterSubmits || []).forEach(student => {
                 if (student.name.toUpperCase() === "PRATIM") return;
                 let correct = 0, cheated = (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_BLOCKED_STATUS`] === "BLOCKED");
+                targetQuestionsArray.forEach(q => { if (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_modId_BLOCKED_STATUS`] === "BLOCKED") correct = 0; });
+                
                 targetQuestionsArray.forEach(q => { if (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_${q.id}`] === q.answer) correct++; });
                 performanceRows.push({ name: student.name, score: correct, total: targetQuestionsArray.length, cheated: cheated });
             });
@@ -1968,7 +1965,6 @@
             modal.style.display = 'flex';
         }
 
-        /* --- CLASSROOM ROSTER & LEADERS PROGRESS ENGINE --- */
         function openGlobalDppLeaderboard() {
             const modal = document.getElementById('global-dpp-leaderboard-modal');
             const container = document.getElementById('global-dpp-leaderboard-target'); container.innerHTML = "";
@@ -2019,7 +2015,6 @@
             modal.style.display = 'flex';
         }
 
-        /* --- ADMIN student DECOMMISSION REMOVAL ACTION --- */
         function removeStudentProfile(studentName) {
             const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
             if (!isAdmin) return;
@@ -2043,12 +2038,11 @@
         function closeGlobalDppLeaderboard() { document.getElementById('global-dpp-leaderboard-modal').style.display = 'none'; }
         function closeLeaderboardModal() { document.getElementById('leaderboard-overlay-modal').style.display = 'none'; }
 
-        // ProGuard Exam Protection Timer
         function initiateProGuardExamTimer(mins) {
             clearInterval(proGuardCountdownInterval); examActiveState = true; timeRemainingSeconds = mins * 60;
             document.getElementById('security-timer-banner').style.display = 'block';
             document.getElementById('btn-exit-quiz-portal').style.display = 'none';
-            updateChatButtonVisibility(); // Hide chat when timer begins
+            updateChatButtonVisibility(); 
             proGuardCountdownInterval = setInterval(() => {
                 timeRemainingSeconds--;
                 if (timeRemainingSeconds <= 0) executeProGuardAutomaticLockout("EXPIRED");
@@ -2075,7 +2069,7 @@
                     broadcastGlobalNotification("⚠️ ProGuard Flag: Tab breach triggered lockout security.");
                 } else { showCustomAlert("⏱️ Session Expired", "Duration window closed."); }
                 processStateNavigationTransition("SUBFOLDERS");
-                updateChatButtonVisibility(); // Restores chat bubble since exam active state is now false
+                updateChatButtonVisibility(); 
             });
         }
         
@@ -2083,10 +2077,9 @@
             examActiveState = false; 
             clearInterval(proGuardCountdownInterval); 
             processStateNavigationTransition("SUBFOLDERS"); 
-            updateChatButtonVisibility(); // Restores chat bubble
+            updateChatButtonVisibility(); 
         }
         
-        /* --- NATIVE LOCK SCREEN PUSH NOTIFICATION DISPATCH ENGINE --- */
         function triggerNativePushNotification(headline, payloadBody) {
             if (!("Notification" in window)) return;
 
@@ -2118,7 +2111,6 @@
             }
         }
 
-        /* --- MULTI-CLIENT CLOUD BROADCAST PIPELINE --- */
         function broadcastGlobalNotification(txt) { 
             db.collection('sync_notifications').add({ 
                 text: txt, 
@@ -2137,7 +2129,6 @@
             triggerNativePushNotification("SCIENCE_IX Update", msg);
         }
 
-        // Custom modal controls
         function showCustomAlert(title, body) {
             const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">${body}</p><button class="btn-dialog-primary" style="width:100%;" onclick="closeCustomDialog()">Understood</button>`; m.style.display = 'flex';
         }
@@ -2151,7 +2142,6 @@
         }
         function closeCustomDialog() { document.getElementById('custom-dialog-modal').style.display = 'none'; }
 
-        // --- GREY NEON DOTS BACKGROUND PARTICLE SYSTEM ENGINE ---
         const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
@@ -2203,3 +2193,5 @@
     </script>
 </body>
 </html>
+
+
