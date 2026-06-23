@@ -97,7 +97,7 @@
       </div>
 
       <div class="space-y-2">
-        <h1 class="text-4xl font-black tracking-widest text-white uppercase bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">SCIENCE_IX</h1>
+        <h1 class="text-4xl font-black tracking-widest text-white uppercase bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent animate-pulse">SCIENCE_IX</h1>
         <p class="text-xs font-bold tracking-widest text-slate-400 uppercase">Synchronizing Workspace Core...</p>
       </div>
     </div>
@@ -177,7 +177,7 @@
         </div>
 
         <button type="submit" id="login-submit-button" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3.5 rounded-xl text-sm transition transform active:scale-95 shadow-lg shadow-blue-500/20">
-          Access Study Deck
+          Access Study Workspace
         </button>
       </form>
     </div>
@@ -301,11 +301,11 @@
 
   <!-- ==================== VIEW 2: SUBJECT DIRECTORY FOLDERS (LEVEL 1) ==================== -->
   <div id="view-classes-folders" class="max-w-3xl w-full mx-auto px-4 py-8 hidden space-y-6 animate-in fade-in duration-200">
-    <!-- Static PW Notification Banner -->
+    <!-- PW Progress Helper Banner -->
     <div class="bg-slate-900/90 text-slate-300 border border-slate-800 px-4 py-3 rounded-2xl flex items-center justify-between shadow-lg relative">
       <div class="flex items-center gap-2.5">
         <div class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></div>
-        <p class="text-xs font-semibold">Completion % depends on lecture and DPP progress!</p>
+        <p class="text-xs font-semibold">Completion % depends on lectures, DPPs, notes, and secure tests!</p>
       </div>
       <button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-slate-300 transition">
         <i data-lucide="x" class="w-4 h-4"></i>
@@ -319,12 +319,12 @@
         </button>
         <div>
           <h1 class="text-xl font-bold text-white tracking-tight">Academic Subjects</h1>
-          <p class="text-xs text-slate-400">Classrooms configured dynamically with real-time status tracking</p>
+          <p class="text-xs text-slate-400">Select standard modules to track resource completion progress</p>
         </div>
       </div>
     </div>
 
-    <!-- SUBJECTS WORKSPACE LIST (Premium Dark Mode Subject Cards matching Screenshot 1 layout) -->
+    <!-- SUBJECTS WORKSPACE LIST (Sleek Dark Cards showing custom computed student-specific progress) -->
     <div id="subject-cards-list" class="space-y-4"></div>
   </div>
 
@@ -337,7 +337,7 @@
         </button>
         <div>
           <h1 id="chapters-subject-title" class="text-xl font-bold text-white">Subject Chapters</h1>
-          <p class="text-xs text-slate-400">Interactive curriculum modules and progress indexes</p>
+          <p class="text-xs text-slate-400">Syllabus directories containing modules, DPPs, and solutions</p>
         </div>
       </div>
       <!-- Add Chapter Admin Trigger -->
@@ -349,10 +349,10 @@
     <!-- Chapters & Study Material Navigation Pill Header -->
     <div class="flex border-b border-slate-800/80">
       <button class="px-5 py-2.5 font-bold text-sm text-[#A088FF] border-b-2 border-[#A088FF] transition focus:outline-none">Chapters</button>
-      <button onclick="showToast('Materials are listed inside each individual chapter deck.', 'info')" class="px-5 py-2.5 font-semibold text-sm text-slate-500 hover:text-slate-300 transition focus:outline-none">Study Material</button>
+      <button onclick="showToast('Materials are organized directly within each chapter syllabus deck.', 'info')" class="px-5 py-2.5 font-semibold text-sm text-slate-500 hover:text-slate-300 transition focus:outline-none">Study Material</button>
     </div>
 
-    <!-- CHAPTERS DIRECTORY LIST (Pic 2 Layout) -->
+    <!-- CHAPTERS DIRECTORY LIST (Pic 2 Layout with Admin Delete Control) -->
     <div id="chapters-list-container" class="space-y-4"></div>
   </div>
 
@@ -365,7 +365,7 @@
         </button>
         <div>
           <div class="flex items-center gap-2">
-            <!-- Precise high-resolution tag header (e.g. CH 03 MOTION style) -->
+            <!-- Dynamic detailed tag header (CH 03 MOTION style) -->
             <span id="detail-chapter-code" class="text-[11px] bg-indigo-500/10 text-indigo-300 font-extrabold px-3 py-1 rounded-md border border-indigo-500/30 uppercase font-mono tracking-wider shadow-[0_0_12px_rgba(99,102,241,0.15)]">CH - 01</span>
             <h1 id="detail-chapter-title" class="text-lg font-bold text-white">Chapter Syllabus</h1>
           </div>
@@ -373,7 +373,7 @@
         </div>
       </div>
 
-      <!-- Quick Admin actions panel to add/delete resources or secure assessments -->
+      <!-- Quick Admin actions panel to publish items or tests -->
       <div class="flex gap-2 flex-wrap">
         <button id="admin-publish-payload-btn" onclick="openAdminContentPublishModal()" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 hidden animate-pulse">
           <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Publish Resource
@@ -582,53 +582,47 @@
     </div>
   </div>
 
-  <!-- ==================== CONTROLLER: AVATAR SELECTION ENGINE ==================== -->
-  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-white">Select Your Profile Avatar</h3>
-        <button onclick="closeAvatarSelectorModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+  <!-- ==================== CONTROLLER: NOTE STUDY WINDOW MODAL ==================== -->
+  <div id="modal-note-viewer" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh] space-y-6 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-start justify-between border-b border-slate-800/80 pb-3">
+        <div>
+          <h3 id="note-viewer-header" class="text-xl font-black text-white">Classroom Lesson Note</h3>
+          <p class="text-xs text-blue-400 mt-1">Study session active. Keep reading to automatically gain dynamic XP bonuses!</p>
+        </div>
+        <div class="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 text-xs font-bold shrink-0">
+          <i data-lucide="timer" class="w-4 h-4 animate-spin text-blue-400"></i>
+          <span id="note-session-timer">0 minutes</span>
+        </div>
       </div>
-      <div class="space-y-3">
-        <p class="text-[10px] uppercase font-bold text-blue-400 tracking-wider">Boys Avatars</p>
-        <div class="grid grid-cols-4 gap-3">
-          <div onclick="changeUserAvatar('Milo')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Milo</span>
-          </div>
-          <div onclick="changeUserAvatar('Alexander')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alexander">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Alex</span>
-          </div>
-          <div onclick="changeUserAvatar('Lucas')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucas">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lucas</span>
-          </div>
-          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition flex flex-col justify-center items-center">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ethan">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Ethan</span>
-          </div>
-        </div>
+      <div class="flex-grow overflow-y-auto bg-slate-950/80 border border-slate-800 p-5 rounded-2xl text-slate-300 text-sm leading-relaxed whitespace-pre-wrap custom-scrollbar" id="note-viewer-text-content"></div>
+      <div class="flex justify-end gap-3 shrink-0 pt-3 border-t border-slate-800/80">
+        <button onclick="terminateNoteSession()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition transform active:scale-95 shadow-lg shadow-blue-500/20">Mark as Completed & Close</button>
+      </div>
+    </div>
+  </div>
 
-        <p class="text-[10px] uppercase font-bold text-pink-400 tracking-wider pt-2">Girls Avatars</p>
-        <div class="grid grid-cols-4 gap-3">
-          <div onclick="changeUserAvatar('Sasha')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sasha">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Sasha</span>
-          </div>
-          <div onclick="changeUserAvatar('Zoe')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Zoe</span>
-          </div>
-          <div onclick="changeUserAvatar('Lily')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lily">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lily</span>
-          </div>
-          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition font-semibold">
-            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maya">
-            <span class="text-[9px] text-slate-400 block mt-1">Maya</span>
-          </div>
+  <!-- ==================== CONTROLLER: EXAM / ASSESSMENT PROCTORED SANDBOX ==================== -->
+  <div id="view-exam-sandbox" class="fixed inset-0 bg-[#070a13] z-50 flex flex-col items-center justify-center p-4 md:p-8 hidden overflow-y-auto">
+    <div class="max-w-3xl w-full space-y-6 my-auto">
+      <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-2xl flex items-center justify-between text-red-400">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-alert" class="w-5 h-5 animate-pulse"></i>
+          <span class="text-xs font-bold uppercase tracking-wider">Secured Proctored Sandbox View (Anti-Cheating Policy Active)</span>
         </div>
+        <span class="text-xs bg-red-500/20 px-2.5 py-1 rounded font-black">ACTIVE MONITORING</span>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <h2 id="exam-sandbox-title" class="text-2xl font-black text-white">Assessment Diagnostics</h2>
+        <button onclick="terminateSecureAssessment()" class="text-slate-400 hover:text-white text-xs font-bold bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl transition">Cancel Exam</button>
+      </div>
+
+      <!-- Exam Questions container -->
+      <div id="exam-question-target" class="space-y-6"></div>
+
+      <div class="pt-4 flex justify-end">
+        <button onclick="commitSecureExamAnswers()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black px-8 py-4 rounded-2xl text-sm transition transform active:scale-95 shadow-lg shadow-emerald-500/10">Submit Verification & Exit</button>
       </div>
     </div>
   </div>
@@ -643,7 +637,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // --- SYSTEM LOCAL STATE ---
@@ -654,6 +648,7 @@
       streak: 1,
       avatar: "Milo",
       
+      // Dynamic Folders & Navigation Parameters
       currentSubject: "Physics",
       currentChapterId: "",
       currentActiveTab: "All",
@@ -856,7 +851,7 @@
     };
 
     // --- DECIDE VIEW LAYOUT POST-ANIMATION (BYPASSES LOCKS COMPLETELY) ---
-    function showInitialViewLayout() {
+    async function showInitialViewLayout() {
       const savedUser = localStorage.getItem("science_ix_saved_user");
       if (savedUser) {
         // Safe fast recovery
@@ -884,6 +879,9 @@
         if (streakCount) streakCount.innerText = appState.streak;
 
         pushCurrentStudentIntoLeaderboard();
+        
+        // Load dynamically saved curriculum from backend before rendering subject directories!
+        await loadCurriculumData();
         
         document.getElementById('view-dashboard').classList.remove('hidden');
         document.getElementById('view-login').classList.add('hidden');
@@ -1164,6 +1162,9 @@
       if (streakCount) streakCount.innerText = appState.streak;
 
       await pushCurrentStudentIntoLeaderboard();
+      
+      // Sync curriculum load!
+      await loadCurriculumData();
 
       submitButton.disabled = false;
       submitButton.innerText = "Access Study Deck";
@@ -1309,22 +1310,90 @@
       lucide.createIcons();
     }
 
+    // --- DOUBLE-SYNC GLOBAL CURRICULUM PERSISTENCE ENGINE ---
+    async function saveCurriculumData() {
+      // 1. Instantly Back up in Local device storage so loading is instantaneous next time
+      localStorage.setItem('science_ix_curriculum', JSON.stringify(folderSystemData));
+      localStorage.setItem('science_ix_exams', JSON.stringify(defaultMonthlyExams));
+      
+      // 2. Persist directly to Firestore public structural paths (Rule 1, public category)
+      if (db && auth && auth.currentUser) {
+        try {
+          const curriculumDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'curriculum_v2', 'structure');
+          await setDoc(curriculumDocRef, { folderSystemData, defaultMonthlyExams }, { merge: true });
+        } catch (err) {
+          console.warn("Firestore Curriculum sync delayed, locally backed up:", err);
+        }
+      }
+    }
+
+    async function loadCurriculumData() {
+      // 1. Restore local cache first to render immediately
+      const localCurriculum = localStorage.getItem('science_ix_curriculum');
+      if (localCurriculum) {
+        folderSystemData = JSON.parse(localCurriculum);
+      }
+      const localExams = localStorage.getItem('science_ix_exams');
+      if (localExams) {
+        defaultMonthlyExams = JSON.parse(localExams);
+      }
+
+      // 2. Fetch the latest live structures from the cloud
+      const authenticatedUser = await authReadyPromise;
+      if (db && authenticatedUser) {
+        try {
+          const curriculumDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'curriculum_v2', 'structure');
+          const snap = await getDoc(curriculumDocRef);
+          if (snap.exists()) {
+            const data = snap.data();
+            if (data.folderSystemData) {
+              folderSystemData = data.folderSystemData;
+              localStorage.setItem('science_ix_curriculum', JSON.stringify(folderSystemData));
+            }
+            if (data.defaultMonthlyExams) {
+              defaultMonthlyExams = data.defaultMonthlyExams;
+              localStorage.setItem('science_ix_exams', JSON.stringify(defaultMonthlyExams));
+            }
+          }
+        } catch (err) {
+          console.warn("Firestore curriculum loading offline fallback mode:", err);
+        }
+      }
+      
+      // Update UI components with the fresh values
+      renderSubjectsView();
+    }
+
+    // --- STUDENT-SPECIFIC SUBJECT PROGRESS COMPILATION ---
     function calculateSubjectProgressPercentage(subject) {
       const subData = folderSystemData[subject];
-      if (!subData || !subData.chapters || subData.chapters.length === 0) return 0;
-
+      if (!subData) return 0;
+      
       let totalItems = 0;
       let completedItems = 0;
 
-      subData.chapters.forEach(chap => {
-        if (chap.items) {
-          chap.items.forEach(item => {
-            const isCompleted = item.completed === true || appState.completedItemsRegistry[item.id] === true;
-            totalItems++;
-            if (isCompleted) {
-              completedItems++;
-            }
-          });
+      // 1. Account for Chapter items (Lectures, Notes, DPPs, solution guides)
+      if (subData.chapters) {
+        subData.chapters.forEach(chap => {
+          if (chap.items) {
+            chap.items.forEach(item => {
+              totalItems++;
+              const isCompleted = item.completed === true || appState.completedItemsRegistry[item.id] === true;
+              if (isCompleted) {
+                completedItems++;
+              }
+            });
+          }
+        });
+      }
+
+      // 2. Account for Secure Monthly Test completions
+      const exams = defaultMonthlyExams[subject] || [];
+      exams.forEach(exam => {
+        totalItems++;
+        const examUniqueId = exam.id || `exam-${exam.title}`;
+        if (appState.completedItemsRegistry[examUniqueId] === true) {
+          completedItems++;
         }
       });
 
@@ -1606,7 +1675,7 @@
         
         // Dynamically increment XP: 1 minute = 2 XP gain
         updateUserXp(2);
-        showToast("Studied for " + appState.activeNoteReadingMinutes + "m! +2 XP awarded.", "success");
+        showToast(`Studied for ${appState.activeNoteReadingMinutes}m! +2 XP awarded.`, "success");
       }, 60000);
 
       document.getElementById('modal-note-viewer').classList.remove('hidden');
@@ -1757,7 +1826,7 @@
 
     function triggerCheatingPenalty(reasonText) {
       updateUserXp(-50);
-      showToast("CRITICAL ERROR: Cheating Flagged! " + reasonText + " Penalty: -50 XP.", "error");
+      showToast(`CRITICAL ERROR: Cheating Flagged! ${reasonText} Penalty: -50 XP.`, "error");
       terminateSecureAssessment();
     }
 
@@ -1812,8 +1881,8 @@
         }
 
         // Sync and back up to local device storage immediately
-        localStorage.setItem("science_ix_xp_" + appState.user.toLowerCase(), appState.xp);
-        localStorage.setItem("science_ix_registry_" + appState.user.toLowerCase(), JSON.stringify(appState.completedItemsRegistry));
+        localStorage.setItem(`science_ix_xp_${appState.user.toLowerCase()}`, appState.xp);
+        localStorage.setItem(`science_ix_registry_${appState.user.toLowerCase()}`, JSON.stringify(appState.completedItemsRegistry));
 
         if (db && auth && auth.currentUser) {
           const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
@@ -1900,7 +1969,7 @@
       document.getElementById('modal-admin-add-test').classList.remove('flex');
     };
 
-    window.handleSecureTestSubmit = function(e) {
+    window.handleSecureTestSubmit = async function(e) {
       e.preventDefault();
       const testTitle = document.getElementById('form-test-title').value.trim();
       const question = document.getElementById('form-test-question').value.trim();
@@ -1918,8 +1987,12 @@
       };
 
       defaultMonthlyExams[appState.currentSubject] = [newTestPayload];
+      
+      // Save changes immediately!
+      await saveCurriculumData();
+      
       closeAdminAddTestModal();
-      showToast("Secure assessment configured for " + appState.currentSubject + "!", "success");
+      showToast(`Secure assessment configured for ${appState.currentSubject}!`, "success");
     };
 
     // --- ADMIN CHAPTER ADDITIONS ---
@@ -1933,7 +2006,7 @@
       document.getElementById('modal-admin-add-chapter').classList.remove('flex');
     };
 
-    window.handleAddChapterSubmit = function(e) {
+    window.handleAddChapterSubmit = async function(e) {
       e.preventDefault();
       const code = document.getElementById('form-chap-code').value.trim();
       const title = document.getElementById('form-chap-title').value.trim();
@@ -1943,7 +2016,7 @@
       const subData = folderSystemData[appState.currentSubject];
       if (!subData) return;
 
-      const newChapId = subStateId() || (appState.currentSubject.toLowerCase() + "-ch-" + Date.now());
+      const newChapId = appState.currentSubject.toLowerCase() + "-ch-" + Date.now();
       const newChapter = {
         id: newChapId,
         code,
@@ -1954,27 +2027,31 @@
       };
 
       subData.chapters.push(newChapter);
+      
+      // Save changes dynamically!
+      await saveCurriculumData();
+      
       closeAddChapterModal();
       renderChaptersList(appState.currentSubject);
-      showToast("Created Chapter Module: " + title + "!", "success");
+      showToast(`Created Chapter Module: ${title}!`, "success");
     };
 
-    function subStateId() {
-      return "";
-    }
-
-    window.deleteChapterModule = function(chapterId) {
+    window.deleteChapterModule = async function(chapterId) {
       const subData = folderSystemData[appState.currentSubject];
       if (!subData) return;
 
       subData.chapters = subData.chapters.filter(x => x.id !== chapterId);
+      
+      // Save changes dynamically!
+      await saveCurriculumData();
+      
       renderChaptersList(appState.currentSubject);
       showToast("Chapter directory purged permanently.", "info");
     };
 
     // --- ADMIN MATERIAL ENTRY CREATION ---
     window.openAdminContentPublishModal = function() {
-      document.getElementById('admin-publisher-subject-title').innerText = "Publish to " + appState.currentSubject;
+      document.getElementById('admin-publisher-subject-title').innerText = `Publish to ${appState.currentSubject}`;
       document.getElementById('modal-admin-publisher').classList.remove('hidden');
       document.getElementById('modal-admin-publisher').classList.add('flex');
       toggleFormFieldsBasedOnPayload();
@@ -2001,7 +2078,7 @@
       }
     };
 
-    window.handlePayloadSubmission = function(e) {
+    window.handlePayloadSubmission = async function(e) {
       e.preventDefault();
       const type = document.getElementById('payload-type').value;
       const title = document.getElementById('payload-title').value.trim();
@@ -2012,7 +2089,7 @@
       const chap = subData.chapters.find(x => x.id === appState.currentChapterId);
       if (!chap) return;
 
-      const uniqueItemId = "item-" + Date.now();
+      const uniqueItemId = `item-${Date.now()}`;
 
       if (type === "Notes" || type === "DPP PDFs") {
         const linkVal = document.getElementById('payload-link').value.trim();
@@ -2045,12 +2122,15 @@
         chap.dppCount += 1;
       }
 
+      // Save dynamic updates permanently!
+      await saveCurriculumData();
+
       closeAdminContentPublishModal();
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       showToast("Resource material entry published!", "success");
     };
 
-    window.deleteResourceItem = function(id) {
+    window.deleteResourceItem = async function(id) {
       const subData = folderSystemData[appState.currentSubject];
       if (!subData) return;
 
@@ -2058,6 +2138,10 @@
       if (!chap) return;
 
       chap.items = chap.items.filter(x => x.id !== id);
+      
+      // Save changes dynamically!
+      await saveCurriculumData();
+
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       showToast("Study resource deleted permanently.", "info");
     };
@@ -2080,13 +2164,13 @@
       const teacher = document.getElementById('form-class-teacher').value.trim();
       const time = document.getElementById('form-class-time').value.trim();
 
-      const newId = "class_" + Date.now();
+      const newId = `class_${Date.now()}`;
       const payload = { id: newId, subject, topic, teacher, time };
 
       defaultUpcomingClasses.unshift(payload);
       renderClassesSchedule();
       closeAdminSchedulerModal();
-      showToast("Published weekly timetable schedule!", "success");
+      showToast(`Published weekly timetable schedule!`, "success");
 
       if (db) {
         try {
@@ -2123,7 +2207,7 @@
     window.changeUserAvatar = async function(seed) {
       try {
         appState.avatar = seed;
-        document.getElementById('user-avatar').src = "https://api.dicebear.com/7.x/adventurer/svg?seed=" + seed;
+        document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
         
         const self = fallbackLeaderboard.find(x => x.id === appState.user.toLowerCase());
         if (self) {
@@ -2131,7 +2215,7 @@
           renderLeaderboard();
         }
 
-        localStorage.setItem("science_ix_avatar_" + appState.user.toLowerCase(), seed);
+        localStorage.setItem(`science_ix_avatar_${appState.user.toLowerCase()}`, seed);
 
         if (db && auth && auth.currentUser) {
           const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
@@ -2198,7 +2282,7 @@
                         type === 'error' ? 'bg-red-950 border-red-500/50 text-red-300' :
                         'bg-slate-900 border-slate-800 text-slate-300';
 
-      box.className = "flex items-center gap-3 p-4 rounded-2xl border " + styling + " shadow-xl backdrop-blur transition-all duration-300 transform translate-y-2 opacity-0";
+      box.className = `flex items-center gap-3 p-4 rounded-2xl border ${styling} shadow-xl backdrop-blur transition-all duration-300 transform translate-y-2 opacity-0`;
       box.innerHTML = `
         <i data-lucide="${statusIcon}" class="w-5 h-5 shrink-0 ${type === 'success' ? 'text-emerald-400' : 'text-blue-400'}"></i>
         <span class="text-xs font-semibold">${message}</span>
