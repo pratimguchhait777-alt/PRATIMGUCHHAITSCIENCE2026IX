@@ -162,7 +162,7 @@
             Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
           </p>
         </div>
-        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.8.0</div>
+        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.8.5</div>
       </div>
 
       <!-- MY BATCH PORTAL -->
@@ -647,6 +647,9 @@
         // Signal that Firebase is authenticated and ready to receive queries
         resolveAuthReady(user);
         setupFirestoreRealtimeSubscribers();
+        
+        // --- AUTO RECOVERY ATTEMPT ON LOAD (RULE 1 + RULE 3 compliant) ---
+        await attemptAutoSessionRecovery(user);
       } catch (err) {
         console.warn("Ecosystem offline sandbox model active.", err);
         // Fallback resolve to allow testing offline
@@ -689,6 +692,61 @@
           renderLeaderboard();
         }
       });
+    }
+
+    // --- AUTO-RECOVER CURRENT AUTH USERNAME FROM FIRESTORE (Resolves Refresh Logout) ---
+    async function attemptAutoSessionRecovery(authenticatedUser) {
+      if (!db || !authenticatedUser) return;
+      try {
+        // Query strict Rule 1 public mapping path using authenticated uid
+        const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'usersMapping', authenticatedUser.uid);
+        const sessionSnap = await getDoc(sessionRef);
+        
+        if (sessionSnap.exists()) {
+          const sessionData = sessionSnap.data();
+          if (sessionData && sessionData.name) {
+            // Restore session directly
+            const rawName = sessionData.name;
+            const isRoleAdmin = sessionData.role === "admin";
+            
+            appState.user = rawName;
+            appState.role = sessionData.role || "student";
+            document.getElementById('user-display-name').innerText = rawName;
+            
+            if (isRoleAdmin) {
+              document.getElementById('role-badge').classList.remove('hidden');
+              document.getElementById('add-schedule-btn').classList.remove('hidden');
+              document.getElementById('admin-publish-payload-btn').classList.remove('hidden');
+            }
+            
+            // Retrieve full metrics from student file
+            const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', rawName.toLowerCase());
+            const studentSnap = await getDoc(studentDocRef);
+            
+            if (studentSnap.exists()) {
+              const restoredData = studentSnap.data();
+              appState.xp = restoredData.xp !== undefined ? restoredData.xp : 0;
+              appState.streak = restoredData.streak || 1;
+              appState.avatar = restoredData.avatar || "Milo";
+              appState.completedItemsRegistry = restoredData.completedItemsRegistry || {};
+            }
+            
+            // Sync UI components to matched restored settings
+            document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
+            document.getElementById('header-xp-count').innerText = appState.xp;
+            document.getElementById('header-streak-count').innerText = appState.streak;
+
+            await pushCurrentStudentIntoLeaderboard();
+            
+            // Bypass login directly to dashboard
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            showToast(`Auto-Logged In: Welcome back ${rawName}!`, "success");
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to auto-recover session state:", err);
+      }
     }
 
     // --- DYNAMICALLY TOGGLE ADMIN PIN PANEL ---
@@ -789,6 +847,14 @@
             });
             showToast(`Profile successfully created/linked for student: ${rawName}!`, "success");
           }
+
+          // Save Auth Session Mapping so refreshing does not log them out! (Rule 1 Path)
+          const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'usersMapping', authenticatedUser.uid);
+          await setDoc(sessionRef, {
+            name: rawName,
+            role: appState.role
+          });
+
         } catch (err) {
           console.warn("Ecosystem offline - unable to sync profile recovery.", err);
           // Local fallback restoration
