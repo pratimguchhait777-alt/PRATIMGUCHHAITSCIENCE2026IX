@@ -60,8 +60,18 @@
     </div>
   </header>
 
+  <!-- ==================== LAUNCH / LOADING PROGRESS VIEW ==================== -->
+  <div id="view-loading" class="flex-grow flex flex-col items-center justify-center px-4 py-12">
+    <div class="text-center space-y-4">
+      <div class="inline-block animate-spin text-blue-500">
+        <i data-lucide="atom" class="w-16 h-16"></i>
+      </div>
+      <p class="text-sm font-semibold tracking-wider text-slate-400">CONNECTING TO SCIENCE_IX DATABASE...</p>
+    </div>
+  </div>
+
   <!-- ==================== SIGN IN SCREEN ==================== -->
-  <div id="view-login" class="flex-grow flex items-center justify-center px-4 py-12">
+  <div id="view-login" class="flex-grow flex items-center justify-center px-4 py-12 hidden">
     <div class="bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl text-center space-y-6 animate-in fade-in zoom-in-95 duration-200">
       <div class="mx-auto w-16 h-16 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 shadow-lg">
         <i data-lucide="user-plus" class="w-8 h-8"></i>
@@ -117,6 +127,8 @@
           <div class="flex items-center gap-2">
             <p id="user-display-name" class="text-base font-bold text-white"></p>
             <span id="role-badge" class="hidden text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded font-black uppercase tracking-wider animate-pulse">ADMIN</span>
+            <!-- Log Out Button Trigger -->
+            <button onclick="handleLogout()" class="text-xs text-red-400 hover:text-red-300 font-semibold transition ml-2 border-l border-slate-800 pl-2">Log Out</button>
           </div>
           <p class="text-xs text-slate-400">Class 9 Science Study Workspace</p>
         </div>
@@ -162,7 +174,7 @@
             Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
           </p>
         </div>
-        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.8.5</div>
+        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.9.0</div>
       </div>
 
       <!-- MY BATCH PORTAL -->
@@ -276,7 +288,6 @@
   </button>
 
   <div id="chat-console-panel" class="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] h-[480px] bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl flex flex-col z-40 overflow-hidden hidden transition-all duration-300">
-    <!-- Header -->
     <div class="bg-slate-950 border-b border-slate-800 p-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
@@ -284,9 +295,7 @@
       </div>
       <button onclick="toggleChatConsole()" class="text-slate-400 hover:text-white"><i data-lucide="minus" class="w-4 h-4"></i></button>
     </div>
-    <!-- Messages space -->
     <div id="chat-messages-box" class="flex-grow p-4 overflow-y-auto space-y-3 custom-scrollbar"></div>
-    <!-- Inputs -->
     <form onsubmit="handleSendChatMessage(event)" class="p-3 border-t border-slate-800 bg-slate-950 flex gap-2">
       <input type="text" id="chat-input" placeholder="Type a message..." class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500">
       <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-xl transition"><i data-lucide="send" class="w-4 h-4"></i></button>
@@ -415,7 +424,7 @@
             <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucas">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lucas</span>
           </div>
-          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
+          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition flex flex-col justify-center items-center">
             <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ethan">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Ethan</span>
           </div>
@@ -435,64 +444,12 @@
             <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lily">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lily</span>
           </div>
-          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
+          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition font-semibold">
             <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maya">
-            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Maya</span>
+            <span class="text-[9px] text-slate-400 block mt-1">Maya</span>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- ==================== CONTROLLER: ACTIVE STUDY DOCUMENT NOTE VIEWER ==================== -->
-  <div id="modal-note-viewer" class="fixed inset-0 bg-[#070a13]/98 z-50 hidden flex-col">
-    <!-- RECONFIGURED RESPONSIVE RESOLUTION HEADER BAR -->
-    <div class="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div class="min-w-0 flex-1">
-        <h3 id="note-viewer-header" class="font-extrabold text-white text-lg sm:text-xl truncate leading-tight">Lecture Document Deck</h3>
-        <div class="text-xs text-amber-500 flex flex-wrap items-center gap-2 mt-1.5 font-medium">
-          <span class="inline-flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full animate-pulse">
-            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
-            <span>Read Tracker Active:</span>
-            <span id="note-session-timer" class="font-bold text-amber-400">0 minutes</span>
-          </span>
-          <span class="text-slate-400 font-mono text-[10px] bg-slate-800 px-2.5 py-1 rounded-full shrink-0">(+2 XP / minute)</span>
-        </div>
-      </div>
-      <button onclick="terminateNoteSession()" class="bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white px-5 py-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shrink-0 border border-red-500/20 self-stretch sm:self-auto text-center shadow-lg">
-        <span>Close Study Window & Save XP</span>
-        <i data-lucide="log-out" class="w-4 h-4 shrink-0"></i>
-      </button>
-    </div>
-    <div class="flex-grow p-6 md:p-12 overflow-y-auto max-w-4xl mx-auto w-full">
-      <article id="note-viewer-text-content" class="prose prose-invert text-slate-300 text-sm leading-relaxed whitespace-pre-wrap selection:bg-blue-600"></article>
-    </div>
-  </div>
-
-  <!-- ==================== SECURE EXAM SANDBOX SCREEN (STRICT MONITOR) ==================== -->
-  <div id="view-exam-sandbox" class="fixed inset-0 bg-[#070a13] z-50 hidden flex-col no-select">
-    <div class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded text-[10px] font-black tracking-widest animate-pulse">LOCKDOWN ENVIRONMENT</span>
-        <h2 id="exam-sandbox-title" class="text-sm font-bold text-white">Monthly Assessment</h2>
-      </div>
-      <div class="text-right">
-        <span class="text-xs text-slate-400 block">Proctor Mode Active</span>
-        <span class="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Protected Deck</span>
-      </div>
-    </div>
-
-    <div class="flex-grow max-w-3xl w-full mx-auto px-4 py-8 overflow-y-auto space-y-6">
-      <div class="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-2xl text-xs flex gap-2">
-        <i data-lucide="shield-alert" class="w-4 h-4 shrink-0"></i>
-        <span><strong>Tab Safeguard Notice:</strong> Defocusing, changing screens, or exiting Fullscreen triggers an automatic penalty of <strong>-50 XP</strong> directly. 2 warning blocks closes evaluation immediately.</span>
-      </div>
-
-      <div id="exam-question-target" class="space-y-4"></div>
-
-      <button onclick="commitSecureExamAnswers()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition uppercase tracking-widest">
-        Submit Test Assessment
-      </button>
     </div>
   </div>
 
@@ -522,7 +479,7 @@
       activeNoteReadingMinutes: 0,
       activeExam: null,
       examViolations: 0,
-      completedItemsRegistry: {} // Stores titles/IDs already answered to avoid double-XP gains
+      completedItemsRegistry: {} // Stores completed items to avoid double-XP gains
     };
 
     // --- HARDCODED PRELOADED LEADERBOARD DATA (Fixed IDs to resolve Duplication) ---
@@ -621,12 +578,10 @@
     });
 
     // --- INITIALIZATION ---
-    window.onload = function() {
-      lucide.createIcons();
-      initFirebaseConnection();
-      renderDashboardOverview();
-      renderFoldersWorkspace();
-    };
+    // Executed directly within the module wrapper to ensure we never miss events or fail to initiate Firebase!
+    initFirebaseConnection();
+    renderDashboardOverview();
+    renderFoldersWorkspace();
 
     // --- FIREBASE CONNECTION & AUTHENTICATION (RULE 3 - Complete await before query) ---
     async function initFirebaseConnection() {
@@ -648,12 +603,14 @@
         resolveAuthReady(user);
         setupFirestoreRealtimeSubscribers();
         
-        // --- AUTO RECOVERY ATTEMPT ON LOAD (RULE 1 + RULE 3 compliant) ---
-        await attemptAutoSessionRecovery(user);
+        // --- SECURED REFRESH PERSISTENCE RECOVERY ---
+        await attemptAutoSessionRecovery();
       } catch (err) {
         console.warn("Ecosystem offline sandbox model active.", err);
         // Fallback resolve to allow testing offline
         resolveAuthReady(null);
+        // Even if offline, we MUST attempt local recovery so we don't get stuck spinning!
+        await attemptAutoSessionRecovery();
       }
     }
 
@@ -694,59 +651,81 @@
       });
     }
 
-    // --- AUTO-RECOVER CURRENT AUTH USERNAME FROM FIRESTORE (Resolves Refresh Logout) ---
-    async function attemptAutoSessionRecovery(authenticatedUser) {
-      if (!db || !authenticatedUser) return;
-      try {
-        // Query strict Rule 1 public mapping path using authenticated uid
-        const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'usersMapping', authenticatedUser.uid);
-        const sessionSnap = await getDoc(sessionRef);
-        
-        if (sessionSnap.exists()) {
-          const sessionData = sessionSnap.data();
-          if (sessionData && sessionData.name) {
-            // Restore session directly
-            const rawName = sessionData.name;
-            const isRoleAdmin = sessionData.role === "admin";
-            
-            appState.user = rawName;
-            appState.role = sessionData.role || "student";
-            document.getElementById('user-display-name').innerText = rawName;
-            
-            if (isRoleAdmin) {
-              document.getElementById('role-badge').classList.remove('hidden');
-              document.getElementById('add-schedule-btn').classList.remove('hidden');
-              document.getElementById('admin-publish-payload-btn').classList.remove('hidden');
-            }
-            
-            // Retrieve full metrics from student file
-            const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', rawName.toLowerCase());
-            const studentSnap = await getDoc(studentDocRef);
-            
-            if (studentSnap.exists()) {
-              const restoredData = studentSnap.data();
-              appState.xp = restoredData.xp !== undefined ? restoredData.xp : 0;
-              appState.streak = restoredData.streak || 1;
-              appState.avatar = restoredData.avatar || "Milo";
-              appState.completedItemsRegistry = restoredData.completedItemsRegistry || {};
-            }
-            
-            // Sync UI components to matched restored settings
-            document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
-            document.getElementById('header-xp-count').innerText = appState.xp;
-            document.getElementById('header-streak-count').innerText = appState.streak;
-
-            await pushCurrentStudentIntoLeaderboard();
-            
-            // Bypass login directly to dashboard
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.remove('hidden');
-            showToast(`Auto-Logged In: Welcome back ${rawName}!`, "success");
-          }
-        }
-      } catch (err) {
-        console.warn("Failed to auto-recover session state:", err);
+    // --- SESSION AUTO RECOVERY VIA RELIABLE STORAGE SYSTEM ---
+    async function attemptAutoSessionRecovery() {
+      // Look for locally saved student login name
+      const savedUser = localStorage.getItem("science_ix_saved_user");
+      const savedRole = localStorage.getItem("science_ix_saved_role") || "student";
+      
+      if (!savedUser) {
+        // No saved session found; transition to clean login screen
+        document.getElementById('view-loading').classList.add('hidden');
+        document.getElementById('view-login').classList.remove('hidden');
+        return;
       }
+
+      const authenticatedUser = await authReadyPromise;
+
+      appState.user = savedUser;
+      appState.role = savedRole;
+      document.getElementById('user-display-name').innerText = savedUser;
+
+      if (savedRole === "admin") {
+        document.getElementById('role-badge').classList.remove('hidden');
+        document.getElementById('add-schedule-btn').classList.remove('hidden');
+        document.getElementById('admin-publish-payload-btn').classList.remove('hidden');
+      }
+
+      let recoveredXp = 0;
+      let recoveredStreak = 1;
+      let recoveredAvatar = "Milo";
+
+      const fallbackRecord = fallbackLeaderboard.find(x => x.name.replace(/\s*\(You\)/i, '').trim().toLowerCase() === savedUser.toLowerCase() || x.id === savedUser.toLowerCase());
+      if (fallbackRecord) {
+        recoveredXp = fallbackRecord.xp;
+        recoveredStreak = fallbackRecord.streak;
+        recoveredAvatar = fallbackRecord.avatar || "Milo";
+      }
+
+      // Recover accurate Firestore data securely
+      if (db && authenticatedUser) {
+        try {
+          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', savedUser.toLowerCase());
+          const studentSnap = await getDoc(studentDocRef);
+
+          if (studentSnap.exists()) {
+            const restoredData = studentSnap.data();
+            appState.xp = restoredData.xp !== undefined ? restoredData.xp : recoveredXp;
+            appState.streak = restoredData.streak || recoveredStreak;
+            appState.avatar = restoredData.avatar || recoveredAvatar;
+            appState.completedItemsRegistry = restoredData.completedItemsRegistry || {};
+          } else {
+            appState.xp = recoveredXp;
+            appState.streak = recoveredStreak;
+            appState.avatar = recoveredAvatar;
+            appState.completedItemsRegistry = {};
+          }
+        } catch (err) {
+          appState.xp = recoveredXp;
+          appState.streak = recoveredStreak;
+          appState.avatar = recoveredAvatar;
+        }
+      } else {
+        appState.xp = recoveredXp;
+        appState.streak = recoveredStreak;
+        appState.avatar = recoveredAvatar;
+      }
+
+      document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
+      document.getElementById('header-xp-count').innerText = appState.xp;
+      document.getElementById('header-streak-count').innerText = appState.streak;
+
+      await pushCurrentStudentIntoLeaderboard();
+
+      // Show dashboard
+      document.getElementById('view-loading').classList.add('hidden');
+      document.getElementById('view-dashboard').classList.remove('hidden');
+      showToast(`Welcome back, ${savedUser}! Restoring your progress.`, "success");
     }
 
     // --- DYNAMICALLY TOGGLE ADMIN PIN PANEL ---
@@ -833,7 +812,7 @@
             appState.completedItemsRegistry = restoredData.completedItemsRegistry || {};
             showToast(`Welcome back, ${rawName}! Restoring your progress.`, "success");
           } else {
-            // No custom firestore doc, initialize using our pre-loaded fallback stats
+            // Create brand new student database profile record
             appState.xp = recoveredXp;
             appState.streak = recoveredStreak;
             appState.avatar = recoveredAvatar;
@@ -845,32 +824,25 @@
               avatar: recoveredAvatar,
               completedItemsRegistry: {}
             });
-            showToast(`Profile successfully created/linked for student: ${rawName}!`, "success");
+            showToast(`Created new profile for student: ${rawName}!`, "success");
           }
-
-          // Save Auth Session Mapping so refreshing does not log them out! (Rule 1 Path)
-          const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'usersMapping', authenticatedUser.uid);
-          await setDoc(sessionRef, {
-            name: rawName,
-            role: appState.role
-          });
-
         } catch (err) {
           console.warn("Ecosystem offline - unable to sync profile recovery.", err);
-          // Local fallback restoration
           appState.xp = recoveredXp;
           appState.streak = recoveredStreak;
           appState.avatar = recoveredAvatar;
           appState.completedItemsRegistry = {};
         }
       } else {
-        // Local only fallback
         appState.xp = recoveredXp;
         appState.streak = recoveredStreak;
         appState.avatar = recoveredAvatar;
         appState.completedItemsRegistry = {};
-        showToast(`Logged in in offline mode: Loaded ${rawName}`, "info");
       }
+
+      // --- PERSIST SESSION DATA IN LOCAL STORAGE ---
+      localStorage.setItem("science_ix_saved_user", rawName);
+      localStorage.setItem("science_ix_saved_role", appState.role);
 
       // Sync UI components to matched restored settings
       document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
@@ -885,6 +857,25 @@
       submitButton.innerText = "Access Study Deck";
       document.getElementById('view-login').classList.add('hidden');
       document.getElementById('view-dashboard').classList.remove('hidden');
+    };
+
+    // --- LOGOUT / SWITCH ACCOUNT FUNCTIONALITY ---
+    window.handleLogout = function() {
+      localStorage.removeItem("science_ix_saved_user");
+      localStorage.removeItem("science_ix_saved_role");
+      
+      appState.user = "";
+      appState.role = "student";
+      appState.xp = 0;
+      appState.streak = 1;
+      appState.avatar = "Milo";
+      appState.completedItemsRegistry = {};
+
+      document.getElementById('login-name-input').value = "";
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById('view-classes-folders').classList.add('hidden');
+      document.getElementById('view-login').classList.remove('hidden');
+      showToast("Logged out successfully.", "info");
     };
 
     async function pushCurrentStudentIntoLeaderboard() {
