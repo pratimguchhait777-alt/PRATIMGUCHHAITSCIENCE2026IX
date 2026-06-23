@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +51,10 @@
 
       <!-- Live Syncing Indicators -->
       <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400">
-        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
         <span class="text-xs font-bold tracking-wide">Synchronized</span>
       </div>
     </div>
@@ -60,7 +62,7 @@
 
   <!-- ==================== SIGN IN SCREEN ==================== -->
   <div id="view-login" class="flex-grow flex items-center justify-center px-4 py-12">
-    <div class="bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl text-center space-y-6">
+    <div class="bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl text-center space-y-6 animate-in fade-in zoom-in-95 duration-200">
       <div class="mx-auto w-16 h-16 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 shadow-lg">
         <i data-lucide="user-plus" class="w-8 h-8"></i>
       </div>
@@ -69,7 +71,7 @@
         <p class="text-xs text-slate-400 mt-1">Unlock your interactive study deck and live progress records.</p>
       </div>
       <form onsubmit="handleUserRegistration(event)" class="space-y-4">
-        <!-- Textbox is completely blanked as requested -->
+        <!-- Textbox is completely blanked on default as requested -->
         <input type="text" id="login-name-input" placeholder="Your Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required>
         
         <!-- Toggle Admin Node -->
@@ -91,7 +93,7 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3.5 rounded-xl text-sm transition transform active:scale-95 shadow-lg shadow-blue-500/20">
+        <button type="submit" id="login-submit-button" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3.5 rounded-xl text-sm transition transform active:scale-95 shadow-lg shadow-blue-500/20">
           Access Study Deck
         </button>
       </form>
@@ -160,7 +162,7 @@
             Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
           </p>
         </div>
-        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.5.5</div>
+        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.8.0</div>
       </div>
 
       <!-- MY BATCH PORTAL -->
@@ -176,7 +178,7 @@
         </div>
 
         <!-- VIEW CLASSES BUTTON -->
-        <button onclick="switchView('view-classes-folders')" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-blue-500/20 transition-all duration-300 flex items-center justify-center gap-2 group">
+        <button onclick="switchView('view-classes-folders')" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-blue-500/20 transition-all duration-300 flex items-center justify-center gap-2 group transform active:scale-95">
           <span>View Classes</span>
           <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
         </button>
@@ -293,7 +295,7 @@
 
   <!-- ==================== ADMIN OPERATIONS SCHEDULER MODAL ==================== -->
   <div id="modal-admin-scheduler" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-center justify-between">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-500"></i> Add Weekly Schedule</h3>
         <button onclick="closeAdminSchedulerModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
@@ -357,10 +359,17 @@
           </div>
         </div>
 
-        <!-- Interactive objective DPP fields -->
+        <!-- Interactive objective DPP fields with Image URL option -->
         <div id="payload-dpp-wrapper" class="hidden space-y-2">
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Problem Question</label>
           <input type="text" id="payload-dpp-question" placeholder="e.g. Which cell organelle is the powerhouse?" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
+          
+          <!-- Optional Image URL feature added as requested -->
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Question Image URL (Optional)</label>
+            <input type="url" id="payload-dpp-image" placeholder="https://example.com/question-image.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+          </div>
+
           <div class="grid grid-cols-2 gap-2">
             <input type="text" id="payload-dpp-opt-a" placeholder="Option A" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
             <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
@@ -498,7 +507,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // --- SYSTEM LOCAL STATE ---
     let appState = {
@@ -516,27 +525,25 @@
       completedItemsRegistry: {} // Stores titles/IDs already answered to avoid double-XP gains
     };
 
-    // --- HARDCODED PRELOADED LEADERBOARD DATA (NEVER LOST) ---
+    // --- HARDCODED PRELOADED LEADERBOARD DATA (Fixed IDs to resolve Duplication) ---
     let fallbackLeaderboard = [
-      { id: "lead_1", name: "RAJDEEP CHAKROBORTY", streak: 8, xp: 1825, avatar: "Lucas" },
-      { id: "lead_2", name: "ABD KARTIK", streak: 1, xp: 1500, avatar: "Milo" },
-      { id: "lead_3", name: "RD", streak: 1, xp: 1160, avatar: "Alexander" },
-      { id: "lead_4", name: "DEBA", streak: 3, xp: 300, avatar: "Zoe" },
-      { id: "lead_5", name: "Arunava", streak: 1, xp: 270, avatar: "Ethan" },
-      { id: "lead_6", name: "ARIK", streak: 1, xp: 200, avatar: "Lucas" },
-      { id: "lead_7", name: "ANKUSH MONDAL", streak: 1, xp: 60, avatar: "Milo" },
-      { id: "lead_8", name: "NAMAN KAR", streak: 1, xp: 30, avatar: "Alexander" },
-      { id: "lead_9", name: "Bijon chandra", streak: 1, xp: 15, avatar: "Ethan" },
-      { id: "lead_10", name: "Anushka Manna", streak: 1, xp: 0, avatar: "Sasha" }
+      { id: "rajdeep chakroborty", name: "RAJDEEP CHAKROBORTY", streak: 8, xp: 1825, avatar: "Lucas" },
+      { id: "abd kartik", name: "ABD KARTIK", streak: 1, xp: 1500, avatar: "Milo" },
+      { id: "rd", name: "RD", streak: 1, xp: 1160, avatar: "Alexander" },
+      { id: "deba", name: "DEBA", streak: 3, xp: 300, avatar: "Zoe" },
+      { id: "arunava", name: "Arunava", streak: 1, xp: 270, avatar: "Ethan" },
+      { id: "arik", name: "ARIK", streak: 1, xp: 200, avatar: "Lucas" },
+      { id: "ankush mondal", name: "ANKUSH MONDAL", streak: 1, xp: 60, avatar: "Milo" },
+      { id: "naman kar", name: "NAMAN KAR", streak: 1, xp: 30, avatar: "Alexander" },
+      { id: "bijon chandra", name: "Bijon chandra", streak: 1, xp: 15, avatar: "Ethan" },
+      { id: "anushka manna", name: "Anushka Manna", streak: 1, xp: 0, avatar: "Sasha" }
     ];
 
-    // --- HARDCODED DEFAULT CLASSES SCHEDULE ---
     let defaultUpcomingClasses = [
       { id: "class_1", subject: "Physics", topic: "Kepler's Gravitational Laws & Motion Proofs", teacher: "Alakh Pandey Sir", time: "Monday 10:00 AM" },
       { id: "class_2", subject: "Chemistry", topic: "Atoms, Valence & Chemical Formulas", teacher: "Amit Mahajan Sir", time: "Wednesday 04:30 PM" }
     ];
 
-    // --- HARDCODED INTERNALS OF ALL FOLDERS ---
     let folderSystemData = {
       Physics: {
         Notes: [{ title: "Force Laws of Motion PDF Document", text: "Newton's First Law (Inertia): A body remains in rest unless acted upon by unbalanced forces...", link: "" }],
@@ -544,7 +551,8 @@
           title: "Physics Practice Worksheet 1", 
           question: "If force = 10N and mass = 2kg, what is the acceleration?", 
           options: ["2 m/s²", "5 m/s²", "20 m/s²", "10 m/s²"], 
-          answer: "B" 
+          answer: "B",
+          image: ""
         }]
       },
       Chemistry: {
@@ -553,7 +561,8 @@
           title: "Mole Formula Quiz", 
           question: "What is the molar mass of Carbon Dioxide (CO2)?", 
           options: ["18 g/mol", "32 g/mol", "44 g/mol", "28 g/mol"], 
-          answer: "C" 
+          answer: "C",
+          image: ""
         }]
       },
       Biology: {
@@ -562,7 +571,8 @@
           title: "Cellular Division Sheet", 
           question: "Which organelle is famously known as Powerhouse of Cell?", 
           options: ["Nucleus", "Ribosome", "Mitochondria", "Lysosome"], 
-          answer: "C" 
+          answer: "C",
+          image: ""
         }]
       },
       Mathematics: {
@@ -571,30 +581,46 @@
           title: "Algebra Identity Practice Sheet", 
           question: "Evaluate (a + b)² formula match.", 
           options: ["a² + b² + 2ab", "a² - b²", "a² + b² - 2ab", "a + b"], 
-          answer: "A" 
+          answer: "A",
+          image: ""
         }]
       }
     };
 
-    // --- INTERACTIVE MONTHLY EXAMS MATRIX ---
     let defaultMonthlyExams = {
-      Physics: [{ title: "Forces and Laws of Motion Diagnostics Exam", questions: [{ q: "What is inertia directly proportional to?", options: ["Mass", "Velocity", "Volume", "Density"], correct: "Mass" }] }],
-      Chemistry: [{ title: "Structure of Atoms Terminal Evaluation Exam", questions: [{ q: "Who discovered Electrons?", options: ["J.J. Thomson", "Rutherford", "Chadwick", "Bohr"], correct: "J.J. Thomson" }] }],
-      Biology: [{ title: "Cellular Diagnostics Assessment Test", questions: [{ q: "Which organelle holds DNA?", options: ["Nucleus", "Ribosome", "Lysosome", "Vacuole"], correct: "Nucleus" }] }],
-      Mathematics: [{ title: "Polynomials Complex Equations Midterm", questions: [{ q: "What is the degree of a constant polynomial?", options: ["0", "1", "2", "Undefined"], correct: "0" }] }]
+      Physics: [{ title: "Forces and Laws of Motion Diagnostics Exam", questions: [{ q: "What is inertia directly proportional to?", options: ["Mass", "Velocity", "Volume", "Density"], correct: "Mass", image: "" }] }],
+      Chemistry: [{ title: "Structure of Atoms Terminal Evaluation Exam", questions: [{ q: "Who discovered Electrons?", options: ["J.J. Thomson", "Rutherford", "Chadwick", "Bohr"], correct: "J.J. Thomson", image: "" }] }],
+      Biology: [{ title: "Cellular Diagnostics Assessment Test", questions: [{ q: "Which organelle holds DNA?", options: ["Nucleus", "Ribosome", "Lysosome", "Vacuole"], correct: "Nucleus", image: "" }] }],
+      Mathematics: [{ title: "Polynomials Complex Equations Midterm", questions: [{ q: "What is the degree of a constant polynomial?", options: ["0", "1", "2", "Undefined"], correct: "0", image: "" }] }]
     };
 
-    // --- CHAT MESSAGES BUFFER ---
     let chatBuffer = [
       { sender: "System", text: "Welcome to SCIENCE_IX Live Chat workspace!" },
       { sender: "Arik", text: "Is anyone practicing today's Physics DPP?" }
     ];
 
-    // Firebase state placeholders
     let db, auth;
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'science-ix-v9';
+    
+    // --- EXACT LIVE FIREBASE CONFIGURATION (pointed to science-ix-87252) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZVe4wuhnXD4vs5NxSz9yhKtzNpa6Sivg",
+      authDomain: "science-ix-87252.firebaseapp.com",
+      projectId: "science-ix-87252",
+      storageBucket: "science-ix-87252.firebasestorage.app",
+      messagingSenderId: "387959998990",
+      appId: "1:387959998990:web:83e19bec709349035cca5f",
+      measurementId: "G-D77S762S3F"
+    };
 
-    // --- INITIALIZATION SEQUENCE ---
+    const appId = "science-ix-87252";
+
+    // Global promise resolver to guarantee login queries never run before connection is ready
+    let resolveAuthReady;
+    const authReadyPromise = new Promise((resolve) => {
+      resolveAuthReady = resolve;
+    });
+
+    // --- INITIALIZATION ---
     window.onload = function() {
       lucide.createIcons();
       initFirebaseConnection();
@@ -602,30 +628,37 @@
       renderFoldersWorkspace();
     };
 
-    // --- GOOGLE FIREBASE CLOUD SETUP ---
+    // --- FIREBASE CONNECTION & AUTHENTICATION (RULE 3 - Complete await before query) ---
     async function initFirebaseConnection() {
       try {
-        if (typeof __firebase_config !== 'undefined') {
-          const config = JSON.parse(__firebase_config);
-          const app = initializeApp(config);
-          auth = getAuth(app);
-          db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
 
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-          setupFirestoreRealtimeSubscribers();
+        let user;
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          const cred = await signInWithCustomToken(auth, __initial_auth_token);
+          user = cred.user;
+        } else {
+          const cred = await signInAnonymously(auth);
+          user = cred.user;
         }
+        
+        // Signal that Firebase is authenticated and ready to receive queries
+        resolveAuthReady(user);
+        setupFirestoreRealtimeSubscribers();
       } catch (err) {
-        console.warn("Cloud connection defaulted to sandboxed runtime.");
+        console.warn("Ecosystem offline sandbox model active.", err);
+        // Fallback resolve to allow testing offline
+        resolveAuthReady(null);
       }
     }
 
+    // --- FIRESTORE REALTIME SYNC (RULES 1, 2) ---
     function setupFirestoreRealtimeSubscribers() {
       if (!db) return;
       
+      // Sync timetable classes
       const classesCol = collection(db, 'artifacts', appId, 'public', 'data', 'classes');
       onSnapshot(classesCol, (snap) => {
         let items = [];
@@ -636,18 +669,29 @@
         }
       });
 
+      // Sync Leaderboard from Firestore, keeping it in sync
       const leaderboardCol = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
       onSnapshot(leaderboardCol, (snap) => {
         let items = [];
         snap.forEach(d => items.push({ id: d.id, ...d.data() }));
         if (items.length > 0) {
-          fallbackLeaderboard = items;
+          // Merge custom database records, ensuring hardcoded fallback is preserved if missing
+          const merged = [...fallbackLeaderboard];
+          items.forEach(dbItem => {
+            const index = merged.findIndex(x => x.id === dbItem.id);
+            if (index !== -1) {
+              merged[index] = { ...merged[index], ...dbItem };
+            } else {
+              merged.push(dbItem);
+            }
+          });
+          fallbackLeaderboard = merged;
           renderLeaderboard();
         }
       });
     }
 
-    // --- DYNAMICALLY TOGGLE ADMIN PASSCODE ROW ---
+    // --- DYNAMICALLY TOGGLE ADMIN PIN PANEL ---
     window.toggleAdminPasswordField = function(checkbox) {
       const container = document.getElementById('admin-password-container');
       const passInput = document.getElementById('login-admin-pass');
@@ -662,22 +706,31 @@
       }
     };
 
-    // --- REGISTRATION & SIGN IN HANDLERS ---
-    window.handleUserRegistration = function(e) {
+    // --- DYNAMIC REGISTRATION WITH DATA RECOVERY PERSISTENCE ---
+    window.handleUserRegistration = async function(e) {
       e.preventDefault();
-      const name = document.getElementById('login-name-input').value.trim();
+      const rawName = document.getElementById('login-name-input').value.trim();
       const adminRequested = document.getElementById('login-as-admin').checked;
+      const submitButton = document.getElementById('login-submit-button');
 
-      if (!name) {
-        showToast("Please enter your name.", "error");
+      if (!rawName) {
+        showToast("Please specify your name to access files.", "error");
         return;
       }
 
+      // Show loader state to avoid premature clicks while retrieving
+      submitButton.disabled = true;
+      submitButton.innerText = "Restoring Account...";
+
+      // Await Auth promise strictly to prevent anonymous database read rejections (Rule 3)
+      const authenticatedUser = await authReadyPromise;
+
       if (adminRequested) {
         const passValue = document.getElementById('login-admin-pass').value.trim();
-        // Master Admin Lockout is case-sensitive: "PRATIM"
         if (passValue !== "PRATIM") {
           showToast("Incorrect Administration secret key!", "error");
+          submitButton.disabled = false;
+          submitButton.innerText = "Access Study Deck";
           return;
         }
         appState.role = "admin";
@@ -691,29 +744,112 @@
         document.getElementById('admin-publish-payload-btn').classList.add('hidden');
       }
 
-      appState.user = name;
-      document.getElementById('user-display-name').innerText = name;
-      document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
-      
-      pushCurrentStudentIntoLeaderboard();
+      appState.user = rawName;
+      document.getElementById('user-display-name').innerText = rawName;
 
+      // --- PERSISTENT DATA RECOVERY FLOW (FIRESTORE SECURE RETRIEVAL) ---
+      let recoveredXp = 0;
+      let recoveredStreak = 1;
+      let recoveredAvatar = "Milo";
+      let recoveredRegistry = {};
+
+      // Match hardcoded fallback statistics first so that names like RD don't get reset!
+      const fallbackRecord = fallbackLeaderboard.find(x => x.name.replace(/\s*\(You\)/i, '').trim().toLowerCase() === rawName.toLowerCase() || x.id === rawName.toLowerCase());
+      if (fallbackRecord) {
+        recoveredXp = fallbackRecord.xp;
+        recoveredStreak = fallbackRecord.streak;
+        recoveredAvatar = fallbackRecord.avatar || "Milo";
+      }
+
+      if (db && authenticatedUser) {
+        try {
+          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', rawName.toLowerCase());
+          const studentSnap = await getDoc(studentDocRef);
+
+          if (studentSnap.exists()) {
+            // Restore existing database profile to local session state
+            const restoredData = studentSnap.data();
+            appState.xp = restoredData.xp !== undefined ? restoredData.xp : recoveredXp;
+            appState.streak = restoredData.streak || recoveredStreak;
+            appState.avatar = restoredData.avatar || recoveredAvatar;
+            appState.completedItemsRegistry = restoredData.completedItemsRegistry || {};
+            showToast(`Welcome back, ${rawName}! Restoring your progress.`, "success");
+          } else {
+            // No custom firestore doc, initialize using our pre-loaded fallback stats
+            appState.xp = recoveredXp;
+            appState.streak = recoveredStreak;
+            appState.avatar = recoveredAvatar;
+            appState.completedItemsRegistry = {};
+            await setDoc(studentDocRef, {
+              name: rawName,
+              xp: recoveredXp,
+              streak: recoveredStreak,
+              avatar: recoveredAvatar,
+              completedItemsRegistry: {}
+            });
+            showToast(`Profile successfully created/linked for student: ${rawName}!`, "success");
+          }
+        } catch (err) {
+          console.warn("Ecosystem offline - unable to sync profile recovery.", err);
+          // Local fallback restoration
+          appState.xp = recoveredXp;
+          appState.streak = recoveredStreak;
+          appState.avatar = recoveredAvatar;
+          appState.completedItemsRegistry = {};
+        }
+      } else {
+        // Local only fallback
+        appState.xp = recoveredXp;
+        appState.streak = recoveredStreak;
+        appState.avatar = recoveredAvatar;
+        appState.completedItemsRegistry = {};
+        showToast(`Logged in in offline mode: Loaded ${rawName}`, "info");
+      }
+
+      // Sync UI components to matched restored settings
+      document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
+      document.getElementById('header-xp-count').innerText = appState.xp;
+      document.getElementById('header-streak-count').innerText = appState.streak;
+
+      // Ensure student's synced stats update on the ranking leaderboard
+      await pushCurrentStudentIntoLeaderboard();
+
+      // Reset login form buttons and hide login panel
+      submitButton.disabled = false;
+      submitButton.innerText = "Access Study Deck";
       document.getElementById('view-login').classList.add('hidden');
       document.getElementById('view-dashboard').classList.remove('hidden');
-      showToast(`Welcome to SCIENCE_IX, ${name}!`, "success");
     };
 
-    function pushCurrentStudentIntoLeaderboard() {
-      const idx = fallbackLeaderboard.findIndex(x => x.name.includes(appState.user));
-      if (idx === -1) {
-        fallbackLeaderboard.push({
-          id: "curr_user",
-          name: `${appState.user} (You)`,
-          streak: appState.streak,
-          xp: appState.xp,
-          avatar: appState.avatar
-        });
+    async function pushCurrentStudentIntoLeaderboard() {
+      const selfId = appState.user.toLowerCase();
+      const existingIdx = fallbackLeaderboard.findIndex(x => x.id === selfId);
+
+      const studentRecord = {
+        id: selfId,
+        name: `${appState.user} (You)`,
+        streak: appState.streak,
+        xp: appState.xp,
+        avatar: appState.avatar
+      };
+
+      if (existingIdx !== -1) {
+        fallbackLeaderboard[existingIdx] = studentRecord;
+      } else {
+        fallbackLeaderboard.push(studentRecord);
       }
+
       renderLeaderboard();
+
+      // Cloud leaderboard persistence update
+      if (db && auth.currentUser) {
+        try {
+          const leaderRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', selfId);
+          await setDoc(leaderRef, studentRecord, { merge: true });
+        } catch (err) {
+          console.warn("Ecosystem offline - Leaderboard cloud write failed.", err);
+        }
+      }
     }
 
     window.switchView = function(viewId) {
@@ -766,6 +902,7 @@
       lucide.createIcons();
     }
 
+    // Leaderboard rendering
     function renderLeaderboard() {
       const target = document.getElementById('leaderboard-list-target');
       if (!target) return;
@@ -775,7 +912,7 @@
 
       ordered.forEach((std, idx) => {
         const place = idx + 1;
-        const isSelf = std.id === "curr_user";
+        const isSelf = std.id === appState.user.toLowerCase();
         let rankBadgeClass = "text-slate-400 bg-slate-800/40 border-slate-700/30";
         if (place === 1) rankBadgeClass = "text-yellow-400 bg-yellow-400/10 border-yellow-500/30";
         else if (place === 2) rankBadgeClass = "text-slate-300 bg-slate-300/10 border-slate-400/30";
@@ -938,6 +1075,13 @@
 
           const alreadyDone = appState.completedItemsRegistry[item.title] === true;
 
+          // DPP Questions now cleanly check and render images inline if present in dataset
+          const imageTagHTML = item.image && item.image.trim() !== '' ? `
+            <div class="my-2 rounded-xl border border-slate-800 bg-[#0e1626] overflow-hidden p-2 max-w-full flex justify-center">
+              <img src="${item.image}" class="max-h-48 object-contain rounded-lg" alt="Question Diagram" onerror="this.style.display='none'">
+            </div>
+          ` : '';
+
           box.innerHTML += `
             <div id="dpp-card-${index}" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl space-y-4">
               <div class="flex justify-between items-center">
@@ -947,6 +1091,7 @@
                 </span>
               </div>
               <p class="text-xs text-slate-400 leading-relaxed font-semibold">${item.question}</p>
+              ${imageTagHTML}
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 ${optsString}
               </div>
@@ -980,10 +1125,6 @@
         showToast("Active study minutes logged! +2 XP awarded.", "success");
       }, 60000);
 
-      document.getElementById('modal-note-viewer').remove(); // Clear old modals
-      const clone = document.getElementById('modal-note-viewer');
-      if (clone) clone.remove();
-
       document.getElementById('modal-note-viewer').classList.remove('hidden');
       document.getElementById('modal-note-viewer').classList.add('flex');
     };
@@ -1005,7 +1146,6 @@
         return;
       }
 
-      // Check Fullscreen Security state during DPP validation
       if (!document.fullscreenElement) {
         triggerCheatingPenalty("DPP submitted outside forced Fullscreen Sandbox view!");
         return;
@@ -1025,7 +1165,7 @@
       }
     };
 
-    // --- PROCTORED ASSESSMENTS ENVIRONMENT ---
+    // --- PROCTORED ASSESSMENTS ---
     window.launchMonthlyTestEnvironment = function(subject) {
       const exams = defaultMonthlyExams[subject];
       if (!exams || exams.length === 0) {
@@ -1033,7 +1173,6 @@
         return;
       }
 
-      // FORCED IMMERSIVE FULLSCREEN SANDBOX ACTIVATION
       const docEl = document.documentElement;
       if (docEl.requestFullscreen) {
         docEl.requestFullscreen().catch(() => {
@@ -1064,9 +1203,17 @@
           `;
         });
 
+        // Optional exam question image render
+        const examImageHTML = qItem.image && qItem.image.trim() !== '' ? `
+          <div class="my-2 rounded-xl border border-slate-800 bg-[#0e1626] overflow-hidden p-2 max-w-full flex justify-center">
+            <img src="${qItem.image}" class="max-h-48 object-contain rounded-lg" alt="Test Diagram" onerror="this.style.display='none'">
+          </div>
+        ` : '';
+
         qBox.innerHTML += `
           <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
             <h4 class="text-xs font-bold text-slate-200">Question ${idx + 1}: ${qItem.q}</h4>
+            ${examImageHTML}
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optStructure}</div>
           </div>
         `;
@@ -1148,16 +1295,42 @@
       }
     }
 
-    // --- MUTATION DATA COMPILER ENGINE ---
-    function updateUserXp(delta) {
+    // --- REALTIME MUTATION CORE (Rule 1 Paths - Strict Authentication check) ---
+    async function updateUserXp(delta) {
       appState.xp += delta;
       if (appState.xp < 0) appState.xp = 0;
+      
       document.getElementById('header-xp-count').innerText = appState.xp;
 
-      const self = fallbackLeaderboard.find(x => x.id === "curr_user");
+      // Update Local list
+      const self = fallbackLeaderboard.find(x => x.id === appState.user.toLowerCase());
       if (self) {
         self.xp = appState.xp;
         renderLeaderboard();
+      }
+
+      // Sync and Persist to Cloud Database (Rule 1 Strict Path)
+      if (db && auth.currentUser) {
+        try {
+          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
+          await setDoc(studentDocRef, {
+            xp: appState.xp,
+            streak: appState.streak,
+            avatar: appState.avatar,
+            completedItemsRegistry: appState.completedItemsRegistry
+          }, { merge: true });
+
+          // Leaderboard mirroring update
+          const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', appState.user.toLowerCase());
+          await setDoc(leaderDocRef, {
+            xp: appState.xp,
+            streak: appState.streak,
+            avatar: appState.avatar
+          }, { merge: true });
+
+        } catch (e) {
+          console.warn("Ecosystem offline - unable to sync XP metadata to cloud.", e);
+        }
       }
     }
 
@@ -1237,23 +1410,25 @@
         folderSystemData[appState.currentSubject].Notes.push({ title, text: rawContent, link: linkVal });
       } else if (type === "DPP") {
         const q = document.getElementById('payload-dpp-question').value.trim();
+        const imageVal = document.getElementById('payload-dpp-image').value.trim();
         const optA = document.getElementById('payload-dpp-opt-a').value.trim();
         const optB = document.getElementById('payload-dpp-opt-b').value.trim();
-        const optC = document.getElementById('payload-dpp-opt-c').value.trim();
+        const optCReal = document.getElementById('payload-dpp-opt-c').value.trim();
         const optD = document.getElementById('payload-dpp-opt-d').value.trim();
         const correct = document.getElementById('payload-dpp-correct').value;
 
         folderSystemData[appState.currentSubject].DPP.push({
           title,
           question: q,
-          options: [optA, optB, optC, optD],
+          image: imageVal,
+          options: [optA, optB, optCReal, optD],
           answer: correct
         });
       }
 
       closeAdminContentPublishModal();
       hydrateBrowserItemsList();
-      showToast(`Structural material payload loaded successfully!`, "success");
+      showToast("Structural material payload loaded successfully!", "success");
     };
 
     // --- PROFILE ACTIONS AVATAR CUSTOMIZATIONS ---
@@ -1265,15 +1440,26 @@
       document.getElementById('modal-avatar-selector').classList.add('hidden');
       document.getElementById('modal-avatar-selector').classList.remove('flex');
     };
-    window.changeUserAvatar = function(seed) {
+    window.changeUserAvatar = async function(seed) {
       appState.avatar = seed;
       document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
       
-      const self = fallbackLeaderboard.find(x => x.id === "curr_user");
+      const self = fallbackLeaderboard.find(x => x.id === appState.user.toLowerCase());
       if (self) {
         self.avatar = seed;
         renderLeaderboard();
       }
+
+      // Sync and Persist profile update to cloud
+      if (db && auth.currentUser) {
+        try {
+          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
+          await setDoc(studentDocRef, { avatar: seed }, { merge: true });
+        } catch (e) {
+          console.warn("Unable to persist updated avatar settings to cloud.", e);
+        }
+      }
+
       closeAvatarSelectorModal();
       showToast("Avatar modified successfully.");
     };
@@ -1350,5 +1536,3 @@
   </script>
 </body>
 </html>
-
-
