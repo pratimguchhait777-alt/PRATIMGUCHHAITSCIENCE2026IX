@@ -1,2219 +1,1354 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    try {
-      await OneSignal.init({
-        appId: "543bf1ab-ee7b-4331-9026-f4947bddba17",
-      });
-    } catch (e) {
-      console.warn("OneSignal initialization safely bypassed in sandboxed sandbox/iframe:", e);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCIENCE_IX - Academic Portal</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
     }
-  });
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SCIENCE_IX | Pro-Guard Sync Portal</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&family=Space+Grotesk:wght=500;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --pw-bg: #f8fafc;      
-            --pw-card: #ffffff;    
-            --pw-primary: #ffffff; 
-            --pw-accent: #1e1b4b;  
-            --pw-accent-glow: rgba(30, 27, 75, 0.05);
-            --text-main: #0f172a;  
-            --text-muted: #64748b; 
-            --pw-green: #10b981;  
-            --pw-purple: #8b5cf6;
-            --pw-red: #ef4444;
-            --pw-border: #f1f5f9; 
-            
-            --neon-blue: #3b82f6;
-            --neon-glow: rgba(59, 130, 246, 0.1);
-            --dark-blue-line: #cbd5e1;
-            --folder-glow: rgba(0, 0, 0, 0.02);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent !important;
-            tap-highlight-color: transparent !important;
-        }
-
-        body {
-            background-color: var(--pw-bg);
-            color: var(--text-main);
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        #particle-canvas, #celebration-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; pointer-events: none;
-        }
-
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        #startup-splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .splash-logo-container {
-            display: flex; flex-direction: column; align-items: center; gap: 12px;
-            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .atom-branding-svg {
-            width: 80px; height: 80px;
-        }
-        .splash-logo {
-            font-family: 'Space Grotesk', sans-serif; font-size: 3rem;
-            font-weight: 900; color: #111827; letter-spacing: -2px;
-        }
-        .splash-logo span { color: var(--neon-blue); }
-        .splash-loader {
-            width: 40px; height: 3px; background: #e5e7eb;
-            border-radius: 4px; margin-top: 16px; overflow: hidden; position: relative;
-        }
-        .splash-loader-bar {
-            width: 70%; height: 100%; background: var(--neon-blue);
-            position: absolute; left: -100%; border-radius: 4px;
-            animation: loadingProgress 1.8s infinite linear;
-        }
-        @keyframes loadingProgress {
-            0% { left: -100%; width: 30%; }
-            50% { width: 60%; }
-            100% { left: 100%; width: 30%; }
-        }
-
-        #notification-toast-container {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 5000;
-            display: flex; flex-direction: column; gap: 12px; width: 92%; max-width: 360px;
-        }
-        .toast-card {
-            background: #ffffff; border: 1px solid var(--pw-border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-            padding: 14px 18px; border-radius: 12px; color: var(--text-main); display: flex;
-            flex-direction: column; gap: 4px; border-left: 4px solid var(--neon-blue);
-            animation: toastIn 0.3s ease forwards;
-        }
-        @keyframes toastIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .toast-header { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--neon-blue); text-transform: uppercase; }
-        .toast-body { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-
-        header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(241, 245, 249, 0.6); padding: 12px 16px;
-            display: flex; flex-direction: column; gap: 10px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.01);
-        }
-        .header-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 900; color: #0f172a; letter-spacing: -0.5px; }
-        .logo span { color: var(--neon-blue); opacity: 0.8; }
-
-        .header-utility-grid {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            width: 100%;
-            background: rgba(248, 250, 252, 0.7);
-            border: 1px solid #f1f5f9;
-            padding: 8px 14px;
-            border-radius: 14px;
-        }
-        .user-identity-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        #welcome-user { 
-            font-weight: 700; 
-            color: var(--text-main); 
-            font-size: 0.85rem; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap; 
-            letter-spacing: -0.2px; 
-        }
-
-        .header-controls-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-            flex-wrap: nowrap;
-        }
-        
-        .xp-badge, .streak-badge { 
-            background: #ffffff; 
-            color: #1e293b; 
-            padding: 0 12px; 
-            border-radius: 10px; 
-            font-weight: 700; 
-            font-size: 0.75rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            height: 36px; 
-            border: 1px solid #e2e8f0; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            cursor: pointer; 
-            transition: transform 0.2s ease;
-            white-space: nowrap;
-        }
-        .xp-badge:active, .streak-badge:active { transform: scale(0.96); }
-
-        .streak-badge { 
-            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%); 
-            color: #c53030; border: 1px solid #feb2b2;
-        }
-        .streak-fire-icon {
-            animation: burnEffect 0.8s infinite alternate steps(4);
-            display: inline-block;
-        }
-        @keyframes burnEffect {
-            0% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 1px #f56565); }
-            100% { transform: scale(1.15) translateY(-1px); filter: drop-shadow(0 0 4px #ed8936); }
-        }
-
-        .admin-badge { 
-            background: #f0fdf4; 
-            color: #16a34a; 
-            padding: 4px 10px; 
-            border-radius: 8px; 
-            font-weight: 700; 
-            font-size: 0.7rem; 
-            display: none; 
-            height: 26px; 
-            align-items: center; 
-            border: 1px solid #bbf7d0; 
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .sync-indicator { 
-            font-size: 0.7rem; 
-            font-weight: 700; 
-            padding: 6px 12px; 
-            border-radius: 10px; 
-            background: #fef2f2; 
-            color: var(--pw-red); 
-            height: 28px; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            border: 1px solid #fecaca; 
-        }
-        .sync-indicator span { width: 6px; height: 6px; background: var(--pw-red); border-radius: 50%; }
-        .sync-connected { background: #f0fdf4 !important; color: #16a34a !important; border-color: #bbf7d0 !important; }
-        .sync-connected span { background: #16a34a !important; }
-
-        @media (min-width: 768px) {
-            header { flex-direction: row; justify-content: space-between; align-items: center; padding: 16px 32px; gap: 20px; }
-            .header-top-row { width: auto; }
-            .header-utility-grid { width: auto; display: flex; gap: 12px; background: transparent; border: none; padding: 0; }
-            .user-identity-badge { max-width: none; }
-        }
-
-        .bell-container { 
-            position: relative; 
-            cursor: pointer; 
-            width: 36px; 
-            height: 36px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: #ffffff; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
-        }
-        .bell-svg { width: 16px; height: 16px; fill: #475569; }
-        .bell-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background-color: var(--pw-red); border-radius: 50%; display: none; }
-
-        .info-drawer {
-            background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 16px; margin-top: 16px; overflow: hidden; 
-            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.05); width: 100%; width: -webkit-fill-available;
-            position: relative;
-        }
-        .info-drawer-trigger {
-            background: linear-gradient(to right, #ffffff, #f8fafc); padding: 14px 20px; font-weight: 700; font-size: 0.88rem; color: #1e293b; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #f1f5f9; letter-spacing: -0.2px;
-        }
-        .info-viewer-window {
-            height:150px; position: relative; overflow: hidden; background: #ffffff; width: 100%;
-        }
-        .info-slider-track {
-            position: absolute; height: 100%; left: 0; display: flex; flex-direction: row; transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1); width: 300%;
-        }
-        .info-card {
-            width: 33.333%; height: auto; 
-            padding: 16px 24px; display: flex; flex-direction: column; justify-content: center; background: #ffffff; box-sizing: border-box; flex-shrink: 0;
-            position: relative;
-        }
-        .info-card::before {
-            content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 3px; background: #e2e8f0; border-radius: 0 4px 4px 0;
-        }
-        .info-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.1px; }
-        .info-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; word-break: break-word; font-weight: 500; }
-
-        #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f8fafc; display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .welcome-box { text-align: center; padding: 36px 28px; border-radius: 20px; background: #ffffff; border: 1px solid #e2e8f0; width: 92%; max-width: 360px; box-shadow: 0 20px 40px rgba(148,163,184,0.08); }
-        .welcome-box h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 900; color: #0f172a; letter-spacing: -1.5px; margin-bottom: 6px; }
-        .welcome-box h1 span { color: var(--neon-blue); }
-        .welcome-box p { color: var(--text-muted); margin-bottom: 24px; font-size: 0.88rem; font-weight: 500; }
-        .welcome-box input { padding: 14px; font-size: 1rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc; color: var(--text-main); text-align: center; width: 100%; margin-bottom: 16px; outline: none; font-weight: 600; }
-        .welcome-box button { padding: 14px; background: #0f172a; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; width: 100%; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(15,23,42,0.15); }
-
-        .container { max-width: 1200px; margin: 12px auto 24px auto; padding: 0 16px; }
-
-        .subject-table-view { width: 100%; border-collapse: separate; border-spacing: 0 12px; margin-top: 8px; animation: slideUpFade 0.4s ease; }
-        .subject-table-view tr { background: #ffffff; border: 1px solid var(--pw-border); cursor: pointer; box-shadow: 0 4px 14px rgba(148,163,184,0.03); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .subject-table-view tr:active { transform: scale(0.99); }
-        .subject-table-view td { padding: 18px 16px; vertical-align: middle; border-top: 1px solid rgba(241,245,249,0.7); border-bottom: 1px solid rgba(241,245,249,0.7); }
-        .subject-table-view tr td:first-child { border-left: 1px solid rgba(241,245,249,0.7); border-top-left-radius: 16px; border-bottom-left-radius: 16px; }
-        .subject-table-view tr td:last-child { border-right: 1px solid rgba(241,245,249,0.7); border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
-        .subject-icon-box { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4rem; background: #f8fafc; }
-        .subject-name { font-weight: 700; font-size: 1.05rem; color: #1e293b; letter-spacing: -0.2px; }
-        .progress-text { font-size: 0.85rem; font-weight: 700; color: var(--neon-blue); text-align: right; background: #f0f6ff; padding: 4px 10px; border-radius: 8px; display: none; } 
-
-        .directory-view { display: none; animation: slideUpFade 0.3s ease; }
-        .back-btn { background: #ffffff; color: var(--text-main); border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; margin-bottom: 16px; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .directory-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--dark-blue-line); padding-bottom: 12px; }
-        .directory-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 900; color: #0f172a; letter-spacing: -0.5px; }
-        
-        .btn-create-chapter { background: #ffffff; border: 1px solid #e2e8f0; color: #0f172a; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; display: none; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        
-        .chapter-list { display: flex; flex-direction: column; gap: 12px; }
-        .chapter-row { background: #ffffff; border: 1px solid rgba(241,245,249,0.8); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(148,163,184,0.02); padding: 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .chapter-label { font-size: 0.68rem; font-weight: 800; color: var(--neon-blue); text-transform: uppercase; background: #f0f6ff; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 6px; letter-spacing: 0.5px; }
-        .chapter-title-text { font-size: 1.05rem; font-weight: 700; color: #0f172a; letter-spacing: -0.2px; }
-        .chapter-counters { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
-        .btn-delete-chapter { background: #fef2f2; border: none; color: var(--pw-red); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; display: none; font-weight: bold; margin-right: 8px; }
-
-        #subfolders-workspace-view { display: none; animation: slideUpFade 0.3s ease; }
-        .subfolder-chapter-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 900; color: #0f172a; margin-top: 6px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: -0.5px; }
-        .subfolder-meta-text { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 18px; font-weight: 500; }
-        
-        .top-slots-nav-bar { display: flex; gap: 8px; margin-bottom: 20px; background: #f1f5f9; padding: 4px; border-radius: 12px; }
-        .slot-tab-btn { flex: 1; text-align: center; padding: 10px 14px; font-size: 0.88rem; font-weight: 700; border: none; border-radius: 10px; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; }
-        .slot-tab-btn.active { background: #ffffff; color: #0f172a; box-shadow: 0 4px 10px rgba(148,163,184,0.08); }
-
-        .active-slot-bucket-panel { background: #ffffff; border: 1px solid rgba(241,245,249,0.8); border-radius: 16px; padding: 22px; box-shadow: 0 10px 30px rgba(148, 163, 184, 0.02); min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; }
-        .bucket-panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 16px; }
-        .bucket-panel-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; color: #0f172a; display: flex; align-items: center; gap: 6px; letter-spacing: -0.2px; }
-        .content-list { list-style: none; }
-        .content-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 14px 16px; border-radius: 12px; margin-bottom: 10px; font-size: 0.9rem; border: 1px solid #f1f5f9; color: var(--text-main); font-weight: 600; }
-        .btn-view { background: #ffffff; color: #0f172a; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; border: 1px solid #e2e8f0; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .admin-upload-panel { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; border-top: 1px dashed #e2e8f0; padding-top: 16px; }
-        .native-pdf-label { display: block; background: #ffffff; color: var(--neon-blue); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700; border: 1px dashed var(--neon-blue); text-align: center; }
-        
-        #notice-overlay-modal, #leaderboard-overlay-modal, #global-dpp-leaderboard-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.15); display: none; justify-content: center; align-items: center; z-index: 4500; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .notice-board-box { width: 92%; max-width: 480px; background: #ffffff; border-radius: 20px; padding: 26px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 25px 50px rgba(15,23,42,0.08); }
-        .notice-board-content { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 14px; padding: 18px; color: var(--text-main); font-size: 0.92rem; text-align: left; margin-bottom: 20px; max-height: 300px; overflow-y: auto; }
-        .btn-edit-notice { background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; display: none; cursor: pointer; }
-
-        .roster-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
-        .roster-table th { padding: 10px 8px; font-weight: 800; border-bottom: 2px solid #f1f5f9; color: var(--text-muted); }
-        .roster-table td { padding: 12px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-
-        #viewer-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.3); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-        .modal-content { width: 95%; height: 90%; background: #ffffff; border-radius: 20px; overflow: hidden; position: relative; display: flex; flex-direction: column; border: 1px solid #e2e8f0; }
-        .close-modal { position: absolute; top: 14px; right: 14px; color: var(--pw-red); font-size: 0.75rem; cursor: pointer; background: #fef2f2; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 8px; z-index: 2100; font-weight: bold; }
-        #view-frame { width: 100%; height: 100%; border: none; background: #ffffff; padding-top: 50px; }
-
-        #custom-dialog-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.15); display: none; justify-content: center; align-items: center; z-index: 4000; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .dialog-box { width: 100%; max-width: 350px; background: #ffffff; border-radius: 20px; padding: 24px; border: 1px solid #e2e8f0; text-align: center; color: var(--text-main); }
-        .dialog-box input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; background: #f8fafc; color: var(--text-main); outline: none; margin-bottom: 16px; text-align: center; font-weight: 600; }
-        .dialog-actions { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
-        .btn-dialog-primary { background: #0f172a; color: #fff; padding: 10px 20px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
-        .btn-dialog-secondary { background: #ffffff; color: var(--text-main); padding: 10px 20px; border: 1px solid #e2e8f0; border-radius: 10px; font-weight: 700; cursor: pointer; }
-
-        #quiz-portal-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f8fafc; display: none; flex-direction: column; z-index: 3000; padding: 20px; overflow-y: auto; }
-        .quiz-container { max-width: 650px; margin: 20px auto; width: 100%; }
-        #security-timer-banner { position: sticky; top: 0; background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 12px; text-align: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--pw-red); display: none; margin-bottom: 18px; z-index: 10; }
-        .question-card { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 22px; margin-bottom: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
-        .question-image { width: 100%; max-height: 260px; object-fit: contain; border-radius: 12px; margin: 12px 0; border: 1px solid #f1f5f9; background: #f8fafc; }
-        .options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-        .option-button { background: #ffffff; border: 1px solid #e2e8f0; padding: 14px; text-align: left; color: var(--text-main); border-radius: 12px; cursor: pointer; font-size: 0.92rem; font-weight: 500; transition: background 0.2s; }
-        .option-button.selected { border-color: var(--neon-blue); background: #f0f6ff; }
-        .option-button.correct { border-color: var(--pw-green); background: #ecfdf5; color: #047857; font-weight: 700; }
-        .option-button.wrong { border-color: var(--pw-red); background: #fef2f2; color: #b91c1c; font-weight: 700; }
-        .correction-container { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-        .attached-input-group { position: relative; display: flex; align-items: center; width: 100%; margin-bottom: 14px; }
-        .inline-attach-btn { position: absolute; right: 8px; width: 36px; height: 36px; border-radius: 8px; border: 1px dashed var(--neon-blue); background: #f0f6ff; color: var(--neon-blue); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; }
-
-        /* --- COLLABORATIVE CHATROOM (WHITE AESTHETIC DESIGN TOKENS) --- */
-        #floating-chat-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-            display: none; 
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1500;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        #floating-chat-btn:active {
-            transform: scale(0.92);
-        }
-        
-        .chat-unread-badge {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            width: 12px;
-            height: 12px;
-            background-color: var(--pw-red);
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-            display: none;
-            box-shadow: 0 0 4px rgba(239, 68, 68, 0.4);
-            animation: pulseUnreadDot 1.5s infinite;
-        }
-        @keyframes pulseUnreadDot {
-            0% { transform: scale(0.9); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(0.9); }
-        }
-
-        .chat-logo-popup-banner {
-            position: fixed;
-            bottom: 90px;
-            right: 24px;
-            background: #0f172a;
-            color: #ffffff;
-            padding: 10px 16px;
-            border-radius: 14px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
-            z-index: 1400;
-            opacity: 0;
-            transform: translateY(10px) scale(0.95);
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            white-space: nowrap;
-        }
-        .chat-logo-popup-banner.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }
-        .chat-logo-popup-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            right: 22px;
-            width: 12px;
-            height: 12px;
-            background: #0f172a;
-            transform: rotate(45deg);
-            border-right: 1px solid rgba(255, 255, 255, 0.15);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        #chat-window-container {
-            position: fixed;
-            bottom: 96px;
-            right: 24px;
-            width: 350px;
-            height: 480px;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            display: flex;
-            flex-direction: column;
-            z-index: 1500;
-            overflow: hidden;
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #chat-window-container.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: auto;
-        }
-        @media (max-width: 480px) {
-            #chat-window-container {
-                width: calc(100% - 32px);
-                right: 16px;
-                bottom: 88px;
-                height: 420px;
-            }
-            #floating-chat-btn {
-                bottom: 16px;
-                right: 16px;
-            }
-            .chat-logo-popup-banner {
-                bottom: 80px;
-                right: 16px;
-            }
-        }
-        .chat-header {
-            background: #ffffff;
-            padding: 16px;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-header h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .chat-close-btn {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-        .chat-close-btn:hover {
-            background: #fef2f2;
-            color: var(--pw-red);
-            border-color: #fecaca;
-        }
-        #chat-messages-list {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: #fafbfe;
-        }
-        .chat-msg-item {
-            display: flex;
-            flex-direction: column;
-            max-width: 80%;
-            animation: slideUpFade 0.25s ease forwards;
-        }
-        .chat-msg-item.self {
-            align-self: flex-end;
-        }
-        .chat-msg-item.other {
-            align-self: flex-start;
-        }
-        .chat-msg-sender {
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            margin-bottom: 3px;
-            padding: 0 4px;
-        }
-        .chat-msg-item.self .chat-msg-sender {
-            text-align: right;
-            color: var(--neon-blue);
-        }
-        .chat-msg-bubble {
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            word-break: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.01);
-            position: relative;
-        }
-        .chat-msg-item.self .chat-msg-bubble {
-            background: #0f172a;
-            color: #ffffff;
-            border-top-right-radius: 4px;
-        }
-        .chat-msg-item.other .chat-msg-bubble {
-            background: #ffffff;
-            color: var(--text-main);
-            border-top-left-radius: 4px;
-            border: 1px solid rgba(226, 232, 240, 0.6);
-        }
-        
-        .chat-inline-media {
-            width: 100%;
-            max-width: 220px;
-            height: auto;
-            border-radius: 8px;
-            margin-top: 6px;
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-        }
-        .chat-inline-file {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(148, 163, 184, 0.1);
-            padding: 8px;
-            border-radius: 8px;
-            margin-top: 6px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text-main);
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .chat-inline-file span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 130px;
-        }
-
-        .chat-msg-time {
-            font-size: 0.65rem;
-            color: #94a3b8;
-            margin-top: 4px;
-            padding: 0 4px;
-        }
-        .chat-msg-item.self .chat-msg-time {
-            text-align: right;
-        }
-        .chat-footer {
-            padding: 12px 16px;
-            background: #ffffff;
-            border-top: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .chat-input-wrapper {
-            position: relative;
-            flex: 1;
-            display: flex;
-            align-items: center;
-        }
-        
-        .chat-input-field {
-            width: 100%;
-            padding: 10px 14px 10px 38px; 
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 0.88rem;
-            outline: none;
-            background: #f8fafc;
-            transition: all 0.2s;
-            font-weight: 600;
-            color: var(--text-main);
-            resize: none;
-            max-height: 100px;
-            line-height: 1.4;
-            font-family: inherit;
-        }
-        .chat-input-field:focus {
-            border-color: var(--neon-blue);
-            background: #ffffff;
-        }
-        
-        .chat-attach-trigger {
-            position: absolute;
-            left: 12px;
-            cursor: pointer;
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            transition: color 0.2s, transform 0.2s;
-            line-height: 1;
-            user-select: none;
-            z-index: 10;
-        }
-        .chat-attach-trigger:hover {
-            color: var(--neon-blue);
-            transform: scale(1.1);
-        }
-        
-        .chat-send-btn {
-            background: #0f172a;
-            color: #ffffff;
-            border: none;
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-        }
-        .chat-send-btn:hover {
-            background: #1e293b;
-        }
-        .chat-send-btn:active {
-            transform: scale(0.95);
-        }
-    </style>
-
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(59, 130, 246, 0.3);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(59, 130, 246, 0.5);
+    }
+    .no-select {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  </style>
 </head>
-<body>
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col selection:bg-blue-500 selection:text-white transition-all duration-300">
 
-    <div id="startup-splash">
-        <div class="splash-logo-container">
-            <svg class="atom-branding-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="44" fill="#231d4f" stroke="#38bdf8" stroke-width="2"/>
-                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(0 50 50)"/>
-                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(60 50 50)"/>
-                <ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(120 50 50)"/>
-                <circle cx="50" cy="50" r="5" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
-                <circle cx="14" cy="50" r="3" fill="#ffffff"/>
-                <circle cx="68" cy="19" r="3" fill="#ffffff"/>
-                <circle cx="68" cy="81" r="3" fill="#ffffff"/>
-            </svg>
-            <div class="splash-logo">SCIENCE_<span>IX</span></div>
-            <div class="splash-loader"><div class="splash-loader-bar"></div></div>
+  <!-- ==================== TOP NAVIGATION BAR ==================== -->
+  <header id="main-header" class="border-b border-slate-800/80 bg-[#0f1524]/95 sticky top-0 z-40 backdrop-blur transition-opacity duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo and Brand -->
+      <div class="flex items-center gap-3">
+        <div class="bg-blue-600 text-white p-2.5 rounded-xl shadow-lg shadow-blue-500/20 flex items-center justify-center">
+          <i data-lucide="atom" class="w-6 h-6"></i>
         </div>
+        <div>
+          <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">SCIENCE_IX</span>
+          <span class="text-[10px] block text-slate-400 font-medium tracking-widest uppercase">Class 9 Premium Deck</span>
+        </div>
+      </div>
+
+      <!-- Live Syncing Indicators -->
+      <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400">
+        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+        <span class="text-xs font-bold tracking-wide">Synchronized</span>
+      </div>
     </div>
+  </header>
 
-    <canvas id="particle-canvas"></canvas>
-    <canvas id="celebration-canvas"></canvas>
-    <div id="notification-toast-container"></div>
-
-    <div id="welcome-screen">
-        <div class="welcome-box">
-            <h1>SCIENCE_<span>IX</span></h1>
-            <p>Sign in to access your batch classroom</p>
-            <input type="text" id="username-input" autocomplete="off" placeholder="Enter name..."><br>
-            <button id="auth-submit-btn" onclick="entrySetup()">Let's Study</button>
-        </div>
-    </div>
-
-    <header>
-        <div class="header-top-row">
-            <div class="logo">SCIENCE_<span>IX</span></div>
-            <span id="sync-status" class="sync-indicator"><span></span> Syncing</span>
-        </div>
-        <div class="header-utility-grid">
-            <div class="user-identity-badge">
-                <span id="welcome-user">Loading Profile...</span>
-                <div id="admin-indicator" class="admin-badge">Admin</div>
-            </div>
-            <div class="header-controls-group">
-                <button id="admin-global-metrics-btn" class="xp-badge" onclick="openGlobalDppLeaderboard()">🏆 Rankings</button>
-                <div class="bell-container" id="notice-bell" onclick="openNoticeModal()">
-                    <svg class="bell-svg" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1-1.5-1s-1.5.17-1.5 1v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-                    <div class="bell-dot" id="notice-unread-dot"></div>
-                </div>
-                <div id="streak-badge-wrapper" class="streak-badge"><span class="streak-fire-icon">🔥</span> <span id="streak-count">1</span></div>
-                <div id="xp-badge-wrapper" class="xp-badge">✨ <span id="xp-count">0</span> XP</div>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="info-drawer">
-            <div class="info-drawer-trigger">
-                <span>📢 Platform Guidelines & Live System Index</span>
-                <span style="font-size: 0.72rem; opacity: 0.4; font-weight: 600;">Automated Cycle</span>
-            </div>
-            <div class="info-viewer-window">
-                <div class="info-slider-track" id="horizontal-info-track">
-                    <div class="info-card">
-                        <h4>🌐 Workspace Overview</h4>
-                        <p>Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.</p>
-                    </div>
-                    <div class="info-card">
-                        <h4>🎯 Daily Practice Problems (DPPs)</h4>
-                        <p>DPPs are structured sub-folder modules deployed regularly to solidify concepts. Completing an integrated DPP unlocks instant analytics stats and rewards +25 XP directly to your continuous learning leaderboard.</p>
-                    </div>
-                    <div class="info-card">
-                        <h4>🛡️ ProGuard Examination System</h4>
-                        <p>Live examinations and assessments operate inside the strict automated ProGuard safety container. Switching browser tabs, minimizing the viewport, or losing application context triggers an instantaneous profile lock and automatic response disqualification.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="subject-selection-board">
-            <table class="subject-table-view">
-                <tr onclick="enterSubjectWorkspace('PHY')">
-                    <td style="width: 60px;"><div class="subject-icon-box" style="color:#3b82f6; background:#eff6ff;">⚛️</div></td>
-                    <td><div class="subject-name">Physics Workspace Engine</div></td>
-                    <td style="text-align: right;"><div class="progress-text" id="prog-PHY">0%</div></td>
-                </tr>
-                <tr onclick="enterSubjectWorkspace('CHEM')">
-                    <td><div class="subject-icon-box" style="color:#10b981; background:#ecfdf5;">🧪</div></td>
-                    <td><div class="subject-name">Chemistry Workspace Engine</div></td>
-                    <td style="text-align: right;"><div class="progress-text" id="prog-CHEM">0%</div></td>
-                </tr>
-                <tr onclick="enterSubjectWorkspace('BIO')">
-                    <td><div class="subject-icon-box" style="color:#ec4899; background:#fdf2f8;">🧬</div></td>
-                    <td><div class="subject-name">Biology Workspace Engine</div></td>
-                    <td style="text-align: right;"><div class="progress-text" id="prog-BIO">0%</div></td>
-                </tr>
-                <tr onclick="enterSubjectWorkspace('MATH')">
-                    <td><div class="subject-icon-box" style="color:#8b5cf6; background:#f5f3ff;">📐</div></td>
-                    <td><div class="subject-name">Mathematics Workspace Engine</div></td>
-                    <td style="text-align: right;"><div class="progress-text" id="prog-MATH">0%</div></td>
-                </tr>
-            </table>
-        </div>
-
-        <div id="directory-workspace-view" class="directory-view">
-            <button class="back-btn" onclick="exitToSubjectBoard()">← Back to Subject Core</button>
-            <div class="directory-header">
-                <h2 class="directory-title" id="directory-title-label">Subject Folders</h2>
-                <button class="btn-create-chapter" id="btn-admin-add-ch" onclick="handleCreateChapterClick()">+ Create Chapter</button>
-            </div>
-            <div class="chapter-list" id="chapter-list-target"></div>
-        </div>
-
-        <div id="subfolders-workspace-view">
-            <button class="back-btn" onclick="exitToChaptersDirectory()">← Back to Chapters</button>
-            <h2 class="subfolder-chapter-title" id="subfolder-ch-title-label">CHAPTER TITLE</h2>
-            <div class="subfolder-meta-text" id="subfolder-meta-label">Subject • Folders Breakdown Map</div>
-            
-            <div class="top-slots-nav-bar">
-                <button class="slot-tab-btn active" id="tab-dppModules" onclick="switchActiveSlotTab('dppModules')">DPPs</button>
-                <button class="slot-tab-btn" id="tab-notes" onclick="switchActiveSlotTab('notes')">Class Notes</button>
-                <button class="slot-tab-btn" id="tab-testModules" onclick="switchActiveSlotTab('testModules')">Monthly Tests</button>
-            </div>
-
-            <div class="active-slot-bucket-panel">
-                <div>
-                    <div class="bucket-panel-header">
-                        <h3 id="bucket-panel-title">📂 Sub-Folder Module Content</h3>
-                        <button class="btn-create-chapter" style="display:none;" id="btn-admin-add-slot-item" onclick="handleAddSlotItemClick()">➕ Create Assessment</button>
-                    </div>
-                    <ul class="content-list" id="active-slot-list-target"></ul>
-                </div>
-                
-                <div class="admin-upload-panel" id="admin-notes-upload-block" style="display:none;">
-                    <label class="native-pdf-label" for="file-notes-upload">📤 Upload PDF / HTML Asset</label>
-                    <button class="native-pdf-label" style="background:#ffffff; border-style:solid;" onclick="handleLinkUploadTrigger()">🔗 Add Static HTTPS Address Link</button>
-                    <input type="file" id="file-notes-upload" accept=".pdf,.html" style="display:none;" onchange="handleNotesAssetUpload(this)">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="quiz-portal-modal">
-        <div class="quiz-container">
-            <div id="security-timer-banner">⚠️ PROGUARD BLOCK ACTIVE: DO NOT SWITCH TABS | REMAINING TIME: <span id="timer-countdown-clock">00:00</span></div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2 id="quiz-portal-title" style="font-family:'Space Grotesk', sans-serif; color:#111827;">Assessment</h2>
-                <button class="back-btn" id="btn-exit-quiz-portal" style="margin-bottom:0;" onclick="closeQuizPortal()">Exit Board</button>
-            </div>
-            <div id="quiz-admin-creator" style="display:none; margin-bottom:20px; background:#ffffff; padding:18px; border-radius:14px; border:1px solid #e2e8f0;">
-                <h4 style="margin-bottom:10px; color: var(--neon-blue);">Add Question to this Board Block</h4>
-                <input type="text" id="q-input-text" placeholder="Question Text Stem">
-                <div class="attached-input-group">
-                    <input type="text" id="q-input-img" placeholder="Paste Image URL or click attachment icon">
-                    <label for="q-native-img-file" class="inline-attach-btn">📎</label>
-                    <input type="file" id="q-native-img-file" accept="image/*" style="display:none;" onchange="handleNativeQuestionImageUpload(this)">
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
-                    <input type="text" id="q-opt-A" placeholder="Option A"><input type="text" id="q-opt-B" placeholder="Option B">
-                    <input type="text" id="q-opt-C" placeholder="Option C"><input type="text" id="q-opt-D" placeholder="Option D">
-                </div>
-                <select id="q-correct-ans" style="width:100%; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:14px; font-weight:600;">
-                    <option value="A">Correct Token: A</option><option value="B">Correct Token: B</option>
-                    <option value="C">Correct Token: C</option><option value="D">Correct Token: D</option>
-                </select>
-                <button class="btn-dialog-primary" style="width:100%;" onclick="submitCustomQuestionItem()">Push New Question to Live Block</button>
-            </div>
-            <div id="quiz-questions-render-target"></div>
-        </div>
-    </div>
-
-    <!-- CHAT BOX IMMERSIVE VIEWPORT ELEMENTS -->
-    <div id="floating-chat-btn" onclick="toggleChatWindow()">
-        💬
-        <div id="chat-unread-dot" class="chat-unread-badge"></div>
-    </div>
-
-    <!-- DYNAMIC BUBBLE POPUP COMPONENT (10-min cycle, 30s display) -->
-    <div id="chat-btn-popup" class="chat-logo-popup-banner">
-        Student can talk with their classmates.
-    </div>
-    
-    <div id="chat-window-container">
-        <div class="chat-header">
-            <h3>💬 Batch Chatroom</h3>
-            <button class="chat-close-btn" onclick="toggleChatWindow()">✕ Close</button>
-        </div>
-        <div id="chat-messages-list"></div>
-        <div class="chat-footer">
-            <div class="chat-input-wrapper">
-                <label for="chat-media-attachment" class="chat-attach-trigger">＋</label>
-                <input type="file" id="chat-media-attachment" style="display:none;" onchange="handleChatMediaAttachment(this)">
-                
-                <!-- SELF-EXPANDING TEXTAREA PORTAL FOR SEAMLESS TYPING -->
-                <textarea id="chat-message-input" class="chat-input-field" placeholder="Type a message..." rows="1" oninput="autoExpandChatInput(this)" autocomplete="off"></textarea>
-            </div>
-            <button class="chat-send-btn" onclick="sendChatMessage()">➔</button>
-        </div>
-    </div>
-
-    <div id="notice-overlay-modal"><div class="notice-board-box"><h2 style="font-family:'Space Grotesk', sans-serif; color:var(--neon-blue);">📢 Main Notice Board</h2><div class="notice-board-content" id="announcement-display">Loading notices...</div><div style="display:flex; gap:10px; justify-content:center;"><button class="btn-dialog-secondary" onclick="closeNoticeModal()">Dismiss</button><button class="btn-edit-notice" id="btn-admin-edit-notice" onclick="handleModifyAnnouncement()">📝 Rewrite</button></div></div></div>
-    <div id="leaderboard-overlay-modal"><div class="notice-board-box"><h2 style="font-family:'Space Grotesk', sans-serif; color:var(--pw-purple);">📊 Performance Metrics</h2><div class="notice-board-content" id="leaderboard-metrics-target"></div><button class="btn-dialog-secondary" onclick="closeLeaderboardModal()">Close View</button></div></div>
-    
-    <div id="global-dpp-leaderboard-modal"><div class="notice-board-box" style="max-width:500px;"><h2 style="font-family:'Space Grotesk', sans-serif; color:#0f172a; margin-bottom:12px; letter-spacing: -0.5px;">🏆 Classroom Rankings</h2><div class="notice-board-content" id="global-dpp-leaderboard-target"></div><button class="btn-dialog-secondary" onclick="closeGlobalDppLeaderboard()">Close Rankings</button></div></div>
-    
-    <div id="custom-dialog-modal"><div class="dialog-box" id="dialog-box-content"></div></div>
-    <div id="viewer-modal"><div class="modal-content"><span class="close-modal" onclick="closeViewer()">✕ Close Stream</span><iframe id="view-frame" src="about:blank"></iframe></div></div>
-
-    <script>
-        // Setup configuration dynamically based on Canvas injected global variable
-        let firebaseConfig = {
-            apiKey: "AIzaSyAs8wT64q-7fP9p787q_qG89_L0wD4fA",
-            authDomain: "science-ix-87252.firebaseapp.com",
-            projectId: "science-ix-87252",
-            storageBucket: "science-ix-87252.appspot.com",
-            messagingSenderId: "364508216393",
-            appId: "1:364508216393:web:bda878bc90069cb23214da"
-        };
+  <!-- ==================== SIGN IN SCREEN ==================== -->
+  <div id="view-login" class="flex-grow flex items-center justify-center px-4 py-12">
+    <div class="bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl text-center space-y-6">
+      <div class="mx-auto w-16 h-16 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 shadow-lg">
+        <i data-lucide="user-plus" class="w-8 h-8"></i>
+      </div>
+      <div>
+        <h2 class="text-2xl font-extrabold text-white">Enter Your Name</h2>
+        <p class="text-xs text-slate-400 mt-1">Unlock your interactive study deck and live progress records.</p>
+      </div>
+      <form onsubmit="handleUserRegistration(event)" class="space-y-4">
+        <!-- Textbox is completely blanked as requested -->
+        <input type="text" id="login-name-input" placeholder="Your Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required>
         
-        // Dynamically fetch config if present on current Canvas container context
-        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-            try {
-                firebaseConfig = JSON.parse(__firebase_config);
-            } catch (e) {
-                console.error("Failed to parse environmental __firebase_config:", e);
-            }
+        <!-- Toggle Admin Node -->
+        <div class="flex items-center justify-between border-t border-slate-800/60 pt-4 text-left">
+          <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-400">
+            <input type="checkbox" id="login-as-admin" onchange="toggleAdminPasswordField(this)" class="rounded bg-slate-950 border-slate-800 text-blue-600 focus:ring-0">
+            <span>Access as Admin Node</span>
+          </label>
+        </div>
+
+        <!-- Custom Admin Password Field Container (Sleek Inline Lockout) -->
+        <div id="admin-password-container" class="hidden transition-all duration-300 space-y-1.5 text-left">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Admin Verification Pin</label>
+          <div class="relative">
+            <input type="password" id="login-admin-pass" placeholder="Enter Administration Pin" class="w-full bg-slate-950 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-700 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/20">
+            <div class="absolute right-3.5 top-3.5 text-red-500/50">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3.5 rounded-xl text-sm transition transform active:scale-95 shadow-lg shadow-blue-500/20">
+          Access Study Deck
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== VIEW 1: MAIN DASHBOARD ==================== -->
+  <div id="view-dashboard" class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden space-y-8">
+    
+    <!-- User Quick stats header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-900/60 border border-slate-800/80 p-4 rounded-3xl">
+      <div class="flex items-center gap-3">
+        <!-- Interactive Profile Picture Trigger -->
+        <div onclick="openAvatarSelectorModal()" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 p-0.5 shadow-md relative group cursor-pointer shrink-0">
+          <img id="user-avatar" class="w-full h-full object-cover rounded-[14px]" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" alt="Profile pic">
+          <div class="absolute inset-0 bg-black/40 rounded-[14px] items-center justify-center hidden group-hover:flex">
+            <i data-lucide="camera" class="w-4 h-4 text-white"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <p id="user-display-name" class="text-base font-bold text-white"></p>
+            <span id="role-badge" class="hidden text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded font-black uppercase tracking-wider animate-pulse">ADMIN</span>
+          </div>
+          <p class="text-xs text-slate-400">Class 9 Science Study Workspace</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Streak Display -->
+        <div class="bg-[#111827] border border-slate-800 px-4 py-2 rounded-2xl flex items-center gap-2">
+          <i data-lucide="flame" class="w-5 h-5 text-amber-500 fill-amber-500 animate-pulse"></i>
+          <div>
+            <p class="text-[9px] uppercase font-bold text-slate-500">Streak</p>
+            <p class="text-xs font-black text-slate-200"><span id="header-streak-count">1</span> Days</p>
+          </div>
+        </div>
+
+        <!-- XP Balance Display -->
+        <div class="bg-[#111827] border border-slate-800 px-4 py-2 rounded-2xl flex items-center gap-2">
+          <i data-lucide="award" class="w-5 h-5 text-blue-400"></i>
+          <div>
+            <p class="text-[9px] uppercase font-bold text-slate-500">XP Earned</p>
+            <p class="text-xs font-black text-slate-200"><span id="header-xp-count">0</span> XP</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO BANNER & MY BATCH DIRECTORY CARD -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Workspace Info Banner -->
+      <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl shadow-black/20 flex flex-col justify-between min-h-[240px]">
+        <div class="absolute -right-10 -top-10 w-44 h-44 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute right-20 bottom-0 w-60 h-60 bg-indigo-500/5 rounded-full blur-3xl"></div>
+        
+        <div class="relative">
+          <span class="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-blue-500/20 mb-4">
+            <span class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></span> Target 2027
+          </span>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+            Platform Guidelines & Live System Index
+          </h1>
+          <p class="text-slate-400 mt-2 text-xs md:text-sm max-w-lg leading-relaxed">
+            Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
+          </p>
+        </div>
+        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.5.5</div>
+      </div>
+
+      <!-- MY BATCH PORTAL -->
+      <div class="bg-gradient-to-br from-indigo-950/40 to-slate-900 border-2 border-blue-500/50 rounded-3xl p-6 relative overflow-hidden shadow-xl flex flex-col justify-between">
+        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl"></div>
+        <div>
+          <div class="flex justify-between items-start">
+            <span class="bg-blue-600/20 text-blue-300 text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-md border border-blue-500/30">My Active Batch</span>
+            <span class="text-xs text-slate-400 flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i> Class 9</span>
+          </div>
+          <h2 class="text-xl font-bold text-white mt-4">SCIENCE_IX Academic Suite</h2>
+          <p class="text-xs text-slate-400 mt-1">Physics, Chemistry, Biology & Mathematics</p>
+        </div>
+
+        <!-- VIEW CLASSES BUTTON -->
+        <button onclick="switchView('view-classes-folders')" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-blue-500/20 transition-all duration-300 flex items-center justify-center gap-2 group">
+          <span>View Classes</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN BODY ROW: TODAY'S WEEKLY SCHEDULE & LEADERBOARD -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- WEEKLY SCHEDULE -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="calendar" class="w-5 h-5 text-emerald-400"></i>
+            <h2 class="text-lg font-bold text-white tracking-tight">Weekly Scheduled Timetable</h2>
+          </div>
+          <button id="add-schedule-btn" onclick="openAdminSchedulerModal()" class="bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-800 px-3 py-1.5 rounded-xl transition flex items-center gap-1 hidden">
+            <i data-lucide="plus" class="w-3.5 h-3.5 text-blue-400"></i> Add Schedule
+          </button>
+        </div>
+
+        <!-- Timetable grid populated via script -->
+        <div id="classes-schedule-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- XP STREAK LEADERBOARD -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i>
+            <h2 class="text-base font-bold text-white">Rankings Leaderboard</h2>
+          </div>
+          <span class="text-[10px] text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">Live</span>
+        </div>
+
+        <!-- Leaderboard Target List -->
+        <div id="leaderboard-list-target" class="space-y-2 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VIEW 2: SUBJECT DIRECTORY FOLDERS ==================== -->
+  <div id="view-classes-folders" class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div>
+        <button onclick="switchView('view-dashboard')" class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition mb-2 group">
+          <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+          <span>Back to Dashboard</span>
+        </button>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Active Subject Directories</h1>
+        <p class="text-sm text-slate-400 mt-1">Select any subject directory to inspect classroom assets.</p>
+      </div>
+      <div class="bg-slate-900/80 px-4 py-2 rounded-2xl border border-slate-800 flex items-center gap-3 self-start sm:self-center">
+        <div class="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse"></div>
+        <span class="text-xs font-bold text-slate-300">Class 9 Academic Modules</span>
+      </div>
+    </div>
+
+    <!-- SUBJECTS WORKSPACE GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="subject-directory-target" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full"></div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTROLLER: VIEW DETAILS MODAL ==================== -->
+  <div id="modal-content-browser" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl p-6 shadow-2xl space-y-6 relative animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="bg-blue-500/10 text-blue-400 p-2 rounded-xl">
+            <i data-lucide="folder-open" class="w-5 h-5"></i>
+          </div>
+          <h3 id="browser-modal-header" class="text-lg font-bold text-white">Subject Folder Browser</h3>
+        </div>
+        <button onclick="closeContentBrowserModal()" class="text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-lg transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Quick Admin additions for specific directory item -->
+      <div class="flex justify-end">
+        <button id="admin-publish-payload-btn" onclick="openAdminContentPublishModal()" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 hidden animate-pulse">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Publish Academic Payload
+        </button>
+      </div>
+
+      <!-- Content list container -->
+      <div id="browser-items-list" class="space-y-2.5 max-h-[350px] overflow-y-auto pr-1 custom-scrollbar"></div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTROLLER: CHAT / DISCUSSIONS ENGINE ==================== -->
+  <button id="floating-chat-trigger" onclick="toggleChatConsole()" class="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white p-4 rounded-full shadow-xl shadow-blue-500/10 transition z-40 transform active:scale-95">
+    <i data-lucide="message-square" class="w-6 h-6"></i>
+  </button>
+
+  <div id="chat-console-panel" class="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] h-[480px] bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl flex flex-col z-40 overflow-hidden hidden transition-all duration-300">
+    <!-- Header -->
+    <div class="bg-slate-950 border-b border-slate-800 p-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
+        <h3 class="font-bold text-sm text-white">Student Live Discuss</h3>
+      </div>
+      <button onclick="toggleChatConsole()" class="text-slate-400 hover:text-white"><i data-lucide="minus" class="w-4 h-4"></i></button>
+    </div>
+    <!-- Messages space -->
+    <div id="chat-messages-box" class="flex-grow p-4 overflow-y-auto space-y-3 custom-scrollbar"></div>
+    <!-- Inputs -->
+    <form onsubmit="handleSendChatMessage(event)" class="p-3 border-t border-slate-800 bg-slate-950 flex gap-2">
+      <input type="text" id="chat-input" placeholder="Type a message..." class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-xl transition"><i data-lucide="send" class="w-4 h-4"></i></button>
+    </form>
+  </div>
+
+  <!-- ==================== ADMIN OPERATIONS SCHEDULER MODAL ==================== -->
+  <div id="modal-admin-scheduler" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-500"></i> Add Weekly Schedule</h3>
+        <button onclick="closeAdminSchedulerModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form onsubmit="handleClassSchedulingSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Subject</label>
+          <select id="form-class-subject" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Mathematics">Mathematics</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Schedule Topic / Target Chapter</label>
+          <input type="text" id="form-class-topic" placeholder="e.g. Gravitation & Kepler's Laws Practice" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Assigned Instructor / Teacher</label>
+          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Delivery Timing</label>
+          <input type="text" id="form-class-time" placeholder="e.g. Monday 10:00 AM" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Publish Weekly Schedule</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN CONTENT PAYLOAD PUBLISHER MODAL ==================== -->
+  <div id="modal-admin-publisher" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between">
+        <h3 id="admin-publisher-subject-title" class="text-sm font-bold text-white uppercase tracking-wider">Publish New Material Entry</h3>
+        <button onclick="closeAdminContentPublishModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form onsubmit="handlePayloadSubmission(event)" class="space-y-3">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Module Slot Type</label>
+          <select id="payload-type" onchange="toggleFormFieldsBasedOnPayload()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
+            <option value="Notes">Classroom Note / Resource Link</option>
+            <option value="DPP">Objective DPP (Multiple Choice)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Topic / Title</label>
+          <input type="text" id="payload-title" placeholder="e.g. Atoms and Molecules Practice" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+        </div>
+        
+        <!-- Interactive note / url inputs -->
+        <div id="payload-notes-wrapper" class="space-y-2">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Document Link (PDF or Google Drive URL)</label>
+            <input type="url" id="payload-link" placeholder="https://drive.google.com/... or empty" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Alternative Plaintext Text Notes</label>
+            <textarea id="payload-content" rows="3" placeholder="Enter detailed study text notes instead..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Interactive objective DPP fields -->
+        <div id="payload-dpp-wrapper" class="hidden space-y-2">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Problem Question</label>
+          <input type="text" id="payload-dpp-question" placeholder="e.g. Which cell organelle is the powerhouse?" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="payload-dpp-opt-a" placeholder="Option A" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+            <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+            <input type="text" id="payload-dpp-opt-c" placeholder="Option C" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+            <input type="text" id="payload-dpp-opt-d" placeholder="Option D" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Correct Answer Match</label>
+            <select id="payload-dpp-correct" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
+              <option value="A">Option A</option>
+              <option value="B">Option B</option>
+              <option value="C">Option C</option>
+              <option value="D">Option D</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Add Material Payload</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== CONTROLLER: AVATAR SELECTION ENGINE ==================== -->
+  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white">Select Your Profile Avatar</h3>
+        <button onclick="closeAvatarSelectorModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <!-- Fixed friendly Boy & Girl avatar seeds for precise rendering -->
+      <div class="space-y-3">
+        <p class="text-[10px] uppercase font-bold text-blue-400 tracking-wider">Boys Avatars</p>
+        <div class="grid grid-cols-4 gap-3">
+          <div onclick="changeUserAvatar('Milo')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Milo</span>
+          </div>
+          <div onclick="changeUserAvatar('Alexander')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alexander">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Alex</span>
+          </div>
+          <div onclick="changeUserAvatar('Lucas')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucas">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lucas</span>
+          </div>
+          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ethan">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Ethan</span>
+          </div>
+        </div>
+
+        <p class="text-[10px] uppercase font-bold text-pink-400 tracking-wider pt-2">Girls Avatars</p>
+        <div class="grid grid-cols-4 gap-3">
+          <div onclick="changeUserAvatar('Sasha')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sasha">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Sasha</span>
+          </div>
+          <div onclick="changeUserAvatar('Zoe')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Zoe</span>
+          </div>
+          <div onclick="changeUserAvatar('Lily')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lily">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lily</span>
+          </div>
+          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer border border-slate-800 hover:border-pink-500 p-1 rounded-xl bg-slate-950 text-center transition">
+            <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maya">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Maya</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTROLLER: ACTIVE STUDY DOCUMENT NOTE VIEWER ==================== -->
+  <div id="modal-note-viewer" class="fixed inset-0 bg-[#070a13]/98 z-50 hidden flex-col">
+    <!-- RECONFIGURED RESPONSIVE RESOLUTION HEADER BAR -->
+    <div class="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="min-w-0 flex-1">
+        <h3 id="note-viewer-header" class="font-extrabold text-white text-lg sm:text-xl truncate leading-tight">Lecture Document Deck</h3>
+        <div class="text-xs text-amber-500 flex flex-wrap items-center gap-2 mt-1.5 font-medium">
+          <span class="inline-flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full animate-pulse">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
+            <span>Read Tracker Active:</span>
+            <span id="note-session-timer" class="font-bold text-amber-400">0 minutes</span>
+          </span>
+          <span class="text-slate-400 font-mono text-[10px] bg-slate-800 px-2.5 py-1 rounded-full shrink-0">(+2 XP / minute)</span>
+        </div>
+      </div>
+      <button onclick="terminateNoteSession()" class="bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white px-5 py-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shrink-0 border border-red-500/20 self-stretch sm:self-auto text-center shadow-lg">
+        <span>Close Study Window & Save XP</span>
+        <i data-lucide="log-out" class="w-4 h-4 shrink-0"></i>
+      </button>
+    </div>
+    <div class="flex-grow p-6 md:p-12 overflow-y-auto max-w-4xl mx-auto w-full">
+      <article id="note-viewer-text-content" class="prose prose-invert text-slate-300 text-sm leading-relaxed whitespace-pre-wrap selection:bg-blue-600"></article>
+    </div>
+  </div>
+
+  <!-- ==================== SECURE EXAM SANDBOX SCREEN (STRICT MONITOR) ==================== -->
+  <div id="view-exam-sandbox" class="fixed inset-0 bg-[#070a13] z-50 hidden flex-col no-select">
+    <div class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded text-[10px] font-black tracking-widest animate-pulse">LOCKDOWN ENVIRONMENT</span>
+        <h2 id="exam-sandbox-title" class="text-sm font-bold text-white">Monthly Assessment</h2>
+      </div>
+      <div class="text-right">
+        <span class="text-xs text-slate-400 block">Proctor Mode Active</span>
+        <span class="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Protected Deck</span>
+      </div>
+    </div>
+
+    <div class="flex-grow max-w-3xl w-full mx-auto px-4 py-8 overflow-y-auto space-y-6">
+      <div class="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-2xl text-xs flex gap-2">
+        <i data-lucide="shield-alert" class="w-4 h-4 shrink-0"></i>
+        <span><strong>Tab Safeguard Notice:</strong> Defocusing, changing screens, or exiting Fullscreen triggers an automatic penalty of <strong>-50 XP</strong> directly. 2 warning blocks closes evaluation immediately.</span>
+      </div>
+
+      <div id="exam-question-target" class="space-y-4"></div>
+
+      <button onclick="commitSecureExamAnswers()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition uppercase tracking-widest">
+        Submit Test Assessment
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== SYSTEM TOAST POPUPS ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full"></div>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto border-t border-slate-900 bg-[#070a12]/80 py-6 text-center text-xs text-slate-500">
+    <p>&copy; 2026 SCIENCE_IX Cloud Study Suite. Premium Edition.</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // --- SYSTEM LOCAL STATE ---
+    let appState = {
+      user: "",
+      role: "student",
+      xp: 0,
+      streak: 1,
+      avatar: "Milo",
+      currentSubject: "Physics",
+      currentFolder: "Notes",
+      activeNoteTimerId: null,
+      activeNoteReadingMinutes: 0,
+      activeExam: null,
+      examViolations: 0,
+      completedItemsRegistry: {} // Stores titles/IDs already answered to avoid double-XP gains
+    };
+
+    // --- HARDCODED PRELOADED LEADERBOARD DATA (NEVER LOST) ---
+    let fallbackLeaderboard = [
+      { id: "lead_1", name: "RAJDEEP CHAKROBORTY", streak: 8, xp: 1825, avatar: "Lucas" },
+      { id: "lead_2", name: "ABD KARTIK", streak: 1, xp: 1500, avatar: "Milo" },
+      { id: "lead_3", name: "RD", streak: 1, xp: 1160, avatar: "Alexander" },
+      { id: "lead_4", name: "DEBA", streak: 3, xp: 300, avatar: "Zoe" },
+      { id: "lead_5", name: "Arunava", streak: 1, xp: 270, avatar: "Ethan" },
+      { id: "lead_6", name: "ARIK", streak: 1, xp: 200, avatar: "Lucas" },
+      { id: "lead_7", name: "ANKUSH MONDAL", streak: 1, xp: 60, avatar: "Milo" },
+      { id: "lead_8", name: "NAMAN KAR", streak: 1, xp: 30, avatar: "Alexander" },
+      { id: "lead_9", name: "Bijon chandra", streak: 1, xp: 15, avatar: "Ethan" },
+      { id: "lead_10", name: "Anushka Manna", streak: 1, xp: 0, avatar: "Sasha" }
+    ];
+
+    // --- HARDCODED DEFAULT CLASSES SCHEDULE ---
+    let defaultUpcomingClasses = [
+      { id: "class_1", subject: "Physics", topic: "Kepler's Gravitational Laws & Motion Proofs", teacher: "Alakh Pandey Sir", time: "Monday 10:00 AM" },
+      { id: "class_2", subject: "Chemistry", topic: "Atoms, Valence & Chemical Formulas", teacher: "Amit Mahajan Sir", time: "Wednesday 04:30 PM" }
+    ];
+
+    // --- HARDCODED INTERNALS OF ALL FOLDERS ---
+    let folderSystemData = {
+      Physics: {
+        Notes: [{ title: "Force Laws of Motion PDF Document", text: "Newton's First Law (Inertia): A body remains in rest unless acted upon by unbalanced forces...", link: "" }],
+        DPP: [{ 
+          title: "Physics Practice Worksheet 1", 
+          question: "If force = 10N and mass = 2kg, what is the acceleration?", 
+          options: ["2 m/s²", "5 m/s²", "20 m/s²", "10 m/s²"], 
+          answer: "B" 
+        }]
+      },
+      Chemistry: {
+        Notes: [{ title: "Mole Concept Handouts", text: "One mole of substance equals Avogadro's constant: 6.022 * 10^23 entities..." }],
+        DPP: [{ 
+          title: "Mole Formula Quiz", 
+          question: "What is the molar mass of Carbon Dioxide (CO2)?", 
+          options: ["18 g/mol", "32 g/mol", "44 g/mol", "28 g/mol"], 
+          answer: "C" 
+        }]
+      },
+      Biology: {
+        Notes: [{ title: "Plant vs Animal Tissues Outline", text: "Meristematic tissues vs Permanent tissues detail summary..." }],
+        DPP: [{ 
+          title: "Cellular Division Sheet", 
+          question: "Which organelle is famously known as Powerhouse of Cell?", 
+          options: ["Nucleus", "Ribosome", "Mitochondria", "Lysosome"], 
+          answer: "C" 
+        }]
+      },
+      Mathematics: {
+        Notes: [{ title: "Coordinate Geometry Definitions", text: "Cartesian plane consists of two coordinate axes crossing orthogonally at origin..." }],
+        DPP: [{ 
+          title: "Algebra Identity Practice Sheet", 
+          question: "Evaluate (a + b)² formula match.", 
+          options: ["a² + b² + 2ab", "a² - b²", "a² + b² - 2ab", "a + b"], 
+          answer: "A" 
+        }]
+      }
+    };
+
+    // --- INTERACTIVE MONTHLY EXAMS MATRIX ---
+    let defaultMonthlyExams = {
+      Physics: [{ title: "Forces and Laws of Motion Diagnostics Exam", questions: [{ q: "What is inertia directly proportional to?", options: ["Mass", "Velocity", "Volume", "Density"], correct: "Mass" }] }],
+      Chemistry: [{ title: "Structure of Atoms Terminal Evaluation Exam", questions: [{ q: "Who discovered Electrons?", options: ["J.J. Thomson", "Rutherford", "Chadwick", "Bohr"], correct: "J.J. Thomson" }] }],
+      Biology: [{ title: "Cellular Diagnostics Assessment Test", questions: [{ q: "Which organelle holds DNA?", options: ["Nucleus", "Ribosome", "Lysosome", "Vacuole"], correct: "Nucleus" }] }],
+      Mathematics: [{ title: "Polynomials Complex Equations Midterm", questions: [{ q: "What is the degree of a constant polynomial?", options: ["0", "1", "2", "Undefined"], correct: "0" }] }]
+    };
+
+    // --- CHAT MESSAGES BUFFER ---
+    let chatBuffer = [
+      { sender: "System", text: "Welcome to SCIENCE_IX Live Chat workspace!" },
+      { sender: "Arik", text: "Is anyone practicing today's Physics DPP?" }
+    ];
+
+    // Firebase state placeholders
+    let db, auth;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'science-ix-v9';
+
+    // --- INITIALIZATION SEQUENCE ---
+    window.onload = function() {
+      lucide.createIcons();
+      initFirebaseConnection();
+      renderDashboardOverview();
+      renderFoldersWorkspace();
+    };
+
+    // --- GOOGLE FIREBASE CLOUD SETUP ---
+    async function initFirebaseConnection() {
+      try {
+        if (typeof __firebase_config !== 'undefined') {
+          const config = JSON.parse(__firebase_config);
+          const app = initializeApp(config);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+          setupFirestoreRealtimeSubscribers();
         }
-        
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const messaging = firebase.messaging();
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'science-ix-87252';
+      } catch (err) {
+        console.warn("Cloud connection defaulted to sandboxed runtime.");
+      }
+    }
 
-        let activeUser = localStorage.getItem('science_ix_session');
-        window.latestCloudPayload = {};
-        let selectedSubjectCode = "";
-        let selectedChapterIndex = null;
-        let activeSlotTabKey = "dppModules";
-        let lastSeenNoticeText = localStorage.getItem('science_ix_last_notice') || "";
-        
-        let currentXP = 0;
-        let userStreak = 1;
-        let readLog = [];
-        let solvedQuestionsLog = {};
-
-        let examActiveState = false;
-        let proGuardCountdownInterval = null;
-        let timeRemainingSeconds = 0;
-        let currentAppStateView = "SUBJECTS"; 
-
-        let activeNotesTimerInterval = null;
-
-        let chatUnsubscribe = null;
-        let chatInitialized = false;
-
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await auth.signInWithCustomToken(__initial_auth_token);
-                } else {
-                    await auth.signInAnonymously();
-                }
-                console.log("Firebase Auth established successfully.");
-            } catch (e) {
-                console.error("Firebase Auth failed:", e);
-            }
-        };
-        initAuth();
-
-        const getChatCollection = () => {
-            return db.collection('artifacts').doc(appId).collection('public').doc('data').collection('chats');
-        };
-
-        function playRewardChimeSound(type) {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (type === 'xp') {
-                    let osc1 = audioCtx.createOscillator(), osc2 = audioCtx.createOscillator();
-                    let gainNode = audioCtx.createGain();
-                    osc1.type = 'sine'; osc1.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
-                    osc1.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
-                    osc2.type = 'triangle'; osc2.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.15); 
-                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                    osc1.connect(gainNode); osc2.connect(gainNode); gainNode.connect(audioCtx.destination);
-                    osc1.start(); osc2.start(); osc1.stop(audioCtx.currentTime + 0.4); osc2.stop(audioCtx.currentTime + 0.4);
-                } else if (type === 'streak') {
-                    let osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    const notes = [440, 554, 659, 880];
-                    notes.forEach((freq, index) => {
-                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.08));
-                    });
-                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-                }
-            } catch(e) { console.log("Audio context blocked", e); }
+    function setupFirestoreRealtimeSubscribers() {
+      if (!db) return;
+      
+      const classesCol = collection(db, 'artifacts', appId, 'public', 'data', 'classes');
+      onSnapshot(classesCol, (snap) => {
+        let items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        if (items.length > 0) {
+          defaultUpcomingClasses = items;
+          renderClassesSchedule();
         }
+      });
 
-        window.addEventListener('load', () => {
-            setupProGuardTabProtection();
-            setupHardwareBackButtonEngine();
-            setupContinuousInfoDrawerSlider();
-            requestNativeNotificationPermissionsOnLoad();
-            registerLocalServiceWorker();
-            
-            const chatBoxInput = document.getElementById('chat-message-input');
-            if (chatBoxInput) {
-                chatBoxInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendChatMessage();
-                    }
-                });
-            }
+      const leaderboardCol = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+      onSnapshot(leaderboardCol, (snap) => {
+        let items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        if (items.length > 0) {
+          fallbackLeaderboard = items;
+          renderLeaderboard();
+        }
+      });
+    }
 
-            setTimeout(() => {
-                const splash = document.getElementById('startup-splash');
-                if (splash) {
-                    splash.style.opacity = '0';
-                    splash.style.transform = 'scale(1.05)';
-                    setTimeout(() => splash.remove(), 600);
-                }
-            }, 2000);
+    // --- DYNAMICALLY TOGGLE ADMIN PASSCODE ROW ---
+    window.toggleAdminPasswordField = function(checkbox) {
+      const container = document.getElementById('admin-password-container');
+      const passInput = document.getElementById('login-admin-pass');
+      if (checkbox.checked) {
+        container.classList.remove('hidden');
+        passInput.required = true;
+        passInput.focus();
+      } else {
+        container.classList.add('hidden');
+        passInput.required = false;
+        passInput.value = "";
+      }
+    };
 
-            if (activeUser) {
-                document.getElementById('welcome-screen').style.display = 'none';
-                initializeAuthenticatedSession(activeUser);
-            } else {
-                document.getElementById('welcome-screen').style.display = 'flex';
-            }
+    // --- REGISTRATION & SIGN IN HANDLERS ---
+    window.handleUserRegistration = function(e) {
+      e.preventDefault();
+      const name = document.getElementById('login-name-input').value.trim();
+      const adminRequested = document.getElementById('login-as-admin').checked;
+
+      if (!name) {
+        showToast("Please enter your name.", "error");
+        return;
+      }
+
+      if (adminRequested) {
+        const passValue = document.getElementById('login-admin-pass').value.trim();
+        // Master Admin Lockout is case-sensitive: "PRATIM"
+        if (passValue !== "PRATIM") {
+          showToast("Incorrect Administration secret key!", "error");
+          return;
+        }
+        appState.role = "admin";
+        document.getElementById('role-badge').classList.remove('hidden');
+        document.getElementById('add-schedule-btn').classList.remove('hidden');
+        document.getElementById('admin-publish-payload-btn').classList.remove('hidden');
+      } else {
+        appState.role = "student";
+        document.getElementById('role-badge').classList.add('hidden');
+        document.getElementById('add-schedule-btn').classList.add('hidden');
+        document.getElementById('admin-publish-payload-btn').classList.add('hidden');
+      }
+
+      appState.user = name;
+      document.getElementById('user-display-name').innerText = name;
+      document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
+      
+      pushCurrentStudentIntoLeaderboard();
+
+      document.getElementById('view-login').classList.add('hidden');
+      document.getElementById('view-dashboard').classList.remove('hidden');
+      showToast(`Welcome to SCIENCE_IX, ${name}!`, "success");
+    };
+
+    function pushCurrentStudentIntoLeaderboard() {
+      const idx = fallbackLeaderboard.findIndex(x => x.name.includes(appState.user));
+      if (idx === -1) {
+        fallbackLeaderboard.push({
+          id: "curr_user",
+          name: `${appState.user} (You)`,
+          streak: appState.streak,
+          xp: appState.xp,
+          avatar: appState.avatar
+        });
+      }
+      renderLeaderboard();
+    }
+
+    window.switchView = function(viewId) {
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById('view-classes-folders').classList.add('hidden');
+      document.getElementById(viewId).classList.remove('hidden');
+    };
+
+    function renderDashboardOverview() {
+      renderClassesSchedule();
+      renderLeaderboard();
+    }
+
+    function renderClassesSchedule() {
+      const box = document.getElementById('classes-schedule-list');
+      if (!box) return;
+      box.innerHTML = '';
+
+      defaultUpcomingClasses.forEach(item => {
+        let subjectColor = item.subject === "Physics" ? "purple-500" :
+                           item.subject === "Chemistry" ? "emerald-500" :
+                           item.subject === "Biology" ? "pink-500" : "blue-500";
+
+        const deleteButtonHTML = appState.role === "admin" ? `
+          <button onclick="deleteClassRecord('${item.id}')" class="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 transition text-red-400 hover:text-red-300 p-1">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
+        ` : '';
+
+        box.innerHTML += `
+          <div class="bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-slate-700/80 transition relative group shadow">
+            <div>
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-extrabold tracking-wider text-${subjectColor} bg-${subjectColor}/10 px-2.5 py-1 rounded-md border border-${subjectColor}/20 uppercase">
+                  ${item.subject}
+                </span>
+                <span class="text-xs font-medium text-slate-400 flex items-center gap-1">
+                  <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${item.time}
+                </span>
+              </div>
+              <h3 class="text-base font-bold text-white mt-3 line-clamp-1">${item.topic}</h3>
+              <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
+                <i data-lucide="user" class="w-3.5 h-3.5 text-blue-400"></i> ${item.teacher}
+              </p>
+            </div>
+            ${deleteButtonHTML}
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function renderLeaderboard() {
+      const target = document.getElementById('leaderboard-list-target');
+      if (!target) return;
+      target.innerHTML = '';
+
+      const ordered = [...fallbackLeaderboard].sort((a, b) => b.xp - a.xp);
+
+      ordered.forEach((std, idx) => {
+        const place = idx + 1;
+        const isSelf = std.id === "curr_user";
+        let rankBadgeClass = "text-slate-400 bg-slate-800/40 border-slate-700/30";
+        if (place === 1) rankBadgeClass = "text-yellow-400 bg-yellow-400/10 border-yellow-500/30";
+        else if (place === 2) rankBadgeClass = "text-slate-300 bg-slate-300/10 border-slate-400/30";
+        else if (place === 3) rankBadgeClass = "text-amber-600 bg-amber-600/10 border-amber-700/30";
+
+        const deleteMemberHTML = appState.role === "admin" ? `
+          <button onclick="removeStudentFromLeaderboard('${std.id}')" class="text-red-400/80 hover:text-red-400 p-1 bg-red-500/5 hover:bg-red-500/10 rounded-lg transition">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
+        ` : '';
+
+        target.innerHTML += `
+          <div class="flex items-center justify-between p-3 rounded-2xl border ${isSelf ? 'bg-blue-600/10 border-blue-500/40 shadow shadow-blue-500/5' : 'bg-slate-950/40 border-slate-800/50'} hover:bg-slate-900/40 transition">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center border ${rankBadgeClass}">
+                ${place}
+              </span>
+              <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=${std.avatar || std.name}" class="w-8 h-8 rounded-lg object-cover bg-slate-800 border border-slate-700/60" alt="Avatar">
+              <div>
+                <p class="text-xs font-bold ${isSelf ? 'text-blue-400' : 'text-slate-200'}">${std.name}</p>
+                <p class="text-[10px] text-slate-400 flex items-center gap-0.5">
+                  <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-500 fill-amber-500 animate-pulse"></i> ${std.streak} Days active
+                </p>
+              </div>
+            </div>
+            <div class="text-right flex items-center gap-3">
+              <p class="text-xs font-extrabold text-slate-200">${std.xp} XP</p>
+              ${deleteMemberHTML}
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function renderFoldersWorkspace() {
+      const container = document.getElementById('subject-directory-target');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const subjects = ["Physics", "Chemistry", "Biology", "Mathematics"];
+      subjects.forEach(sub => {
+        let iconName = sub === "Physics" ? "atom" :
+                       sub === "Chemistry" ? "test-tube-2" :
+                       sub === "Biology" ? "dna" : "triangle";
+        let iconTheme = sub === "Physics" ? "text-purple-400 bg-purple-500/10" :
+                        sub === "Chemistry" ? "text-emerald-400 bg-emerald-500/10" :
+                        sub === "Biology" ? "text-pink-400 bg-pink-500/10" : "text-blue-400 bg-blue-500/10 text-blue-400 rotate-90";
+
+        container.innerHTML += `
+          <div class="bg-slate-900 border border-slate-800/80 rounded-3xl p-5 hover:border-blue-500/40 transition duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="p-3 rounded-2xl ${iconTheme}">
+                  <i data-lucide="${iconName}" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 bg-slate-950 px-2.5 py-1 rounded-full border border-slate-800">CLASS 9</span>
+              </div>
+              <h3 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">${sub} Workspace</h3>
+              <p class="text-xs text-slate-400 mt-1 font-medium">Academics tracking folders & core curriculum.</p>
+              
+              <div class="mt-5 space-y-2">
+                <div onclick="openSubFolder('${sub}', 'Notes')" class="flex items-center justify-between bg-slate-950/60 p-3 rounded-xl border border-slate-800/60 cursor-pointer hover:bg-slate-800/50 transition">
+                  <div class="flex items-center gap-2 text-xs text-slate-300">
+                    <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
+                    <span>Notes & Drive Resources</span>
+                  </div>
+                  <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full font-bold">Explore</span>
+                </div>
+
+                <div onclick="openSubFolder('${sub}', 'DPP')" class="flex items-center justify-between bg-slate-950/60 p-3 rounded-xl border border-slate-800/60 cursor-pointer hover:bg-slate-800/50 transition">
+                  <div class="flex items-center gap-2 text-xs text-slate-300">
+                    <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-400"></i>
+                    <span>Objective DPP (Practice Deck)</span>
+                  </div>
+                  <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full font-bold">Explore</span>
+                </div>
+
+                <div onclick="launchMonthlyTestEnvironment('${sub}')" class="flex items-center justify-between bg-gradient-to-r from-purple-950/30 to-rose-950/30 p-3 rounded-xl border border-purple-900/40 cursor-pointer hover:from-purple-900/40 hover:to-rose-900/40 transition">
+                  <div class="flex items-center gap-2 text-xs text-slate-300">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-purple-400 animate-pulse"></i>
+                    <span>Secure Monthly Test</span>
+                  </div>
+                  <span class="text-[10px] text-yellow-400 font-bold">Launch</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    window.openSubFolder = function(subject, folderName) {
+      appState.currentSubject = subject;
+      appState.currentFolder = folderName;
+
+      document.getElementById('browser-modal-header').innerText = `${subject} > ${folderName}`;
+      hydrateBrowserItemsList();
+
+      const modal = document.getElementById('modal-content-browser');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    window.closeContentBrowserModal = function() {
+      const modal = document.getElementById('modal-content-browser');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    };
+
+    function hydrateBrowserItemsList() {
+      const box = document.getElementById('browser-items-list');
+      box.innerHTML = '';
+
+      const items = folderSystemData[appState.currentSubject]?.[appState.currentFolder] || [];
+
+      if (items.length === 0) {
+        box.innerHTML = `<p class="text-xs text-slate-500 py-4 text-center">Empty directory. Add payload entries using the Admin console.</p>`;
+        return;
+      }
+
+      items.forEach((item, index) => {
+        if (appState.currentFolder === "Notes") {
+          let actionButtonHTML = '';
+          if (item.link && item.link.trim() !== '') {
+            actionButtonHTML = `
+              <a href="${item.link}" target="_blank" onclick="updateUserXp(15)" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1 font-bold">
+                Open Drive / PDF Link <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+            `;
+          } else {
+            actionButtonHTML = `
+              <button onclick="launchNoteStudySession('${item.title}', ${index})" class="bg-blue-600/25 hover:bg-blue-600 text-blue-400 hover:text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1 font-bold">
+                Read Handout Text <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              </button>
+            `;
+          }
+
+          box.innerHTML += `
+            <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex items-center justify-between">
+              <div class="pr-2 min-w-0">
+                <p class="text-xs font-bold text-slate-200 truncate">${item.title}</p>
+                <p class="text-[10px] text-slate-400 truncate">${item.link ? 'External Academic File Link' : 'Classroom plain text handout'}</p>
+              </div>
+              <div class="shrink-0">${actionButtonHTML}</div>
+            </div>
+          `;
+        } else if (appState.currentFolder === "DPP") {
+          let optsString = '';
+          const labels = ["A", "B", "C", "D"];
+          item.options.forEach((opt, idx) => {
+            optsString += `
+              <label class="flex items-center gap-2 bg-slate-900 border border-slate-800/80 p-2.5 rounded-xl cursor-pointer hover:border-slate-700 transition">
+                <input type="radio" name="dpp_ans_${index}" value="${labels[idx]}" class="text-blue-600 bg-slate-950 border-slate-800 focus:ring-0">
+                <span class="text-xs text-slate-300 font-medium"><strong class="text-blue-400">${labels[idx]}.</strong> ${opt}</span>
+              </label>
+            `;
+          });
+
+          const alreadyDone = appState.completedItemsRegistry[item.title] === true;
+
+          box.innerHTML += `
+            <div id="dpp-card-${index}" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl space-y-4">
+              <div class="flex justify-between items-center">
+                <p class="text-xs font-black text-slate-200">${item.title}</p>
+                <span class="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-black">
+                  ${alreadyDone ? 'Completed (Practice Mode Active)' : '+5 XP First Correct Match'}
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed font-semibold">${item.question}</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${optsString}
+              </div>
+              <div class="flex justify-end pt-1">
+                <button onclick="verifyDppResponse(${index}, '${item.answer}', '${item.title}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-1.5 rounded-lg font-bold transition">Verify Selection</button>
+              </div>
+            </div>
+          `;
+        }
+      });
+      lucide.createIcons();
+    }
+
+    window.launchNoteStudySession = function(title, index) {
+      closeContentBrowserModal();
+      
+      const note = folderSystemData[appState.currentSubject].Notes[index];
+      document.getElementById('note-viewer-header').innerText = note.title;
+      document.getElementById('note-viewer-text-content').innerText = note.text;
+
+      updateUserXp(30);
+      showToast("Lecture file opened! +30 XP Milestone!", "success");
+
+      appState.activeNoteReadingMinutes = 0;
+      document.getElementById('note-session-timer').innerText = "0 minutes";
+      
+      appState.activeNoteTimerId = setInterval(() => {
+        appState.activeNoteReadingMinutes += 1;
+        document.getElementById('note-session-timer').innerText = `${appState.activeNoteReadingMinutes} minutes`;
+        updateUserXp(2);
+        showToast("Active study minutes logged! +2 XP awarded.", "success");
+      }, 60000);
+
+      document.getElementById('modal-note-viewer').remove(); // Clear old modals
+      const clone = document.getElementById('modal-note-viewer');
+      if (clone) clone.remove();
+
+      document.getElementById('modal-note-viewer').classList.remove('hidden');
+      document.getElementById('modal-note-viewer').classList.add('flex');
+    };
+
+    window.terminateNoteSession = function() {
+      if (appState.activeNoteTimerId) {
+        clearInterval(appState.activeNoteTimerId);
+        appState.activeNoteTimerId = null;
+      }
+      document.getElementById('modal-note-viewer').classList.add('hidden');
+      document.getElementById('modal-note-viewer').classList.remove('flex');
+      showToast("Study session details compiled and synchronized.");
+    };
+
+    window.verifyDppResponse = function(index, correctAnswer, itemTitle) {
+      const selected = document.querySelector(`input[name="dpp_ans_${index}"]:checked`);
+      if (!selected) {
+        showToast("Please select an objective option first!", "error");
+        return;
+      }
+
+      // Check Fullscreen Security state during DPP validation
+      if (!document.fullscreenElement) {
+        triggerCheatingPenalty("DPP submitted outside forced Fullscreen Sandbox view!");
+        return;
+      }
+
+      if (selected.value === correctAnswer) {
+        if (!appState.completedItemsRegistry[itemTitle]) {
+          appState.completedItemsRegistry[itemTitle] = true;
+          updateUserXp(5);
+          showToast("Correct! +5 XP Added to your profile registry.", "success");
+        } else {
+          showToast("Correct Answer matched! (Practice mode: no additional XP allocated).", "info");
+        }
+        hydrateBrowserItemsList();
+      } else {
+        showToast("Incorrect option selected. Double check formulas.", "error");
+      }
+    };
+
+    // --- PROCTORED ASSESSMENTS ENVIRONMENT ---
+    window.launchMonthlyTestEnvironment = function(subject) {
+      const exams = defaultMonthlyExams[subject];
+      if (!exams || exams.length === 0) {
+        showToast("No monthly diagnostic currently scheduled for this subject directory.", "info");
+        return;
+      }
+
+      // FORCED IMMERSIVE FULLSCREEN SANDBOX ACTIVATION
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {
+          showToast("Fullscreen activation failed. Proceed with strict observation layout.", "warning");
+        });
+      }
+
+      appState.activeExam = exams[0];
+      appState.examViolations = 0;
+
+      document.getElementById('main-header').classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('floating-chat-trigger').classList.add('hidden');
+      document.getElementById('chat-console-panel').classList.add('hidden');
+
+      document.getElementById('exam-sandbox-title').innerText = appState.activeExam.title;
+
+      const qBox = document.getElementById('exam-question-target');
+      qBox.innerHTML = '';
+
+      appState.activeExam.questions.forEach((qItem, idx) => {
+        let optStructure = '';
+        qItem.options.forEach(opt => {
+          optStructure += `
+            <label class="flex items-center gap-3 bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 hover:border-slate-700 transition cursor-pointer text-xs text-slate-300">
+              <input type="radio" name="sec_q_${idx}" value="${opt}" class="text-blue-600 bg-slate-900 border-slate-700 focus:ring-0">
+              <span>${opt}</span>
+            </label>
+          `;
         });
 
-        function registerLocalServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                if (window.location.protocol === 'blob:' || window.location.protocol === 'data:' || !window.location.protocol.startsWith('http')) {
-                    console.warn('Service Worker registration skipped: unsupported URL protocol (' + window.location.protocol + ')');
-                    return;
-                }
-                navigator.serviceWorker.register('firebase-messaging-sw.js')
-                .then((registration) => {
-                    console.log('FCM Service Worker registered successfully:', registration.scope);
-                })
-                .catch((error) => {
-                    console.error('FCM Service Worker registration failed:', error);
-                });
-            }
-        }
-
-        async function requestNativeNotificationPermissionsOnLoad() {
-            if ("Notification" in window) {
-                try {
-                    if (Notification.permission === "default") {
-                        await Notification.requestPermission();
-                    }
-                } catch (e) {
-                    console.warn("Notification engine permission block or bypass.");
-                }
-            }
-        }
-
-        function setupContinuousInfoDrawerSlider() {
-            const track = document.getElementById('horizontal-info-track');
-            let currentCardOffsetIndex = 0;
-            setInterval(() => {
-                currentCardOffsetIndex = (currentCardOffsetIndex + 1) % 3;
-                if (track) {
-                    track.style.transform = `translateX(-${currentCardOffsetIndex * 33.333}%)`;
-                }
-            }, 4000);
-        }
-
-        function entrySetup() {
-            let input = document.getElementById('username-input').value.trim();
-            if (!input) input = "STUDENT";
-            const processedUser = input.toUpperCase();
-
-            if (processedUser === "PRATIM") {
-                showCustomPrompt("Verification Required", "Enter Admin Security Key Code:", (key) => {
-                    if (key === "2026_IX_ADMIN") {
-                        localStorage.setItem('science_ix_session', processedUser);
-                        document.getElementById('welcome-screen').style.display = 'none';
-                        initializeAuthenticatedSession(processedUser);
-                    } else {
-                        showCustomAlert("Authentication Aborted", "Invalid administrative validation key entered.");
-                    }
-                });
-            } else {
-                localStorage.setItem('science_ix_session', processedUser);
-                document.getElementById('welcome-screen').style.display = 'none';
-                initializeAuthenticatedSession(processedUser);
-            }
-        }
-
-        function initializeAuthenticatedSession(username) {
-            activeUser = username;
-            document.getElementById('welcome-user').innerText = `👋 Welcome, ${username}`;
-            const isAdmin = (username === "PRATIM");
-            
-            if (isAdmin) {
-                document.getElementById('admin-indicator').style.display = 'inline-block';
-                document.querySelectorAll('.progress-text').forEach(el => el.style.display = 'inline-block');
-                if(document.getElementById('btn-admin-edit-notice')) document.getElementById('btn-admin-edit-notice').style.display = 'inline-block';
-                if(document.getElementById('btn-admin-add-ch')) document.getElementById('btn-admin-add-ch').style.display = 'inline-block';
-            } else {
-                document.getElementById('admin-indicator').style.display = 'none';
-                document.querySelectorAll('.progress-text').forEach(el => el.style.display = 'none');
-                if(document.getElementById('btn-admin-edit-notice')) document.getElementById('btn-admin-edit-notice').style.display = 'none';
-                if(document.getElementById('btn-admin-add-ch')) document.getElementById('btn-admin-add-ch').style.display = 'none';
-            }
-            
-            syncStudentCloudProfile(username);
-            listenToActiveRoster();
-            listenToGlobalAnnouncements();
-            listenToNestedMasterCurriculum();
-            updateNavigationHistoryState("SUBJECTS");
-            setupFCMRegistrationToken(username);
-
-            setupChatListener();
-            updateChatButtonVisibility();
-            setupChatPopupScheduler();
-        }
-
-        function setupChatListener() {
-            if (chatUnsubscribe) chatUnsubscribe();
-            
-            const chatColl = getChatCollection();
-            chatUnsubscribe = chatColl.onSnapshot(snapshot => {
-                let messages = [];
-                snapshot.forEach(doc => {
-                    try {
-                        const data = doc.data();
-                        messages.push({
-                            id: doc.id,
-                            sender: data.sender || 'Anonymous',
-                            text: data.text || '',
-                            media: data.media || null,
-                            mediaType: data.mediaType || null,
-                            mediaName: data.mediaName || null,
-                            timestamp: data.timestamp ? data.timestamp.toDate() : new Date()
-                        });
-                    } catch(err) {
-                        console.warn("Skipped corrupted message index entry safely.");
-                    }
-                });
-                
-                messages.sort((a, b) => a.timestamp - b.timestamp);
-                
-                if (messages.length > 40) {
-                    messages = messages.slice(messages.length - 40);
-                }
-                
-                const chatWindow = document.getElementById('chat-window-container');
-                const isChatClosed = !chatWindow || !chatWindow.classList.contains('active');
-                
-                if (chatInitialized && isChatClosed && messages.length > 0) {
-                    const latestMsg = messages[messages.length - 1];
-                    const isLatestMsgFromSelf = latestMsg.sender.toUpperCase() === (activeUser ? activeUser.toUpperCase() : "");
-                    if (!isLatestMsgFromSelf) {
-                        document.getElementById('chat-unread-dot').style.display = 'block';
-                    }
-                }
-                
-                renderChatMessages(messages);
-                chatInitialized = true;
-            }, error => {
-                console.error("Chat sync failed safely: ", error);
-            });
-        }
-
-        function renderChatMessages(messages) {
-            const list = document.getElementById('chat-messages-list');
-            if (!list) return;
-            
-            const isAtBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 60;
-            list.innerHTML = "";
-            
-            if (messages.length === 0) {
-                list.innerHTML = `<p style="color:var(--text-muted); text-align:center; font-size:0.8rem; margin:auto; padding:20px 10px;">Welcome to the Science_IX study space chat! Say hello and share notes. 👋</p>`;
-                return;
-            }
-            
-            messages.forEach(msg => {
-                const isSelf = msg.sender.toUpperCase() === (activeUser ? activeUser.toUpperCase() : "");
-                const item = document.createElement('div');
-                item.className = `chat-msg-item ${isSelf ? 'self' : 'other'}`;
-                
-                const timeString = msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                
-                let mediaHtml = '';
-                if (msg.media) {
-                    if (msg.mediaType && msg.mediaType.startsWith('image/')) {
-                        mediaHtml = `<img src="${msg.media}" class="chat-inline-media" onclick="openMediaPreview('${msg.media}')" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'40\'><text x=\'10\' y=\'25\' fill=\'red\'>Corrupted Image</text></svg>';">`;
-                    } else {
-                        mediaHtml = `
-                            <a href="${msg.media}" download="${msg.mediaName || 'attachment'}" class="chat-inline-file">
-                                📂 <span>${msg.mediaName || 'Shared Document'}</span>
-                            </a>
-                        `;
-                    }
-                }
-
-                item.innerHTML = `
-                    <div class="chat-msg-sender">${msg.sender}</div>
-                    <div class="chat-msg-bubble">
-                        <div style="white-space: pre-wrap;">${msg.text}</div>
-                        ${mediaHtml}
-                    </div>
-                    <div class="chat-msg-time">${timeString}</div>
-                `;
-                list.appendChild(item);
-            });
-            
-            if (isAtBottom) {
-                list.scrollTop = list.scrollHeight;
-            }
-        }
-
-        function autoExpandChatInput(el) {
-            el.style.height = 'auto';
-            el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chat-message-input');
-            const txt = input.value.trim();
-            if (!txt) return;
-            
-            const chatColl = getChatCollection();
-            chatColl.add({
-                sender: activeUser || 'Student',
-                text: txt,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                input.value = "";
-                input.style.height = 'auto';
-                const list = document.getElementById('chat-messages-list');
-                if (list) list.scrollTop = list.scrollHeight;
-            }).catch(e => {
-                console.error("Chat push failed:", e);
-            });
-        }
-
-        /* --- CRASH-PROOF COMPRESSION & SIZE GUARD SYSTEM --- */
-        function handleChatMediaAttachment(input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            if (file.size > 500 * 1024) {
-                if (!file.type.startsWith('image/')) {
-                    showCustomAlert("Upload Limit Exceeded", "To prevent database crashes, non-image files like PDFs are strictly limited to 500KB. Please compress your PDF before uploading.");
-                    input.value = "";
-                    return;
-                }
-            }
-
-            const r = new FileReader();
-            r.onload = function(e) {
-                const rawResult = e.target.result;
-                
-                if (file.type.startsWith('image/')) {
-                    compressImageFile(rawResult, (compressedBase64) => {
-                        uploadMediaToFirestore(compressedBase64, file.type, file.name);
-                        input.value = "";
-                    });
-                } else {
-                    uploadMediaToFirestore(rawResult, file.type, file.name);
-                    input.value = "";
-                }
-            };
-            r.readAsDataURL(file);
-        }
-
-        function compressImageFile(base64Str, callback) {
-            const img = new Image();
-            img.src = base64Str;
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                let width = img.width;
-                let height = img.height;
-                const maxDim = 800;
-                
-                if (width > maxDim || height > maxDim) {
-                    if (width > height) {
-                        height = Math.round((height * maxDim) / width);
-                        width = maxDim;
-                    } else {
-                        width = Math.round((width * maxDim) / height);
-                        height = maxDim;
-                    }
-                }
-                
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
-                
-                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.4);
-                callback(compressedBase64);
-            };
-        }
-
-        function uploadMediaToFirestore(base64Payload, mimeType, fileName) {
-            const chatColl = getChatCollection();
-            chatColl.add({
-                sender: activeUser || 'Student',
-                text: `📎 Shared a file:`,
-                media: base64Payload,
-                mediaType: mimeType,
-                mediaName: fileName,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                const list = document.getElementById('chat-messages-list');
-                if (list) list.scrollTop = list.scrollHeight;
-                spawnNotificationToast("📁 File shared successfully!");
-            }).catch(err => {
-                console.error("Firestore Upload Error: ", err);
-                showCustomAlert("Upload Failed", "Could not complete sharing. The file structure might be too complex or corrupt.");
-            });
-        }
-
-        function openMediaPreview(src) {
-            document.getElementById('view-frame').src = src;
-            document.getElementById('viewer-modal').style.display = 'flex';
-        }
-
-        function toggleChatWindow() {
-            const container = document.getElementById('chat-window-container');
-            if (!container) return;
-            
-            const isActive = container.classList.contains('active');
-            if (isActive) {
-                container.classList.remove('active');
-            } else {
-                container.classList.add('active');
-                document.getElementById('chat-unread-dot').style.display = 'none';
-                document.getElementById('chat-btn-popup').classList.remove('active');
-                
-                setTimeout(() => {
-                    const list = document.getElementById('chat-messages-list');
-                    if (list) list.scrollTop = list.scrollHeight;
-                }, 100);
-            }
-        }
-
-        function setupChatPopupScheduler() {
-            const triggerPopup = () => {
-                const popup = document.getElementById('chat-btn-popup');
-                const chatWindow = document.getElementById('chat-window-container');
-                const isChatOpen = chatWindow && chatWindow.classList.contains('active');
-                const chatBtn = document.getElementById('floating-chat-btn');
-                const isChatBtnVisible = chatBtn && chatBtn.style.display !== 'none';
-
-                if (popup && !isChatOpen && isChatBtnVisible && !examActiveState) {
-                    popup.classList.add('active');
-                    
-                    setTimeout(() => {
-                        popup.classList.remove('active');
-                    }, 30000);
-                }
-            };
-
-            setTimeout(triggerPopup, 5000);
-            setInterval(triggerPopup, 600000);
-        }
-
-        function updateChatButtonVisibility() {
-            const chatBtn = document.getElementById('floating-chat-btn');
-            const chatWindow = document.getElementById('chat-window-container');
-            const chatPopup = document.getElementById('chat-btn-popup');
-            if (!chatBtn) return;
-            
-            const isQuizOpen = document.getElementById('quiz-portal-modal').style.display === 'flex';
-            if (examActiveState || isQuizOpen) {
-                chatBtn.style.display = 'none';
-                if (chatPopup) chatPopup.classList.remove('active');
-                if (chatWindow) chatWindow.classList.remove('active');
-            } else {
-                if (activeUser) {
-                    chatBtn.style.display = 'flex';
-                } else {
-                    chatBtn.style.display = 'none';
-                    if (chatPopup) chatPopup.classList.remove('active');
-                    if (chatWindow) chatWindow.classList.remove('active');
-                }
-            }
-        }
-
-        function setupFCMRegistrationToken(username) {
-            if (!('serviceWorker' in navigator) || window.location.protocol === 'blob:' || window.location.protocol === 'data:') return;
-            
-            const vapidKey = "YOUR_VAPID_PUBLIC_KEY_HERE"; 
-            
-            if (vapidKey === "YOUR_VAPID_PUBLIC_KEY_HERE") {
-                console.warn("FCM registration suspended. Please input your VAPID Key string.");
-                return;
-            }
-
-            navigator.serviceWorker.ready.then((registration) => {
-                messaging.getToken({ serviceWorkerRegistration: registration, vapidKey: vapidKey })
-                .then((currentToken) => {
-                    if (currentToken) {
-                        console.log("FCM background token registered: ", currentToken);
-                        db.collection('students').doc(username.toUpperCase()).update({
-                            fcmToken: currentToken
-                        }).catch(e => console.warn("Fallback Token Registry:", e));
-                    } else {
-                        console.log('No registration token available. Request permission to generate one.');
-                    }
-                })
-                .catch((err) => {
-                    console.log('An error occurred while retrieving token: ', err);
-                });
-            });
-        }
-
-        function updateNavigationHistoryState(viewName) {
-            currentAppStateView = viewName;
-            history.pushState({ appView: viewName }, "");
-        }
-
-        function setupHardwareBackButtonEngine() {
-            window.addEventListener('popstate', (event) => {
-                if (examActiveState) {
-                    updateNavigationHistoryState("QUIZ");
-                    spawnNotificationToast("⚠️ ProGuard Active! Use 'Exit Board' button directly.");
-                    return;
-                }
-                if (event.state && event.state.appView) {
-                    processStateNavigationTransition(event.state.appView);
-                } else {
-                    processStateNavigationTransition("SUBJECTS");
-                }
-            });
-        }
-
-        function processStateNavigationTransition(view) {
-            currentAppStateView = view;
-            if (view === "SUBJECTS") {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('subfolders-workspace-view').style.display = 'none';
-                document.getElementById('directory-workspace-view').style.display = 'none';
-                document.getElementById('subject-selection-board').style.display = 'block';
-                selectedSubjectCode = "";
-                selectedChapterIndex = null;
-                recalculateCompletionProgressBars();
-            } else if (view === "CHAPTERS") {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('subject-selection-board').style.display = 'none';
-                document.getElementById('subfolders-workspace-view').style.display = 'none';
-                document.getElementById('directory-workspace-view').style.display = 'block';
-                selectedChapterIndex = null;
-                if (selectedSubjectCode) renderChapterFolderWorkspace(selectedSubjectCode);
-            } else if (view === "SUBFOLDERS") {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('subject-selection-board').style.display = 'none';
-                document.getElementById('directory-workspace-view').style.display = 'none';
-                document.getElementById('subfolders-workspace-view').style.display = 'block';
-                if (selectedChapterIndex !== null) renderActiveSubFolderBucketView();
-            }
-            updateChatButtonVisibility();
-        }
-
-        function syncStudentCloudProfile(username) {
-            const keyName = username.toUpperCase();
-            const todayStr = new Date().toDateString();
-            db.collection('students').doc(keyName).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    currentXP = data.xp || 0;
-                    readLog = data.readLog || [];
-                    solvedQuestionsLog = data.solvedQuestionsLog || {};
-                    userStreak = data.streak || 1;
-                    if (keyName !== "PRATIM" && data.lastActiveDate !== todayStr) {
-                        userStreak = (data.lastActiveDate === new Date(Date.now() - 86400000).toDateString()) ? userStreak + 1 : 1;
-                        db.collection('students').doc(keyName).update({ streak: userStreak, lastActiveDate: todayStr });
-                    }
-                    document.getElementById('xp-count').innerText = currentXP;
-                    document.getElementById('streak-count').innerText = userStreak;
-                    
-                    if (userStreak >= 5 && keyName !== "PRATIM") {
-                        setTimeout(() => { 
-                            triggerConfettiBurst(); 
-                            playRewardChimeSound('streak');
-                            showCustomAlert("🔥 Phenomenal Streak!", `Holding a <strong>${userStreak} Day Streak</strong>!`); 
-                        }, 1200);
-                    }
-                } else {
-                    db.collection('students').doc(keyName).set({ name: username, xp: 0, streak: 1, lastActiveDate: todayStr, readLog: [], solvedQuestionsLog: {}, joined: new Date().toLocaleDateString() });
-                }
-            });
-        }
-
-        function listenToActiveRoster() {
-            db.collection('students').onSnapshot(snapshot => {
-                window.globalCachedRosterSubmits = [];
-                let activeProfileExisted = false;
-                snapshot.forEach(doc => { 
-                    const profileData = doc.data();
-                    window.globalCachedRosterSubmits.push(profileData); 
-                    if (activeUser && profileData.name.toUpperCase() === activeUser.toUpperCase()) {
-                        activeProfileExisted = true;
-                    }
-                });
-
-                if (activeUser && activeUser.toUpperCase() !== "PRATIM" && !activeProfileExisted && window.latestCloudPayload.PHY) {
-                    localStorage.removeItem('science_ix_session');
-                    activeUser = null;
-                    location.reload();
-                }
-            });
-        }
-
-        function listenToGlobalAnnouncements() {
-            db.collection('curriculum').doc('billboard_announcement').onSnapshot(doc => {
-                if (doc.exists) {
-                    const currentNotice = doc.data().message;
-                    document.getElementById('announcement-display').innerText = currentNotice;
-                    if (currentNotice !== lastSeenNoticeText) document.getElementById('notice-unread-dot').style.display = 'block';
-                }
-            });
-        }
-
-        /* --- CRASH-PROOF MASTER SAVE VALIDATOR --- */
-        function safeSaveCurriculum(payload) {
-            if (!payload || !payload.PHY || !payload.CHEM || !payload.BIO || !payload.MATH) {
-                console.error("Save blocked: Document payload lacks valid subject indexes.");
-                return Promise.reject("Corrupted master layout block");
-            }
-            return db.collection('curriculum').doc('nested_master_folders').set(payload);
-        }
-
-        function listenToNestedMasterCurriculum() {
-            db.collection('curriculum').doc('nested_master_folders').onSnapshot(doc => {
-                if (doc.exists) {
-                    window.latestCloudPayload = doc.data();
-                    document.getElementById('sync-status').className = "sync-indicator sync-connected";
-                    document.getElementById('sync-status').innerHTML = "<span></span> Synchronized";
-                    recalculateCompletionProgressBars();
-                    if (selectedSubjectCode) {
-                        if (selectedChapterIndex !== null) renderActiveSubFolderBucketView();
-                        else renderChapterFolderWorkspace(selectedSubjectCode);
-                    }
-                } else {
-                    console.warn("Curriculum document is temporarily unreachable on the server.");
-                    window.latestCloudPayload = { PHY: [], CHEM: [], BIO: [], MATH: [] };
-                }
-            }, error => {
-                console.error("Master sync subscription connection error:", error);
-                document.getElementById('sync-status').className = "sync-indicator";
-                document.getElementById('sync-status').innerHTML = "<span></span> Sync Failed";
-            });
-        }
-
-        function recalculateCompletionProgressBars() {
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            ['PHY', 'CHEM', 'BIO', 'MATH'].forEach(k => {
-                const chapters = window.latestCloudPayload[k] || [];
-                let overallItemsCount = 0, activeReadCount = 0;
-                chapters.forEach((ch, chIdx) => {
-                    const lists = [ch.notes, ch.dppModules, ch.testModules];
-                    lists.forEach(l => { if (l) overallItemsCount += l.length; });
-                    if (ch.notes) ch.notes.forEach((item, itemIdx) => { if (readLog.includes(`${k}-${chIdx}-notes-${itemIdx}`)) activeReadCount++; });
-                    if (ch.dppModules) ch.dppModules.forEach(mod => { if (solvedQuestionsLog[`${k}_${chIdx}_${mod.id}_BLOCKED_STATUS`]) activeReadCount++; });
-                    if (ch.testModules) ch.testModules.forEach(mod => { if (solvedQuestionsLog[`${k}_${chIdx}_${mod.id}_BLOCKED_STATUS`]) activeReadCount++; });
-                });
-                const percentage = overallItemsCount > 0 ? Math.round((activeReadCount / overallItemsCount) * 100) : 0;
-                const progressDisplay = document.getElementById(`prog-${k}`);
-                if (progressDisplay) {
-                    progressDisplay.innerText = `${percentage}%`;
-                    progressDisplay.style.display = isAdmin ? 'none' : 'inline-block';
-                }
-            });
-        }
-
-        function getSubjectNameString(code) {
-            const mapping = { PHY: "Physics", CHEM: "Chemistry", BIO: "Biology", MATH: "Mathematics" };
-            return mapping[code] || "Subject Core";
-        }
-
-        function enterSubjectWorkspace(subjectCode) {
-            selectedSubjectCode = subjectCode;
-            document.getElementById('subject-selection-board').style.display = 'none';
-            document.getElementById('directory-workspace-view').style.display = 'block';
-            const mapping = { PHY: "Physics Core", CHEM: "Chemistry Core", BIO: "Biology Core", MATH: "Mathematics Core" };
-            document.getElementById('directory-title-label').innerText = mapping[subjectCode] || "Subject Core";
-            
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            if(document.getElementById('btn-admin-add-ch')) {
-                document.getElementById('btn-admin-add-ch').style.display = isAdmin ? 'inline-block' : 'none';
-            }
-            
-            renderChapterFolderWorkspace(subjectCode);
-            updateNavigationHistoryState("CHAPTERS");
-        }
-
-        function exitToSubjectBoard() { processStateNavigationTransition("SUBJECTS"); }
-
-        function renderChapterFolderWorkspace(subCode) {
-            const container = document.getElementById('chapter-list-target');
-            if (!container) return; container.innerHTML = "";
-            const chapters = window.latestCloudPayload[subCode] || [];
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            
-            chapters.forEach((chapter, index) => {
-                const row = document.createElement('div');
-                row.className = 'chapter-row';
-                row.onclick = () => launchDetailedSubfolderWorkspace(index);
-                row.innerHTML = `
-                    <div>
-                        <span class="chapter-label">CH - ${String(index + 1).padStart(2, '0')}</span>
-                        <div class="chapter-title-text">${chapter.title}</div>
-                        <div class="chapter-counters">DPPs: ${(chapter.dppModules||[]).length} • Notes: ${(chapter.notes||[]).length} • Tests: ${(chapter.testModules||[]).length}</div>
-                    </div>
-                    <div onclick="event.stopPropagation();">
-                        <button class="btn-delete-chapter" ${isAdmin ? 'style="display:inline-block;"' : ''} onclick="deleteChapterRow(${index})">🗑</button>
-                        <span style="color:#9ca3af; font-size:0.8rem;">➔</span>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        function launchDetailedSubfolderWorkspace(chIndex) {
-            selectedChapterIndex = chIndex;
-            document.getElementById('directory-workspace-view').style.display = 'none';
-            document.getElementById('subfolders-workspace-view').style.display = 'block';
-            document.getElementById('subfolder-ch-title-label').innerText = window.latestCloudPayload[selectedSubjectCode][chIndex].title;
-            switchActiveSlotTab('dppModules');
-            updateNavigationHistoryState("SUBFOLDERS");
-        }
-
-        function exitToChaptersDirectory() { processStateNavigationTransition("CHAPTERS"); }
-
-        function switchActiveSlotTab(tabKey) {
-            activeSlotTabKey = tabKey;
-            document.querySelectorAll('.slot-tab-btn').forEach(btn => { btn.classList.toggle('active', btn.id === `tab-${tabKey}`); });
-            renderActiveSubFolderBucketView();
-        }
-
-        function renderActiveSubFolderBucketView() {
-            const listContainer = document.getElementById('active-slot-list-target');
-            listContainer.innerHTML = "";
-            const chapterObj = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex];
-            const arr = chapterObj[activeSlotTabKey] || [];
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            
-            document.getElementById('btn-admin-add-slot-item').style.display = (isAdmin && activeSlotTabKey !== 'notes') ? 'inline-block' : 'none';
-            document.getElementById('admin-notes-upload-block').style.display = (isAdmin && activeSlotTabKey === 'notes') ? 'flex' : 'none';
-            
-            const titlesMapping = { dppModules: "🎯 Connected Practice Sets (DPPs)", notes: "📚 Managed Class Notes", testModules: "📅 Scheduled Evaluation Tests" };
-            document.getElementById('bucket-panel-title').innerHTML = `<svg style="width:16px; height:16px; fill:var(--neon-blue);" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="36" ry="12" fill="none" stroke="#2563eb" stroke-width="4" transform="rotate(60 50 50)"/><circle cx="50" cy="50" r="8" fill="#111827"/></svg> ${titlesMapping[activeSlotTabKey]}`;
-            
-            if (arr.length === 0) {
-                listContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px 0; font-size:0.85rem;">Empty sub-folder slot node framework.</p>`; return;
-            }
-            
-            arr.forEach((item, itemIndex) => {
-                const li = document.createElement('li'); li.className = 'content-item';
-                if (activeSlotTabKey === 'notes') {
-                    let icon = item.type === 'html' ? '🌐' : item.type === 'link' ? '🔗' : '📄';
-                    li.innerHTML = `<span>${icon} ${item.name}</span><div><button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : ''} margin-right:4px;" onclick="deleteFileAsset(${itemIndex})">🗑</button><button class="btn-view" onclick="launchViewer(${itemIndex})">Open</button></div>`;
-                } else {
-                    li.innerHTML = `
-                        <div style="display:flex; flex-direction:column; gap:2px;">
-                            <span style="font-weight:700;">📝 ${item.title}</span>
-                            <span style="font-size:0.72rem; color:var(--text-muted); font-weight:500;">Config: ${item.duration}m • ${(item.questions||[]).length} Questions Attached</span>
-                        </div>
-                        <div style="display:flex; gap:4px;">
-                            <button class="btn-view btn-stats" style="${isAdmin ? 'display:inline-block;' : 'display:none;'} background:#f0fdf4; color:var(--pw-green); border-color:var(--pw-green);" onclick="openModuleLeaderboard('${item.id}')">📊 Stats</button>
-                            <button class="btn-view" style="background:#eff6ff; color:var(--neon-blue); border-color:var(--neon-blue);" onclick="launchQuizWorkspace('${item.id}')">Open</button>
-                            <button class="btn-delete-chapter" style="${isAdmin ? 'display:inline-block;' : ''}" onclick="deleteQuizModuleSlot('${item.id}')">🗑</button>
-                        </div>`;
-                }
-                listContainer.appendChild(li);
-            });
-        }
-
-        function handleAddSlotItemClick() {
-            showCustomPrompt("Create Assessment Block", "Enter Title Name:", (title) => {
-                showCustomPrompt("Set Timer Duration", "Enter duration period (in minutes):", (mins) => {
-                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                    if (!copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey]) copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey] = [];
-                    copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].push({ id: "mod-" + Date.now(), title: title, duration: parseInt(mins) || 0, questions: [] });
-                    safeSaveCurriculum(copy).then(() => {
-                        const subjectName = getSubjectNameString(selectedSubjectCode);
-                        const chapterTitle = copy[selectedSubjectCode][selectedChapterIndex].title;
-                        const typeName = activeSlotTabKey === 'dppModules' ? "DPP Set" : "Monthly Test Block";
-                        broadcastGlobalNotification(`🆕 ${typeName} Created: "${title}" added in [${subjectName} ➔ ${chapterTitle} ➔ ${typeName}s]`);
-                    });
-                });
-            });
-        }
-
-        function deleteQuizModuleSlot(modId) {
-            showCustomConfirm("Delete This Assessment Block?", "Drops all contained context parameters.", () => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                const targetIdx = copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].findIndex(m => m.id === modId);
-                if (targetIdx !== -1) { 
-                    copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].splice(targetIdx, 1); 
-                    safeSaveCurriculum(copy); 
-                }
-            });
-        }
-
-        function handleLinkUploadTrigger() {
-            showCustomPrompt("Resource Header Label", "Label name:", (label) => {
-                showCustomPrompt("Destination Link", "Paste complete dynamic HTTPS URL asset link here:", (url) => {
-                    if (!url.startsWith('http')) url = 'https://' + url;
-                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                    if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
-                    copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "link-"+Date.now(), name: label, data: url, type: 'link' });
-                    safeSaveCurriculum(copy).then(() => {
-                        const subjectName = getSubjectNameString(selectedSubjectCode);
-                        const chapterTitle = copy[selectedSubjectCode][selectedChapterIndex].title;
-                        broadcastGlobalNotification(`🆕 Class Notes Link Added: "${label}" pinned in [${subjectName} ➔ ${chapterTitle} ➔ Class Notes]`);
-                    });
-                });
-            });
-        }
-
-        function handleNotesAssetUpload(input) {
-            const file = input.files[0]; if (!file) return;
-            const ext = file.name.split('.').pop().toLowerCase();
-            showCustomPrompt("Label Name", "Enter displaying asset name:", (label) => {
-                const r = new FileReader();
-                r.onload = function(e) {
-                    let rawData = e.target.result; let finalType = ext;
-                    if (ext === 'html' || ext === 'txt') {
-                        const txt = new TextDecoder("utf-8").decode(e.target.result);
-                        rawData = 'data:text/html;charset=utf-8,' + encodeURIComponent(txt); finalType = 'html';
-                    }
-                    let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                    if (!copy[selectedSubjectCode][selectedChapterIndex].notes) copy[selectedSubjectCode][selectedChapterIndex].notes = [];
-                    copy[selectedSubjectCode][selectedChapterIndex].notes.push({ id: "file-" + Date.now(), name: label, data: rawData, type: finalType });
-                    safeSaveCurriculum(copy).then(() => { 
-                        input.value = ""; 
-                        const subjectName = getSubjectNameString(selectedSubjectCode);
-                        const chapterTitle = copy[selectedSubjectCode][selectedChapterIndex].title;
-                        broadcastGlobalNotification(`🆕 Class Notes File Uploaded: "${label}" posted in [${subjectName} ➔ ${chapterTitle} ➔ Class Notes]`);
-                    });
-                };
-                if (ext === 'html' || ext === 'txt') r.readAsArrayBuffer(file); else r.readAsDataURL(file);
-            });
-        }
-
-        function deleteFileAsset(itemIndex) {
-            showCustomConfirm("Delete Asset?", "Drop this resource from database?", () => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                copy[selectedSubjectCode][selectedChapterIndex].notes.splice(itemIndex, 1);
-                safeSaveCurriculum(copy);
-            });
-        }
-
-        function handleCreateChapterClick() {
-            showCustomPrompt("New Chapter Dropdown", "Enter unique chapter heading title name:", (title) => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                if (!copy[selectedSubjectCode]) copy[selectedSubjectCode] = [];
-                copy[selectedSubjectCode].push({ title: title, notes: [], dppModules: [], testModules: [] });
-                safeSaveCurriculum(copy).then(() => {
-                    const subjectName = getSubjectNameString(selectedSubjectCode);
-                    broadcastGlobalNotification(`🆕 Chapter Created: "${title}" formed in Subject [${subjectName}]`);
-                });
-            });
-        }
-
-        function deleteChapterRow(index) {
-            showCustomConfirm("Delete Entire Chapter Context?", "Drops all inner assessments completely.", () => {
-                let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-                copy[selectedSubjectCode].splice(index, 1);
-                safeSaveCurriculum(copy);
-            });
-        }
-
-        window.activeModuleIdReference = null;
-        function launchQuizWorkspace(modId) {
-            window.activeModuleIdReference = modId;
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === modId);
-            document.getElementById('quiz-portal-title').innerText = targetedMod.title;
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            document.getElementById('quiz-admin-creator').style.display = isAdmin ? 'block' : 'none';
-            
-            const examBlockoutKey = `${selectedSubjectCode}_${selectedChapterIndex}_modId_BLOCKED_STATUS`;
-            if (solvedQuestionsLog[examBlockoutKey] === "BLOCKED" && !isAdmin) {
-                showCustomAlert("❌ Access Revoked", "Security lock triggered or profile already committed finalized responses."); return;
-            }
-            renderQuizQuestionsToViewport();
-            document.getElementById('quiz-portal-modal').style.display = 'flex';
-            if (!isAdmin && targetedMod.duration > 0) initiateProGuardExamTimer(targetedMod.duration);
-            updateNavigationHistoryState("QUIZ");
-            updateChatButtonVisibility(); 
-        }
-
-        function renderQuizQuestionsToViewport() {
-            const targetContainer = document.getElementById('quiz-questions-render-target'); targetContainer.innerHTML = "";
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
-            if (!targetedMod || !targetedMod.questions || targetedMod.questions.length === 0) {
-                targetContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px 0;">No active layout mapped here yet.</p>`; return;
-            }
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            targetedMod.questions.forEach((q, qIndex) => {
-                const card = document.createElement('div'); card.className = "question-card";
-                const uniqueStatusKey = `${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`;
-                const hasSolved = solvedQuestionsLog[uniqueStatusKey] || null;
-                let actionHtml = isAdmin ? `<button class="btn-delete-chapter" style="display:inline-block; margin-bottom:10px;" onclick="removeQuestionItem(${qIndex})">🗑 Remove</button>` : '';
-                
-                const stemText = q.stem || q.text || "No question text stems logged";
-                const imgUrl = q.img || q.image || null;
-                let imgHtml = imgUrl ? `<img src="${imgUrl}" class="question-image">` : '';
-                
-                const optionA = (q.options && q.options.A) ? q.options.A : (q.A || "Option A");
-                const optionB = (q.options && q.options.B) ? q.options.B : (q.B || "Option B");
-                const optionC = (q.options && q.options.C) ? q.options.C : (q.C || "Option C");
-                const optionD = (q.options && q.options.D) ? q.options.D : (q.D || "Option D");
-
-                card.innerHTML = `
-                    ${actionHtml}<p style="font-weight:700;">Q${qIndex + 1}: ${stemText}</p>${imgHtml}
-                    <div class="options-grid">
-                        <button class="option-button" id="opt-${qIndex}-A" onclick="handleCommitOptionSelection(${qIndex}, 'A')"><strong>A:</strong> ${optionA}</button>
-                        <button class="option-button" id="opt-${qIndex}-B" onclick="handleCommitOptionSelection(${qIndex}, 'B')"><strong>B:</strong> ${optionB}</button>
-                        <button class="option-button" id="opt-${qIndex}-C" onclick="handleCommitOptionSelection(${qIndex}, 'C')"><strong>C:</strong> ${optionC}</button>
-                        <button class="option-button" id="opt-${qIndex}-D" onclick="handleCommitOptionSelection(${qIndex}, 'D')"><strong>D:</strong> ${optionD}</button>
-                    </div>
-                    <div class="correction-container" id="score-status-${qIndex}"><span style="color:var(--text-muted); font-size:0.75rem;">Status: Awaiting action...</span></div>
-                `;
-                targetContainer.appendChild(card);
-                if (hasSolved || isAdmin) lockVisualOptionState(qIndex, q.answer, hasSolved || q.answer);
-            });
-        }
-
-        function handleCommitOptionSelection(qIndex, selectionToken) {
-            if (activeUser.toUpperCase() === "PRATIM") return;
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
-            const questionObj = targetedMod.questions[qIndex];
-            const uniqueStatusKey = `${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${questionObj.id}`;
-            if (solvedQuestionsLog[uniqueStatusKey]) return;
-            
-            solvedQuestionsLog[uniqueStatusKey] = selectionToken;
-            const isCorrect = (selectionToken === questionObj.answer);
-            if (isCorrect) currentXP += 25; document.getElementById('xp-count').innerText = currentXP;
-            
-            db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog, xp: currentXP }).then(() => {
-                lockVisualOptionState(qIndex, questionObj.answer, selectionToken);
-                if (isCorrect) {
-                    triggerConfettiBurst();
-                    playRewardChimeSound('xp');
-                }
-                let solvedCount = 0;
-                targetedMod.questions.forEach(q => { if (solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_${q.id}`]) solvedCount++; });
-                if (solvedCount === targetedMod.questions.length) {
-                    clearInterval(proGuardCountdownInterval); examActiveState = false;
-                    document.getElementById('btn-exit-quiz-portal').style.display = 'inline-block';
-                    document.getElementById('security-timer-banner').style.display = 'none';
-                    solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_BLOCKED_STATUS`] = "COMPLETED";
-                    db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog });
-                    showCustomAlert("🎓 Assessment Finalized", "All response vectors have been updated cleanly.");
-                }
-            });
-        }
-
-        function lockVisualOptionState(qIndex, correctToken, savedSelection) {
-            ['A', 'B', 'C', 'D'].forEach(tok => {
-                const btn = document.getElementById(`opt-${qIndex}-${tok}`);
-                if (btn) {
-                    btn.disabled = true;
-                    if (tok === correctToken) btn.classList.add('correct');
-                    if (tok === savedSelection && savedSelection !== correctToken) btn.classList.add('wrong');
-                }
-            });
-            const indicator = document.getElementById(`score-status-${qIndex}`);
-            if (indicator) indicator.innerHTML = savedSelection === correctToken ? `<span style="color:#059669; font-weight:700;">✓ Correct Verified</span>` : `<span style="color:#dc2626; font-weight:700;">✕ Response Locked</span>`;
-        }
-
-        function submitCustomQuestionItem() {
-            const stem = document.getElementById('q-input-text').value.trim(); const imgUrl = document.getElementById('q-input-img').value.trim();
-            const optA = document.getElementById('q-opt-A').value.trim(); const optB = document.getElementById('q-opt-B').value.trim();
-            const optC = document.getElementById('q-opt-C').value.trim(); const optD = document.getElementById('q-opt-D').value.trim();
-            const answerToken = document.getElementById('q-correct-ans').value;
-            if (!stem || !optA || !optB || !optC || !optD) { alert("Missing arguments."); return; }
-            
-            let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-            const targetMod = copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference);
-            if (!targetMod.questions) targetMod.questions = [];
-            targetMod.questions.push({ id: "q-" + Date.now(), stem: stem, img: imgUrl || null, options: { A: optA, B: optB, C: optC, D: optD }, answer: answerToken });
-            
-            safeSaveCurriculum(copy).then(() => {
-                document.getElementById('q-input-text').value = ""; document.getElementById('q-input-img').value = "";
-                document.getElementById('q-opt-A').value = ""; document.getElementById('q-opt-B').value = "";
-                document.getElementById('q-opt-C').value = ""; document.getElementById('q-opt-D').value = "";
-                renderQuizQuestionsToViewport();
-            });
-        }
-
-        function launchViewer(itemIndex) {
-            const item = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex].notes[itemIndex];
-            const uniqueId = item.id || `${selectedSubjectCode}-${selectedChapterIndex}-notes-${itemIndex}`;
-            
-            if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
-                if (!readLog.includes(uniqueId)) {
-                    readLog.push(uniqueId);
-                    currentXP += 30; 
-                    document.getElementById('xp-count').innerText = currentXP;
-                    
-                    db.collection('students').doc(activeUser.toUpperCase()).update({ 
-                        readLog: readLog, 
-                        xp: currentXP 
-                    });
-                    
-                    triggerConfettiBurst();
-                    playRewardChimeSound('xp');
-                    spawnNotificationToast("✨ Document Unlocked! +30 XP Added.");
-                }
-            }
-
-            if (activeNotesTimerInterval) {
-                clearInterval(activeNotesTimerInterval);
-                activeNotesTimerInterval = null;
-            }
-
-            if (activeUser && activeUser.toUpperCase() !== "PRATIM") {
-                activeNotesTimerInterval = setInterval(() => {
-                    currentXP += 5; 
-                    document.getElementById('xp-count').innerText = currentXP;
-                    
-                    db.collection('students').doc(activeUser.toUpperCase()).update({ 
-                        xp: currentXP 
-                    });
-                    
-                    playRewardChimeSound('xp');
-                    spawnNotificationToast("⏱️ Continuous Study Bonus: +5 XP Added!");
-                }, 5 * 60 * 1000); 
-            }
-
-            if (item.type === 'link' || item.data.startsWith('http')) { 
-                window.open(item.data, '_blank'); 
-            }
-            else if (item.data.startsWith('data:text/html')) {
-                const decodedMarkup = decodeURIComponent(item.data.split(',')[1]);
-                const blob = new Blob([decodedMarkup], {type: 'text/html;charset=utf-8'});
-                document.getElementById('view-frame').src = URL.createObjectURL(blob);
-                document.getElementById('viewer-modal').style.display = 'flex';
-            } else {
-                document.getElementById('view-frame').src = item.data;
-                document.getElementById('viewer-modal').style.display = 'flex';
-            }
-        }
-
-        function closeViewer() {
-            document.getElementById('viewer-modal').style.display = 'none';
-            document.getElementById('view-frame').src = "about:blank";
-            
-            if (activeNotesTimerInterval) {
-                clearInterval(activeNotesTimerInterval);
-                activeNotesTimerInterval = null;
-                spawnNotificationToast("⏹️ Study Session ended. Active duration logged.");
-            }
-        }
-
-        function handleNativeQuestionImageUpload(input) {
-            const file = input.files[0]; if (!file) return;
-            const r = new FileReader(); r.onload = (e) => { document.getElementById('q-input-img').value = e.target.result; }; r.readAsDataURL(file);
-        }
-
-        function removeQuestionItem(qIndex) {
-            let copy = JSON.parse(JSON.stringify(window.latestCloudPayload));
-            copy[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === window.activeModuleIdReference).questions.splice(qIndex, 1);
-            safeSaveCurriculum(copy).then(() => renderQuizQuestionsToViewport());
-        }
-
-        function openModuleLeaderboard(modId) {
-            if (activeUser.toUpperCase() !== "PRATIM") return; 
-            const modal = document.getElementById('leaderboard-overlay-modal');
-            const container = document.getElementById('leaderboard-metrics-target'); container.innerHTML = "";
-            const targetedMod = window.latestCloudPayload[selectedSubjectCode][selectedChapterIndex][activeSlotTabKey].find(m => m.id === modId);
-            const targetQuestionsArray = targetedMod.questions || [];
-            
-            let performanceRows = [];
-            (window.globalCachedRosterSubmits || []).forEach(student => {
-                if (student.name.toUpperCase() === "PRATIM") return;
-                let correct = 0, cheated = (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_BLOCKED_STATUS`] === "BLOCKED");
-                targetQuestionsArray.forEach(q => { if (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_modId_BLOCKED_STATUS`] === "BLOCKED") correct = 0; });
-                
-                targetQuestionsArray.forEach(q => { if (student.solvedQuestionsLog && student.solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${modId}_${q.id}`] === q.answer) correct++; });
-                performanceRows.push({ name: student.name, score: correct, total: targetQuestionsArray.length, cheated: cheated });
-            });
-            performanceRows.sort((a, b) => b.score - a.score);
-            performanceRows.forEach((row, idx) => {
-                const el = document.createElement('div'); el.className = 'content-item';
-                if(row.cheated) { el.style.background = '#fef2f2'; el.style.borderColor = '#fca5a5'; }
-                el.innerHTML = `<span>${idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"👤"} <strong>${row.name}</strong></span> <span style="font-weight:700; color:${row.cheated?'var(--pw-red)':'var(--pw-green)'};">${row.cheated?'DISQUALIFIED 🚨':`${row.score} / ${row.total}`}</span>`;
-                container.appendChild(el);
-            });
-            modal.style.display = 'flex';
-        }
-
-        function openGlobalDppLeaderboard() {
-            const modal = document.getElementById('global-dpp-leaderboard-modal');
-            const container = document.getElementById('global-dpp-leaderboard-target'); container.innerHTML = "";
-            
-            let rosterList = [];
-            (window.globalCachedRosterSubmits || []).forEach(st => {
-                if (st.name.toUpperCase() === "PRATIM") return;
-                rosterList.push({ name: st.name, xp: st.xp || 0, streak: st.streak || 1 });
-            });
-            rosterList.sort((a, b) => b.xp - a.xp);
-
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-
-            let markup = `
-                <table class="roster-table">
-                    <thead>
-                        <tr>
-                            <th>Rank & Member</th>
-                            <th style="text-align:center;">Streak</th>
-                            <th style="text-align:right;">XP Balance</th>
-                            ${isAdmin ? '<th style="text-align:center; padding-right:12px;">Action</th>' : ''}
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            rosterList.forEach((row, idx) => {
-                let badge = idx === 0 ? "🥇 " : idx === 1 ? "🥈 " : idx === 2 ? "🥉 " : "👤 ";
-                let isCurrentUser = (row.name.toUpperCase() === activeUser.toUpperCase());
-                let styleInline = isCurrentUser ? `style="background: #f0f6ff; font-weight: 700;"` : '';
-                
-                let actionBtnHTML = isAdmin ? `
-                    <td style="text-align:center; padding-right: 12px;">
-                        <button class="btn-delete-chapter" style="display:inline-block; padding: 6px 12px; margin: 0; font-size: 0.72rem; border-radius:6px;" onclick="event.stopPropagation(); removeStudentProfile('${row.name}')">🗑 Remove</button>
-                    </td>` : '';
-
-                markup += `
-                    <tr ${styleInline}>
-                        <td><strong>${badge}${row.name} ${isCurrentUser ? '(You)' : ''}</strong></td>
-                        <td style="text-align:center; color:#b45309; font-weight: 700;">🔥 ${row.streak} d</td>
-                        <td style="text-align:right; font-weight:800; color:var(--neon-blue);">${row.xp} XP</td>
-                        ${actionBtnHTML}
-                    </tr>
-                `;
-            });
-            markup += `</tbody></table>`;
-            container.innerHTML = rosterList.length > 0 ? markup : `<p style="color:var(--text-muted); text-align:center;">No student logs indexed yet.</p>`;
-            modal.style.display = 'flex';
-        }
-
-        function removeStudentProfile(studentName) {
-            const isAdmin = (activeUser && activeUser.toUpperCase() === "PRATIM");
-            if (!isAdmin) return;
-
-            showCustomConfirm(
-                "Decommission Student?", 
-                `Are you sure you want to permanently erase student profile <strong>"${studentName}"</strong>? This will wipe their XP achievements, active streak log, and lock them out of the classroom immediately.`, 
-                () => {
-                    db.collection('students').doc(studentName.toUpperCase()).delete().then(() => {
-                        spawnNotificationToast(`Student profile "${studentName}" successfully deleted.`);
-                        broadcastGlobalNotification(`📢 Profile Purge: ${studentName} was removed from the continuous learning roster by Administrator.`);
-                        openGlobalDppLeaderboard(); 
-                    }).catch(err => {
-                        spawnNotificationToast("❌ Error occurred during profile decommission process.");
-                        console.error(err);
-                    });
-                }
-            );
-        }
-
-        function closeGlobalDppLeaderboard() { document.getElementById('global-dpp-leaderboard-modal').style.display = 'none'; }
-        function closeLeaderboardModal() { document.getElementById('leaderboard-overlay-modal').style.display = 'none'; }
-
-        function initiateProGuardExamTimer(mins) {
-            clearInterval(proGuardCountdownInterval); examActiveState = true; timeRemainingSeconds = mins * 60;
-            document.getElementById('security-timer-banner').style.display = 'block';
-            document.getElementById('btn-exit-quiz-portal').style.display = 'none';
-            updateChatButtonVisibility(); 
-            proGuardCountdownInterval = setInterval(() => {
-                timeRemainingSeconds--;
-                if (timeRemainingSeconds <= 0) executeProGuardAutomaticLockout("EXPIRED");
-                else {
-                    document.getElementById('timer-countdown-clock').innerText = `${String(Math.floor(timeRemainingSeconds / 60)).padStart(2,'0')}:${String(timeRemainingSeconds % 60).padStart(2,'0')}`;
-                }
-            }, 1000);
-        }
-
-        function setupProGuardTabProtection() {
-            document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && examActiveState && activeUser && activeUser.toUpperCase() !== "PRATIM") executeProGuardAutomaticLockout("TAB_SWITCH"); });
-            window.addEventListener("blur", () => { if (examActiveState && activeUser && activeUser.toUpperCase() !== "PRATIM") executeProGuardAutomaticLockout("BREACH"); });
-        }
-
-        function executeProGuardAutomaticLockout(reason) {
-            clearInterval(proGuardCountdownInterval); examActiveState = false;
-            solvedQuestionsLog[`${selectedSubjectCode}_${selectedChapterIndex}_${window.activeModuleIdReference}_BLOCKED_STATUS`] = "BLOCKED";
-            db.collection('students').doc(activeUser.toUpperCase()).update({ solvedQuestionsLog: solvedQuestionsLog }).then(() => {
-                document.getElementById('quiz-portal-modal').style.display = 'none';
-                document.getElementById('btn-exit-quiz-portal').style.display = 'inline-block';
-                document.getElementById('security-timer-banner').style.display = 'none';
-                if (reason !== "EXPIRED") {
-                    showCustomAlert("🚨 Profile Locked", "Focus boundary breach or tab-switch context detected.");
-                    broadcastGlobalNotification("⚠️ ProGuard Flag: Tab breach triggered lockout security.");
-                } else { showCustomAlert("⏱️ Session Expired", "Duration window closed."); }
-                processStateNavigationTransition("SUBFOLDERS");
-                updateChatButtonVisibility(); 
-            });
-        }
-        
-        function closeQuizPortal() { 
-            examActiveState = false; 
-            clearInterval(proGuardCountdownInterval); 
-            processStateNavigationTransition("SUBFOLDERS"); 
-            updateChatButtonVisibility(); 
-        }
-        
-        function triggerNativePushNotification(headline, payloadBody) {
-            if (!("Notification" in window)) return;
-
-            if (Notification.permission !== "granted") {
-                Notification.requestPermission();
-            }
-
-            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-                navigator.serviceWorker.ready.then((registration) => {
-                    registration.showNotification(headline, {
-                        body: payloadBody,
-                        icon: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png", 
-                        badge: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png",
-                        vibrate: [200, 100, 200], 
-                        requireInteraction: true,
-                        tag: "new-upload"
-                    });
-                });
-            } else {
-                try {
-                    new Notification(headline, {
-                        body: payloadBody,
-                        icon: "https://cdn-icons-png.flaticon.com/512/3249/3249911.png",
-                        requireInteraction: true
-                    });
-                } catch (err) {
-                    console.warn("Direct notification constructor bypass.");
-                }
-            }
-        }
-
-        function broadcastGlobalNotification(txt) { 
-            db.collection('sync_notifications').add({ 
-                text: txt, 
-                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-            }); 
-        }
-        
-        function spawnNotificationToast(msg) {
-            const target = document.getElementById('notification-toast-container'); 
-            const t = document.createElement('div'); 
-            t.className = 'toast-card';
-            t.innerHTML = `<div class="toast-header">🔔 Sync Update</div><div class="toast-body">${msg}</div>`; 
-            target.appendChild(t);
-            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 4000);
-
-            triggerNativePushNotification("SCIENCE_IX Update", msg);
-        }
-
-        function showCustomAlert(title, body) {
-            const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">${body}</p><button class="btn-dialog-primary" style="width:100%;" onclick="closeCustomDialog()">Understood</button>`; m.style.display = 'flex';
-        }
-        function showCustomPrompt(title, placeholder, onConfirm) {
-            const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><input type="text" id="custom-prompt-input" placeholder="${placeholder}" autocomplete="off"><div class="dialog-actions"><button class="btn-dialog-secondary" onclick="closeCustomDialog()">Cancel</button><button class="btn-dialog-primary" id="btn-dialog-confirm">Submit</button></div>`; m.style.display = 'flex';
-            document.getElementById('btn-dialog-confirm').onclick = () => { const val = document.getElementById('custom-prompt-input').value.trim(); closeCustomDialog(); if (val) onConfirm(val); };
-        }
-        function showCustomConfirm(title, msg, onConfirm) {
-            const m = document.getElementById('custom-dialog-modal'); document.getElementById('dialog-box-content').innerHTML = `<h3>${title}</h3><p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">${msg}</p><div class="dialog-actions"><button class="btn-dialog-secondary" onclick="closeCustomDialog()">Cancel</button><button class="btn-dialog-primary" style="background:var(--pw-red);" id="btn-dialog-confirm">Confirm</button></div>`; m.style.display = 'flex';
-            document.getElementById('btn-dialog-confirm').onclick = () => { closeCustomDialog(); onConfirm(); };
-        }
-        function closeCustomDialog() { document.getElementById('custom-dialog-modal').style.display = 'none'; }
-
-        const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas); resizeCanvas();
-        class Particle {
-            constructor() { 
-                this.x = Math.random() * canvas.width; 
-                this.y = Math.random() * canvas.height; 
-                this.size = Math.random() * 3 + 2; 
-                this.speedX = Math.random() * 0.4 - 0.2; 
-                this.speedY = Math.random() * 0.4 - 0.2; 
-                this.opacity = Math.random() * 0.4 + 0.2; 
-                this.glowDirection = Math.random() > 0.5 ? 0.005 : -0.005;
-            }
-            update() { 
-                this.x += this.speedX; 
-                this.y += this.speedY; 
-                this.opacity += this.glowDirection;
-                if (this.opacity > 0.75 || this.opacity < 0.15) this.glowDirection *= -1;
-                if (this.x < -10 || this.x > canvas.width + 10) this.speedX *= -1; 
-                if (this.y < -10 || this.y > canvas.height + 10) this.speedY *= -1; 
-            }
-            draw() { 
-                ctx.beginPath(); 
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
-                ctx.fillStyle = `rgba(148, 163, 184, ${this.opacity})`; 
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = 'rgba(100, 116, 139, 0.4)'; 
-                ctx.fill(); 
-                ctx.shadowBlur = 0; 
-            }
-        }
-        for (let i = 0; i < 75; i++) particles.push(new Particle());
-        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
-        animateParticles();
-
-        const celCanvas = document.getElementById('celebration-canvas'); const celCtx = celCanvas.getContext('2d'); let confettiArray = [];
-        class Confetti {
-            constructor() { this.x = Math.random() * celCanvas.width; this.y = Math.random() * -celCanvas.height - 20; this.size = Math.random() * 5 + 5; this.speedY = Math.random() * 4 + 3; this.speedX = Math.random() * 3 - 1.5; this.rotation = Math.random() * 360; this.color = ['#3b82f6', '#60a5fa', '#10b981', '#ec4899', '#f59e0b'][Math.floor(Math.random() * 5)]; }
-            update() { this.y += this.speedY; this.x += this.speedX; }
-            draw() { celCtx.save(); celCtx.translate(this.x, this.y); celCtx.fillStyle = this.color; celCtx.fillRect(-this.size/2, -this.size/2, this.size, this.size); celCtx.restore(); }
-        }
-        function triggerConfettiBurst() { confettiArray = []; for (let i = 0; i < 40; i++) confettiArray.push(new Confetti()); animateConfetti(); }
-        function animateConfetti() {
-            if (confettiArray.length === 0) { celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height); return; }
-            celCtx.clearRect(0, 0, celCanvas.width, celCanvas.height);
-            for (let i = confettiArray.length - 1; i >= 0; i--) { confettiArray[i].update(); confettiArray[i].draw(); if (confettiArray[i].y > celCanvas.height) confettiArray.splice(i, 1); }
-            requestAnimationFrame(animateConfetti);
-        }
-    </script>
+        qBox.innerHTML += `
+          <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
+            <h4 class="text-xs font-bold text-slate-200">Question ${idx + 1}: ${qItem.q}</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optStructure}</div>
+          </div>
+        `;
+      });
+
+      document.getElementById('view-exam-sandbox').classList.remove('hidden');
+      document.getElementById('view-exam-sandbox').classList.add('flex');
+
+      setupExamWindowFocusControls(true);
+    };
+
+    window.commitSecureExamAnswers = function() {
+      const exam = appState.activeExam;
+      if (!exam) return;
+
+      if (!document.fullscreenElement) {
+        triggerCheatingPenalty("Exam submitted outside forced Fullscreen Sandbox view!");
+        return;
+      }
+
+      let marksXP = 0;
+      exam.questions.forEach((qItem, idx) => {
+        const checked = document.querySelector(`input[name="sec_q_${idx}"]:checked`);
+        if (checked && checked.value === qItem.correct) {
+          marksXP += 20;
+        }
+      });
+
+      if (!appState.completedItemsRegistry[exam.title]) {
+        appState.completedItemsRegistry[exam.title] = true;
+        updateUserXp(marksXP);
+        showToast("Test completed successfully! Points added.", "success");
+      } else {
+        showToast("Test completed successfully! (Practice Mode: no double XP).", "info");
+      }
+
+      terminateSecureAssessment();
+    };
+
+    function triggerCheatingPenalty(reasonText) {
+      updateUserXp(-50);
+      showToast(`CRITICAL ERROR: Cheating Flagged! ${reasonText} Penalty: -50 XP.`, "error");
+      terminateSecureAssessment();
+    }
+
+    function terminateSecureAssessment() {
+      appState.activeExam = null;
+      document.getElementById('view-exam-sandbox').classList.add('hidden');
+      document.getElementById('view-exam-sandbox').classList.remove('flex');
+      
+      document.getElementById('main-header').classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById('floating-chat-trigger').classList.remove('hidden');
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+
+      setupExamWindowFocusControls(false);
+    }
+
+    function setupExamWindowFocusControls(active) {
+      if (active) {
+        window.onblur = handleExamDefocusViolation;
+        document.onvisibilitychange = handleExamDefocusViolation;
+      } else {
+        window.onblur = null;
+        document.onvisibilitychange = null;
+      }
+    }
+
+    function handleExamDefocusViolation() {
+      if (!appState.activeExam) return;
+      appState.examViolations += 1;
+      
+      if (appState.examViolations >= 2) {
+        triggerCheatingPenalty("Multiple tab changes / blur states observed.");
+      } else {
+        showToast("WARNING: Tab defocus detected. Stay in Fullscreen!", "error");
+      }
+    }
+
+    // --- MUTATION DATA COMPILER ENGINE ---
+    function updateUserXp(delta) {
+      appState.xp += delta;
+      if (appState.xp < 0) appState.xp = 0;
+      document.getElementById('header-xp-count').innerText = appState.xp;
+
+      const self = fallbackLeaderboard.find(x => x.id === "curr_user");
+      if (self) {
+        self.xp = appState.xp;
+        renderLeaderboard();
+      }
+    }
+
+    // --- ADMIN DIALOG MANAGERS ---
+    window.openAdminSchedulerModal = function() {
+      document.getElementById('modal-admin-scheduler').classList.remove('hidden');
+      document.getElementById('modal-admin-scheduler').classList.add('flex');
+    };
+
+    window.closeAdminSchedulerModal = function() {
+      document.getElementById('modal-admin-scheduler').classList.add('hidden');
+      document.getElementById('modal-admin-scheduler').classList.remove('flex');
+    };
+
+    window.handleClassSchedulingSubmit = async function(e) {
+      e.preventDefault();
+      const subject = document.getElementById('form-class-subject').value;
+      const topic = document.getElementById('form-class-topic').value.trim();
+      const teacher = document.getElementById('form-class-teacher').value.trim();
+      const time = document.getElementById('form-class-time').value.trim();
+
+      const newId = `class_${Date.now()}`;
+      const payload = { id: newId, subject, topic, teacher, time };
+
+      defaultUpcomingClasses.unshift(payload);
+      renderClassesSchedule();
+      closeAdminSchedulerModal();
+      showToast(`Published weekly timetable schedule!`, "success");
+
+      if (db) {
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', newId), payload);
+      }
+    };
+
+    window.deleteClassRecord = async function(id) {
+      defaultUpcomingClasses = defaultUpcomingClasses.filter(x => x.id !== id);
+      renderClassesSchedule();
+      showToast("Schedules updated successfully.");
+
+      if (db) {
+        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', id));
+      }
+    };
+
+    // --- CONTENT PAYLOAD ADDITIONS ---
+    window.openAdminContentPublishModal = function() {
+      document.getElementById('admin-publisher-subject-title').innerText = `Publish to ${appState.currentSubject} Folder`;
+      document.getElementById('modal-admin-publisher').classList.remove('hidden');
+      document.getElementById('modal-admin-publisher').classList.add('flex');
+      toggleFormFieldsBasedOnPayload();
+    };
+
+    window.closeAdminContentPublishModal = function() {
+      document.getElementById('modal-admin-publisher').classList.add('hidden');
+      document.getElementById('modal-admin-publisher').classList.remove('flex');
+    };
+
+    window.toggleFormFieldsBasedOnPayload = function() {
+      const type = document.getElementById('payload-type').value;
+      if (type === "Notes") {
+        document.getElementById('payload-notes-wrapper').classList.remove('hidden');
+        document.getElementById('payload-dpp-wrapper').classList.add('hidden');
+      } else {
+        document.getElementById('payload-notes-wrapper').classList.add('hidden');
+        document.getElementById('payload-dpp-wrapper').classList.remove('hidden');
+      }
+    };
+
+    window.handlePayloadSubmission = function(e) {
+      e.preventDefault();
+      const type = document.getElementById('payload-type').value;
+      const title = document.getElementById('payload-title').value.trim();
+
+      if (type === "Notes") {
+        const linkVal = document.getElementById('payload-link').value.trim();
+        const rawContent = document.getElementById('payload-content').value;
+        folderSystemData[appState.currentSubject].Notes.push({ title, text: rawContent, link: linkVal });
+      } else if (type === "DPP") {
+        const q = document.getElementById('payload-dpp-question').value.trim();
+        const optA = document.getElementById('payload-dpp-opt-a').value.trim();
+        const optB = document.getElementById('payload-dpp-opt-b').value.trim();
+        const optC = document.getElementById('payload-dpp-opt-c').value.trim();
+        const optD = document.getElementById('payload-dpp-opt-d').value.trim();
+        const correct = document.getElementById('payload-dpp-correct').value;
+
+        folderSystemData[appState.currentSubject].DPP.push({
+          title,
+          question: q,
+          options: [optA, optB, optC, optD],
+          answer: correct
+        });
+      }
+
+      closeAdminContentPublishModal();
+      hydrateBrowserItemsList();
+      showToast(`Structural material payload loaded successfully!`, "success");
+    };
+
+    // --- PROFILE ACTIONS AVATAR CUSTOMIZATIONS ---
+    window.openAvatarSelectorModal = function() {
+      document.getElementById('modal-avatar-selector').classList.remove('hidden');
+      document.getElementById('modal-avatar-selector').classList.add('flex');
+    };
+    window.closeAvatarSelectorModal = function() {
+      document.getElementById('modal-avatar-selector').classList.add('hidden');
+      document.getElementById('modal-avatar-selector').classList.remove('flex');
+    };
+    window.changeUserAvatar = function(seed) {
+      appState.avatar = seed;
+      document.getElementById('user-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
+      
+      const self = fallbackLeaderboard.find(x => x.id === "curr_user");
+      if (self) {
+        self.avatar = seed;
+        renderLeaderboard();
+      }
+      closeAvatarSelectorModal();
+      showToast("Avatar modified successfully.");
+    };
+
+    // --- CHAT SYSTEM IMPLEMENTATION ---
+    window.toggleChatConsole = function() {
+      const panel = document.getElementById('chat-console-panel');
+      if (panel.classList.contains('hidden')) {
+        panel.classList.remove('hidden');
+        renderChatMessages();
+      } else {
+        panel.classList.add('hidden');
+      }
+    };
+
+    function renderChatMessages() {
+      const box = document.getElementById('chat-messages-box');
+      box.innerHTML = '';
+      chatBuffer.forEach(msg => {
+        const isMe = msg.sender === appState.user;
+        box.innerHTML += `
+          <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
+            <span class="text-[9px] text-slate-500 font-bold mb-0.5">${msg.sender}</span>
+            <span class="text-xs px-3 py-1.5 rounded-2xl max-w-[80%] inline-block ${isMe ? 'bg-blue-600 text-white' : 'bg-slate-850 border border-slate-800 text-slate-300'}">
+              ${msg.text}
+            </span>
+          </div>
+        `;
+      });
+      box.scrollTop = box.scrollHeight;
+    }
+
+    window.handleSendChatMessage = function(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      chatBuffer.push({ sender: appState.user, text: val });
+      input.value = '';
+      renderChatMessages();
+    };
+
+    // --- UTILITIES TOAST MESSAGES ---
+    window.showToast = function(message, type = 'info') {
+      const parent = document.getElementById('toast-container');
+      const box = document.createElement('div');
+      const statusIcon = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-triangle' : 'info';
+      const styling = type === 'success' ? 'bg-emerald-950 border-emerald-500/50 text-emerald-300' :
+                        type === 'error' ? 'bg-red-950 border-red-500/50 text-red-300' :
+                        'bg-slate-900 border-slate-800 text-slate-300';
+
+      box.className = `flex items-center gap-3 p-4 rounded-2xl border ${styling} shadow-xl backdrop-blur transition-all duration-300 transform translate-y-2 opacity-0`;
+      box.innerHTML = `
+        <i data-lucide="${statusIcon}" class="w-5 h-5 shrink-0 ${type === 'success' ? 'text-emerald-400' : 'text-blue-400'}"></i>
+        <span class="text-xs font-semibold">${message}</span>
+      `;
+
+      parent.appendChild(box);
+      lucide.createIcons();
+
+      setTimeout(() => box.classList.remove('translate-y-2', 'opacity-0'), 20);
+      setTimeout(() => {
+        box.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => box.remove(), 300);
+      }, 3000);
+    };
+
+    window.removeStudentFromLeaderboard = function(id) {
+      fallbackLeaderboard = fallbackLeaderboard.filter(x => x.id !== id);
+      renderLeaderboard();
+      showToast("Member successfully purged from batch rankings.");
+    };
+  </script>
 </body>
 </html>
+
+
