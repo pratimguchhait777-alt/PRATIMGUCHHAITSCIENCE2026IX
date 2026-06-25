@@ -1886,46 +1886,76 @@
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
     };
+    // --- PDF Viewer & XP Tracking Logic ---
+    let pdfStartTime = null;
+    let currentViewingPdfId = null;
 
-    // --- TIME-BASED NOTE & PDF READING SESSION (INTEGRATED OPENER AND COUNTDOWN COUNTBAR) ---
-    window.launchNoteStudySession = function(id, title, text, link) {
-      // Notes study session now automatically opens the associated PDF and runs the live stopwatch countdown
-      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com';
+    function calculateAndAwardPdfXP() {
+      if (!pdfStartTime || !currentViewingPdfId) return;
 
-      if (!appState.completedItemsRegistry[id]) {
-        appState.completedItemsRegistry[id] = true;
-        updateUserXp(15);
-        showToast("Notes Handout Opened! +15 XP", "success");
-      } else {
-        showToast("Notes Handout reopened in Review Mode.", "info");
-      }
+      const timeSpentSeconds = Math.floor((Date.now() - pdfStartTime) / 1000);
+      pdfStartTime = Date.now(); // reset anchor marker
 
-      appState.activeNoteReadingMinutes = 0;
-      if (appState.activeNoteTimerId) clearInterval(appState.activeNoteTimerId);
-
-      const pdfBar = document.getElementById('pdf-study-timer-bar');
-      if (pdfBar) {
-        document.getElementById('pdf-timer-title').innerText = title;
-        document.getElementById('pdf-timer-elapsed').innerText = "0 minutes";
-        document.getElementById('pdf-timer-xp-gained').innerText = "0";
-        pdfBar.classList.remove('opacity-0', '-translate-y-24');
-        pdfBar.classList.add('opacity-100', 'translate-y-0');
-      }
-
-      appState.activeNoteTimerId = setInterval(() => {
-        appState.activeNoteReadingMinutes += 1;
-        const elapsedText = document.getElementById('pdf-timer-elapsed');
-        const xpText = document.getElementById('pdf-timer-xp-gained');
-        if (elapsedText) elapsedText.innerText = appState.activeNoteReadingMinutes + " minutes";
-        if (xpText) xpText.innerText = "" + (appState.activeNoteReadingMinutes * 2);
+      // Award 1 XP for every 30 seconds read (Minimum 1 XP if they stay for 15+ seconds)
+      if (timeSpentSeconds >= 15) {
+        const xpGained = Math.max(1, Math.floor(timeSpentSeconds / 30));
         
-        updateUserXp(2);
-        showToast("Studied Handout for " + appState.activeNoteReadingMinutes + "m! +2 XP gained.", "success");
-      }, 60000);
+        currentUser.xp = (currentUser.xp || 0) + xpGained;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        if (typeof renderDashboard === 'function') renderDashboard();
+        if (typeof showToast === 'function') {
+          showToast(`📚 Earned +${xpGained} XP for reading notes!`, 'success');
+        }
+      }
+    }
 
-      window.open(pdfLink, '_blank');
+    window.viewPDF = function(id, url, title) {
+      const viewer = document.getElementById('pdf-viewer-modal');
+      const frame = document.getElementById('pdf-frame');
+      const titleEl = document.getElementById('pdf-viewer-title');
+      if (!viewer || !frame || !titleEl) return;
+
+      titleEl.textContent = title;
+      frame.src = url;
+      viewer.classList.remove('hidden');
+      viewer.classList.add('flex');
+
+      // Start counting time
+      pdfStartTime = Date.now();
+      currentViewingPdfId = id;
     };
 
+    window.closePDFViewer = function() {
+      const viewer = document.getElementById('pdf-viewer-modal');
+      const frame = document.getElementById('pdf-frame');
+      if (!viewer || !frame) return;
+
+      // Calculate time and save XP before shutting off view
+      calculateAndAwardPdfXP();
+
+      frame.src = '';
+      viewer.classList.remove('flex');
+      viewer.classList.add('hidden');
+      
+      pdfStartTime = null;
+      currentViewingPdfId = null;
+    };
+
+    // Auto check if student leaves the current browser tab or minimizes window
+    document.addEventListener('visibilitychange', () => {
+      const viewer = document.getElementById('pdf-viewer-modal');
+      if (viewer && !viewer.classList.contains('hidden')) {
+        if (document.hidden) {
+          // Tab switched out or minimized -> Pause and save XP instantly
+          calculateAndAwardPdfXP();
+          pdfStartTime = null;
+        } else {
+          // Returned to tab -> resume counting time from right now
+          pdfStartTime = Date.now();
+        }
+      }
+    });
     window.launchPdfStudySession = function(id, title, link) {
       if (!appState.completedItemsRegistry[id]) {
         appState.completedItemsRegistry[id] = true;
