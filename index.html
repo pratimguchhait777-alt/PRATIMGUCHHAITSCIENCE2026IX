@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +53,7 @@
 </head>
 <body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col selection:bg-blue-500 selection:text-white transition-all duration-300">
 
-  <!-- ==================== 5-SECOND HIGH-DEF LOGO SPLASH OVERLAY ==================== -->
+  <!-- ==================== 3-SECOND HIGH-DEF LOGO SPLASH OVERLAY ==================== -->
   <div id="view-loading" class="fixed inset-0 bg-[#0b0f19] z-50 flex flex-col items-center justify-center transition-all duration-1000 ease-in-out opacity-100">
     <div class="text-center space-y-8 flex flex-col items-center max-w-xs md:max-w-md px-4">
       
@@ -63,19 +64,30 @@
         <div id="splash-logo-fallback" class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-[#1a1c38] hidden">
           <div class="relative w-36 h-36 flex items-center justify-center">
             <svg class="absolute inset-0 w-full h-full text-blue-400" viewBox="0 0 200 200">
-              <!-- Orbits -->
+              <!-- Orbit 1 (Rotated 30deg) with smooth animated electron -->
               <g transform="rotate(30 100 100)">
-                <ellipse cx="100" cy="100" rx="80" ry="25" fill="none" stroke="#2563eb" stroke-width="4.5"/>
-                <circle cx="20" cy="100" r="5" fill="#ffffff"/>
+                <path d="M 20,100 a 80,25 0 1,0 160,0 a 80,25 0 1,0 -160,0" fill="none" stroke="#2563eb" stroke-width="4.5"/>
+                <circle r="5.5" fill="#ffffff" class="electron-glow">
+                  <animateMotion dur="3s" repeatCount="indefinite" path="M 20,100 a 80,25 0 1,0 160,0 a 80,25 0 1,0 -160,0" />
+                </circle>
               </g>
+              
+              <!-- Orbit 2 (Rotated 90deg) with smooth animated electron -->
               <g transform="rotate(90 100 100)">
-                <ellipse cx="100" cy="100" rx="80" ry="25" fill="none" stroke="#2563eb" stroke-width="4.5"/>
-                <circle cx="20" cy="100" r="5" fill="#ffffff"/>
+                <path d="M 20,100 a 80,25 0 1,0 160,0 a 80,25 0 1,0 -160,0" fill="none" stroke="#2563eb" stroke-width="4.5"/>
+                <circle r="5.5" fill="#ffffff" class="electron-glow">
+                  <animateMotion dur="4s" repeatCount="indefinite" path="M 20,100 a 80,25 0 1,0 160,0 a 80,25 0 1,0 -160,0" begin="1s" />
+                </circle>
               </g>
+              
+              <!-- Orbit 3 (Rotated 150deg) with smooth animated electron -->
               <g transform="rotate(150 100 100)">
-                <ellipse cx="100" cy="100" rx="80" ry="25" fill="none" stroke="#2563eb" stroke-width="4.5"/>
-                <circle cx="20" cy="100" r="5" fill="#ffffff"/>
+                <path d="M 20,100 a 80,25 0 1,0 160,0 a 80,25 0 1,0 -160,0" fill="none" stroke="#2563eb" stroke-width="4.5"/>
+                <circle r="5.5" fill="#ffffff" class="electron-glow">
+                  <animateMotion dur="5s" repeatCount="indefinite" path="M 20,100 a 80,25 0 1,0 160,0 a 80,25 0 1,0 -160,0" begin="2s" />
+                </circle>
               </g>
+              
               <!-- Nucleus -->
               <circle cx="100" cy="100" r="15" fill="#3b82f6"/>
               <circle cx="100" cy="100" r="6" fill="#ffffff"/>
@@ -467,25 +479,25 @@
       <p class="text-[11px] text-slate-400">Click a preset science vector diagram below to instantly assign it to the question, or paste a custom URL.</p>
       
       <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-slate-950 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-slate-955 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg" class="max-h-full max-w-full object-contain">
           </div>
           <span class="text-[10px] text-slate-400 block font-semibold">Animal Cell</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg')" class="bg-slate-950 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg')" class="bg-slate-955 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg" class="max-h-full max-w-full object-contain">
           </div>
           <span class="text-[10px] text-slate-400 block font-semibold">Lithium Atom</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg')" class="bg-slate-950 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg')" class="bg-slate-955 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg" class="max-h-full max-w-full object-contain">
           </div>
           <span class="text-[10px] text-slate-400 block font-semibold">Cartesian Grid</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg')" class="bg-slate-950 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg')" class="bg-slate-955 p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg" class="max-h-full max-w-full object-contain">
           </div>
@@ -504,7 +516,7 @@
   </div>
 
   <!-- ==================== ADMIN: ADD CHAPTERS MODAL ==================== -->
-  <div id="modal-admin-add-chapter" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
+  <div id="modal-admin-add-chapter" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -515,20 +527,20 @@
       <form onsubmit="handleAddChapterSubmit(event)" class="space-y-3">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Chapter Index Code</label>
-          <input type="text" id="form-chap-code" placeholder="e.g. CH - 04" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+          <input type="text" id="form-chap-code" placeholder="e.g. CH - 04" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Chapter Title Banner</label>
-          <input type="text" id="form-chap-title" placeholder="e.g. Ch - 5 : Atoms and Elements Structure" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+          <input type="text" id="form-chap-title" placeholder="e.g. Ch - 5 : Atoms and Elements Structure" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Estimated Lectures Count</label>
-            <input type="number" id="form-chap-lectures" min="0" placeholder="e.g. 10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+            <input type="number" id="form-chap-lectures" min="0" placeholder="e.g. 10" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
           </div>
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Estimated DPPs Count</label>
-            <input type="number" id="form-chap-dpps" min="0" placeholder="e.g. 5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+            <input type="number" id="form-chap-dpps" min="0" placeholder="e.g. 5" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
           </div>
         </div>
         <button type="submit" class="w-full bg-[#A088FF] hover:bg-[#8e73ff] text-white font-bold py-2.5 rounded-xl text-xs transition">Create Chapter Directory</button>
@@ -537,7 +549,7 @@
   </div>
 
   <!-- ==================== ADMIN ADD TEST MODAL ==================== -->
-  <div id="modal-admin-add-test" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
+  <div id="modal-admin-add-test" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar font-sans">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="shield-plus" class="w-5 h-5 text-purple-400"></i> Add Secure Test Environment</h3>
@@ -557,7 +569,7 @@
           </div>
 
           <!-- Sandbox Area showing compiled test questions -->
-          <div id="form-test-compiled-list" class="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar"></div>
+          <div id="form-test-compiled-list" class="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar font-sans"></div>
 
           <!-- Inputs for currently building question -->
           <div class="bg-slate-955 p-4 border border-slate-800 rounded-2xl space-y-2.5">
@@ -609,7 +621,7 @@
       <form onsubmit="handleClassSchedulingSubmit(event)" class="space-y-3">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Subject</label>
-          <select id="form-class-subject" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
+          <select id="form-class-subject" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
             <option value="Physics">Physics</option>
             <option value="Chemistry">Chemistry</option>
             <option value="Biology">Biology</option>
@@ -618,15 +630,15 @@
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Schedule Topic / Target Chapter</label>
-          <input type="text" id="form-class-topic" placeholder="e.g. Gravitation & Kepler's Laws Practice" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+          <input type="text" id="form-class-topic" placeholder="e.g. Gravitation & Kepler's Laws Practice" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Assigned Instructor / Teacher</label>
-          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Delivery Timing</label>
-          <input type="text" id="form-class-time" placeholder="e.g. Monday 10:00 AM" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+          <input type="text" id="form-class-time" placeholder="e.g. Monday 10:00 AM" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Publish Weekly Schedule</button>
       </form>
@@ -653,18 +665,14 @@
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Topic / Title</label>
-          <input type="text" id="payload-title" placeholder="e.g. Atoms and Molecules Practice" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+          <input type="text" id="payload-title" placeholder="e.g. Atoms and Molecules Practice" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         
-        <!-- Notes/PDFs wrapper -->
+        <!-- Notes/PDFs wrapper (Plaintext input completely removed, link is now mandatory) -->
         <div id="payload-notes-wrapper" class="space-y-2">
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Document Link (PDF or Google Drive URL - Optional)</label>
-            <input type="url" id="payload-link" placeholder="https://drive.google.com/... or empty" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Plaintext Notes Content</label>
-            <textarea id="payload-content" rows="3" placeholder="Enter detailed study text notes instead..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none"></textarea>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Document Link (PDF or Google Drive URL - Mandatory for Notes)</label>
+            <input type="url" id="payload-link" placeholder="https://drive.google.com/..." class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
         </div>
 
@@ -672,11 +680,11 @@
         <div id="payload-lectures-wrapper" class="hidden space-y-2">
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Lecture Video URL (Optional)</label>
-            <input type="url" id="payload-lecture-url" placeholder="https://youtube.com/... or empty" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+            <input type="url" id="payload-lecture-url" placeholder="https://youtube.com/... or empty" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Duration Description</label>
-            <input type="text" id="payload-lecture-duration" placeholder="e.g. 52 mins" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+            <input type="text" id="payload-lecture-duration" placeholder="e.g. 52 mins" class="w-full bg-slate-955 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
         </div>
 
@@ -725,7 +733,7 @@
   </div>
 
   <!-- ==================== CONTROLLER: NOTE STUDY WINDOW MODAL ==================== -->
-  <div id="modal-note-viewer" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans font-sans">
+  <div id="modal-note-viewer" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh] space-y-6 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-start justify-between border-b border-slate-800/80 pb-3">
         <div>
@@ -745,7 +753,7 @@
   </div>
 
   <!-- ==================== CONTROLLER: AVATAR SELECTION ENGINE ==================== -->
-  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
+  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-sm font-bold text-white">Select Your Profile Avatar</h3>
@@ -766,7 +774,7 @@
             <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucas">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Lucas</span>
           </div>
-          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-950 text-center transition flex flex-col justify-center items-center">
+          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer border border-slate-800 hover:border-blue-500 p-1 rounded-xl bg-slate-955 text-center transition flex flex-col justify-center items-center">
             <img class="w-10 h-10 mx-auto rounded-lg" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ethan">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold">Ethan</span>
           </div>
@@ -857,6 +865,16 @@
       { id: "class_2", subject: "Chemistry", topic: "Atoms, Valence & Chemical Formulas", teacher: "Amit Mahajan Sir", time: "Wednesday 04:30 PM" }
     ];
 
+    // Read stored classes locally immediately for fluid UX fallback
+    const savedClasses = localStorage.getItem('science_ix_upcoming_classes');
+    if (savedClasses) {
+      try {
+        defaultUpcomingClasses = JSON.parse(savedClasses);
+      } catch(e) {
+        console.warn("Skipping corrupt local classes database.");
+      }
+    }
+
     // --- IMMERSIVE NESTED DIRECTORY AND PROGRESS CONFIGURATION (Varied Item Configurations with multiple questions array built-in!) ---
     let folderSystemData = {
       Physics: {
@@ -870,7 +888,7 @@
             dppCount: 0, completedDpp: 0,
             items: [
               { id: "phy-ch1-item1", type: "Lectures", title: "L-01: Foundations & Grade 8 Concepts Brushup", duration: "35 mins", completed: false, link: "" },
-              { id: "phy-ch1-item2", type: "Notes", title: "Revision Guide Handout Text", text: "Foundational laws summary: Speed = Distance/Time. Vector quantities require absolute direction metrics.", link: "" }
+              { id: "phy-ch1-item2", type: "Notes", title: "Revision Guide Handout Text", text: "", link: "https://drive.google.com" }
             ]
           },
           {
@@ -890,7 +908,7 @@
               { id: "phy-ch2-item5", type: "DPPs", title: "Motion DPP 02 (Mcq Quiz)", questions: [
                 { q: "Which statement accurately describes displacement?", options: ["Always positive", "Shortest path between two points", "Longest path scalar value", "Identical to odometer distance"], correct: "Shortest path between two points", image: "" }
               ], completed: false },
-              { id: "phy-ch2-item6", type: "Notes", title: "Kinematics Formula Sheet Notes", text: "Equations of uniform acceleration:\n1. v = u + at\n2. s = ut + 0.5 * a * t²\n3. v² = u² + 2as", link: "" },
+              { id: "phy-ch2-item6", type: "Notes", title: "Kinematics Formula Sheet Notes", text: "", link: "https://drive.google.com" },
               { id: "phy-ch2-item7", type: "DPP PDFs", title: "DPP 01 Solution Guide Document", link: "https://drive.google.com" }
             ]
           },
@@ -905,7 +923,7 @@
               { id: "phy-ch3-item2", type: "DPPs", title: "Inertia Objective Assignment", questions: [
                 { q: "Which has maximum inertia?", options: ["A toy car", "A real cargo train", "A heavy bicycle", "A football"], correct: "A real cargo train", image: "" }
               ], completed: false },
-              { id: "phy-ch3-item3", type: "Notes", title: "Interactive Balanced vs Unbalanced Forces Summary", text: "Balanced forces: Net sum of force equals zero. Unbalanced forces: Leads to non-zero net acceleration.", link: "" }
+              { id: "phy-ch3-item3", type: "Notes", title: "Interactive Balanced vs Unbalanced Forces Summary", text: "", link: "https://drive.google.com" }
             ]
           }
         ]
@@ -924,7 +942,7 @@
               { id: "chem-ch1-item2", type: "DPPs", title: "Chemistry Solutions DPP Quiz", questions: [
                 { q: "Which is a true solution?", options: ["Milk in water", "Salt dissolved in water", "Chalk powder mix", "Smoke in air"], correct: "Salt dissolved in water", image: "" }
               ], completed: false },
-              { id: "chem-ch1-item3", type: "Notes", title: "Molecule & Pure Element Handouts", text: "An element contains only one kind of atom. Compounds contain distinct elements chemically combined.", link: "" }
+              { id: "chem-ch1-item3", type: "Notes", title: "Molecule & Pure Element Handouts", text: "", link: "https://drive.google.com" }
             ]
           }
         ]
@@ -943,7 +961,7 @@
               { id: "math-ch1-item2", type: "DPPs", title: "Algebra Identity Practice Sheet", questions: [
                 { q: "Evaluate (a + b)² formula match.", options: ["a² + b² + 2ab", "a² - b²", "a² + b² - 2ab", "a + b"], correct: "a² + b² + 2ab", image: "" }
               ], completed: false },
-              { id: "math-ch1-item3", type: "Notes", title: "Cartesian Quadrants Cheat Sheet", text: "Quadrant I (+,+), Quadrant II (-,+), Quadrily III (-,-), Quadrant IV (+,-)", link: "" }
+              { id: "math-ch1-item3", type: "Notes", title: "Cartesian Quadrants Cheat Sheet", text: "", link: "https://drive.google.com" }
             ]
           }
         ]
@@ -1007,7 +1025,7 @@
     window.onload = function() {
       lucide.createIcons();
       
-      // Fixed 5-Second elegant custom Atom Loader containing your uploaded startup logo
+      // Fixed 3-Second smooth startup atom loader
       setTimeout(() => {
         const loadingScreen = document.getElementById('view-loading');
         if (loadingScreen) {
@@ -1017,7 +1035,7 @@
             showInitialViewLayout();
           }, 1000);
         }
-      }, 5000);
+      }, 3000);
 
       initFirebaseConnection();
       renderDashboardOverview();
@@ -1166,6 +1184,7 @@
         snap.forEach(d => items.push({ id: d.id, ...d.data() }));
         if (items.length > 0) {
           defaultUpcomingClasses = items;
+          localStorage.setItem('science_ix_upcoming_classes', JSON.stringify(defaultUpcomingClasses));
           renderClassesSchedule();
         }
       }, (err) => console.warn("Classes sync offline."));
@@ -1757,8 +1776,10 @@
             </button>
           `;
         } else if (item.type === "Notes") {
+          // Escaped textual body to guarantee zero parser breakage inside dynamic HTML block injection
+          const escapedNotesText = (item.text || '').replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/\n/g, "\\n");
           actionButtonHTML = `
-            <button onclick="launchNoteStudySession('${item.id}', '${item.title}', '${item.text || ''}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans">
+            <button onclick="launchNoteStudySession('${item.id}', '${item.title}', '${escapedNotesText}', '${item.link || ''}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans">
               Read Notes <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
             </button>
           `;
@@ -1866,34 +1887,43 @@
       renderSubjectsView();
     };
 
-    // --- TIME-BASED NOTE & PDF READING SESSION ---
-    window.launchNoteStudySession = function(id, title, text) {
-      document.getElementById('note-viewer-header').innerText = title;
-      document.getElementById('note-viewer-text-content').innerText = text || "No detailed handout text entered.";
+    // --- TIME-BASED NOTE & PDF READING SESSION (INTEGRATED OPENER AND COUNTDOWN COUNTBAR) ---
+    window.launchNoteStudySession = function(id, title, text, link) {
+      // Notes study session now automatically opens the associated PDF and runs the live stopwatch countdown
+      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com';
 
       if (!appState.completedItemsRegistry[id]) {
         appState.completedItemsRegistry[id] = true;
         updateUserXp(15);
-        showToast("Handout Opened! +15 XP", "success");
+        showToast("Notes Handout Opened! +15 XP", "success");
       } else {
-        showToast("Review Mode: Study notes reopened.", "info");
+        showToast("Notes Handout reopened in Review Mode.", "info");
       }
 
       appState.activeNoteReadingMinutes = 0;
-      document.getElementById('note-session-timer').innerText = "0 minutes";
-      
       if (appState.activeNoteTimerId) clearInterval(appState.activeNoteTimerId);
+
+      const pdfBar = document.getElementById('pdf-study-timer-bar');
+      if (pdfBar) {
+        document.getElementById('pdf-timer-title').innerText = title;
+        document.getElementById('pdf-timer-elapsed').innerText = "0 minutes";
+        document.getElementById('pdf-timer-xp-gained').innerText = "0";
+        pdfBar.classList.remove('opacity-0', '-translate-y-24');
+        pdfBar.classList.add('opacity-100', 'translate-y-0');
+      }
 
       appState.activeNoteTimerId = setInterval(() => {
         appState.activeNoteReadingMinutes += 1;
-        document.getElementById('note-session-timer').innerText = `${appState.activeNoteReadingMinutes} minutes`;
+        const elapsedText = document.getElementById('pdf-timer-elapsed');
+        const xpText = document.getElementById('pdf-timer-xp-gained');
+        if (elapsedText) elapsedText.innerText = appState.activeNoteReadingMinutes + " minutes";
+        if (xpText) xpText.innerText = "" + (appState.activeNoteReadingMinutes * 2);
         
         updateUserXp(2);
-        showToast(`Studied for ${appState.activeNoteReadingMinutes}m! +2 XP awarded.`, "success");
+        showToast("Studied Handout for " + appState.activeNoteReadingMinutes + "m! +2 XP gained.", "success");
       }, 60000);
 
-      document.getElementById('modal-note-viewer').classList.remove('hidden');
-      document.getElementById('modal-note-viewer').classList.add('flex');
+      window.open(pdfLink, '_blank');
     };
 
     window.launchPdfStudySession = function(id, title, link) {
@@ -1945,7 +1975,7 @@
       
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
-      showToast("PDF study session compiled and synchronized.");
+      showToast("Study session compiled and synchronized.");
     };
 
     window.terminateNoteSession = function() {
@@ -2137,7 +2167,7 @@
       options.forEach((opt, idx) => {
         const isChecked = (chosenAnswer === opt) ? 'checked' : '';
         optStructure += `
-          <label class="flex items-center gap-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition cursor-pointer text-xs text-slate-300 font-sans">
+          <label class="flex items-center gap-3 bg-slate-955 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition cursor-pointer text-xs text-slate-300 font-sans">
             <input type="radio" name="sandbox_opt" value="${opt}" ${isChecked} onchange="saveExamAnswerSelection(${qIndex}, '${opt}')" class="text-blue-600 bg-slate-900 border-slate-700 focus:ring-0">
             <span><strong class="text-blue-400 mr-1">${labels[idx] || (idx + 1)}.</strong> ${opt}</span>
           </label>
@@ -2331,7 +2361,7 @@
         container.innerHTML += `
           <div class="bg-slate-955 p-2.5 rounded-lg border border-slate-800 text-xs flex justify-between items-center">
             <span class="truncate font-medium text-slate-300"><strong class="text-purple-400">Q${idx+1}:</strong> ${item.q}</span>
-            <button type="button" onclick="removeQuestionFromFormTestDeck(${index})" class="text-red-400 hover:text-red-300 ml-2">Delete</button>
+            <button type="button" onclick="removeQuestionFromFormTestDeck(${idx})" class="text-red-400 hover:text-red-300 ml-2">Delete</button>
           </div>
         `;
       });
@@ -2449,12 +2479,23 @@
       document.getElementById('payload-lectures-wrapper').classList.add('hidden');
       document.getElementById('payload-dpp-wrapper').classList.add('hidden');
 
+      const linkInput = document.getElementById('payload-link');
+
       if (type === "Notes" || type === "DPP PDFs") {
         document.getElementById('payload-notes-wrapper').classList.remove('hidden');
+        if (type === "Notes") {
+          linkInput.required = true;
+          linkInput.placeholder = "https://drive.google.com/... (Mandatory)";
+        } else {
+          linkInput.required = false;
+          linkInput.placeholder = "https://drive.google.com/... or empty";
+        }
       } else if (type === "Lectures") {
         document.getElementById('payload-lectures-wrapper').classList.remove('hidden');
+        linkInput.required = false;
       } else if (type === "DPPs" || type === "Monthly Tests") {
         document.getElementById('payload-dpp-wrapper').classList.remove('hidden');
+        linkInput.required = false;
       }
     };
 
@@ -2502,7 +2543,7 @@
 
       tempDppQuestions.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="bg-slate-950 p-2 rounded-lg border border-slate-855 text-slate-300 flex justify-between items-center">
+          <div class="bg-slate-955 p-2 rounded-lg border border-slate-855 text-slate-300 flex justify-between items-center">
             <span class="truncate"><strong class="text-emerald-400">#${idx+1}:</strong> ${item.q}</span>
             <button type="button" onclick="removeQuestionFromFormDppDeck(${idx})" class="text-red-400 hover:text-red-300 ml-2 text-[10px]">Remove</button>
           </div>
@@ -2530,8 +2571,11 @@
 
       if (type === "Notes" || type === "DPP PDFs") {
         const linkVal = document.getElementById('payload-link').value.trim();
-        const rawContent = document.getElementById('payload-content').value;
-        chap.items.push({ id: uniqueItemId, type, title, text: rawContent, link: linkVal, completed: false });
+        if (type === "Notes" && !linkVal) {
+          showToast("A Document/Drive Link is mandatory for Notes!", "error");
+          return;
+        }
+        chap.items.push({ id: uniqueItemId, type, title, text: "", link: linkVal, completed: false });
       } else if (type === "Lectures") {
         const urlVal = document.getElementById('payload-lecture-url').value.trim();
         const durVal = document.getElementById('payload-lecture-duration').value.trim() || "45 mins";
@@ -2578,7 +2622,7 @@
       showToast("Study resource deleted permanently.", "info");
     };
 
-    // --- TIMETABLE OPERATIONS ---
+    // --- TIMETABLE OPERATIONS (SECURED LIVE MULTI-DEVICE SYNC) ---
     window.openAdminSchedulerModal = function() {
       document.getElementById('modal-admin-scheduler').classList.remove('hidden');
       document.getElementById('modal-admin-scheduler').classList.add('flex');
@@ -2600,29 +2644,32 @@
       const payload = { id: newId, subject, topic, teacher, time };
 
       defaultUpcomingClasses.unshift(payload);
+      localStorage.setItem('science_ix_upcoming_classes', JSON.stringify(defaultUpcomingClasses));
       renderClassesSchedule();
       closeAdminSchedulerModal();
       showToast("Published weekly timetable schedule!", "success");
 
-      if (db) {
+      // Multi-device sync
+      if (db && auth && auth.currentUser) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', newId), payload);
         } catch (e) {
-          console.warn("Offline - skipped cloud sync.");
+          console.warn("Offline - skipped cloud sync.", e);
         }
       }
     };
 
     window.deleteClassRecord = async function(id) {
       defaultUpcomingClasses = defaultUpcomingClasses.filter(x => x.id !== id);
+      localStorage.setItem('science_ix_upcoming_classes', JSON.stringify(defaultUpcomingClasses));
       renderClassesSchedule();
-      showToast("Schedules updated successfully.");
+      showToast("Schedule removed successfully.");
 
-      if (db) {
+      if (db && auth && auth.currentUser) {
         try {
           await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', id));
         } catch (e) {
-          console.warn("Offline - skipped cloud delete.");
+          console.warn("Offline - skipped cloud delete.", e);
         }
       }
     };
@@ -2753,7 +2800,7 @@
 
       box.className = `flex items-center gap-3 p-4 rounded-2xl border ${styling} shadow-xl backdrop-blur transition-all duration-300 transform translate-y-2 opacity-0`;
       box.innerHTML = `
-        <i data-lucide="${statusIcon}" class="w-5 h-5 shrink-0 ${type === 'success' ? 'text-emerald-400' : 'text-blue-400'}\"></i>
+        <i data-lucide="${statusIcon}" class="w-5 h-5 shrink-0 ${type === 'success' ? 'text-emerald-400' : 'text-blue-400'}"></i>
         <span class="text-xs font-semibold">${message}</span>
       `;
 
