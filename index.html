@@ -486,23 +486,40 @@
     </div>
   </div>
 
-  <!-- ==================== CONTROLLER: NOTE STUDY WINDOW MODAL ==================== -->
-  <div id="modal-note-viewer" class="fixed inset-0 bg-slate-955/90 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh] space-y-6 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-start justify-between border-b border-slate-800/80 pb-3">
-        <div>
-          <h3 id="note-viewer-header" class="text-xl font-black text-white font-sans">Classroom Lesson Note</h3>
-          <p class="text-xs text-blue-400 mt-1 font-sans">Study session active. Keep reading to automatically gain dynamic XP bonuses!</p>
+  <!-- ==================== DEDICATED DIRECT IN-APP PDF VIEWER MODAL ==================== -->
+  <div id="modal-pdf-viewer" class="fixed inset-0 bg-[#070a12]/95 z-50 hidden flex-col p-4 md:p-6 animate-in fade-in duration-200">
+    <div class="max-w-6xl w-full mx-auto flex-grow flex flex-col space-y-4 h-full">
+      
+      <div class="flex items-center justify-between bg-slate-900/90 border border-slate-800/80 p-4 rounded-2xl shadow-xl shrink-0 font-sans">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-rose-500/10 rounded-xl text-rose-400">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 id="pdf-viewer-title-label" class="text-sm md:text-base font-bold text-white">Lesson Document Viewer</h3>
+            <p class="text-[11px] text-emerald-400 flex items-center gap-1 font-sans"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Study stopwatch running...</p>
+          </div>
         </div>
-        <div class="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 text-xs font-bold shrink-0 font-mono">
-          <i data-lucide="timer" class="w-4 h-4 animate-spin text-blue-400"></i>
-          <span id="note-session-timer">0 minutes</span>
+        <div class="flex items-center gap-2">
+          <!-- Fallback direct link is preserved in case standard iframes block local layout rendering -->
+          <a id="pdf-viewer-external-btn" href="#" target="_blank" class="hidden sm:flex bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition items-center gap-1.5">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open in New Tab
+          </a>
+          <button onclick="terminatePdfStudySession()" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 font-bold">
+            <i data-lucide="x-square" class="w-4 h-4 font-sans"></i> Close & Save XP
+          </button>
         </div>
       </div>
-      <div class="flex-grow overflow-y-auto bg-slate-950/80 border border-slate-800 p-5 rounded-2xl text-slate-300 text-sm leading-relaxed whitespace-pre-wrap custom-scrollbar" id="note-viewer-text-content"></div>
-      <div class="flex justify-end gap-3 shrink-0 pt-3 border-t border-slate-800/80">
-        <button onclick="terminateNoteSession()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition transform active:scale-95 shadow-lg shadow-blue-500/20">Mark as Completed & Close</button>
+
+      <!-- Embedded high-performance Document Frame container -->
+      <div class="flex-grow w-full bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden relative shadow-2xl">
+        <iframe id="pdf-viewer-embed" class="w-full h-full border-none" src=""></iframe>
+        <div id="pdf-viewer-loading-cover" class="absolute inset-0 bg-[#070a12] flex flex-col items-center justify-center space-y-4">
+          <i data-lucide="loader-2" class="w-8 h-8 text-rose-400 animate-spin"></i>
+          <p class="text-xs text-slate-400 font-semibold uppercase tracking-widest font-mono">Loading Material Stream...</p>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -567,7 +584,7 @@
         </div>
       </div>
 
-      <div class="pt-2 border-t border-slate-800 font-sans font-sans">
+      <div class="pt-2 border-t border-slate-800 font-sans font-sans font-sans">
         <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Custom Diagram Image URL</label>
         <div class="flex gap-2">
           <input type="text" id="custom-diagram-url" placeholder="https://example.com/custom.png" class="flex-grow bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
@@ -637,9 +654,9 @@
           <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl space-y-2.5 font-sans font-sans">
             <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans">Question Builder</p>
             
-            <input type="text" id="form-test-question" placeholder="e.g. What is the value of gravitational acceleration g?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
+            <input type="text" id="form-test-question" placeholder="e.g. What is the value of gravitational acceleration g?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans font-sans">
             
-            <div class="grid grid-cols-2 gap-2 font-sans font-sans">
+            <div class="grid grid-cols-2 gap-2 font-sans font-sans font-sans">
               <input type="text" id="form-test-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
@@ -668,7 +685,7 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-bold font-sans font-sans font-sans">Create Test Environment</button>
+        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-sans font-sans font-sans">Create Test Environment</button>
       </form>
     </div>
   </div>
@@ -716,7 +733,7 @@
       </div>
       <form onsubmit="handlePayloadSubmission(event)" class="space-y-3 font-sans">
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Target Module Slot Type</label>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans font-sans">Target Module Slot Type</label>
           <select id="payload-type" onchange="toggleFormFieldsBasedOnPayload()" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans">
             <option value="Lectures">Lecture Entry</option>
             <option value="DPPs">Objective DPP (Multiple Choice)</option>
@@ -726,32 +743,32 @@
           </select>
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Topic / Title</label>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans font-sans">Topic / Title</label>
           <input type="text" id="payload-title" placeholder="e.g. Atoms and Molecules Practice" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         
         <!-- Notes/PDFs wrapper -->
         <div id="payload-notes-wrapper" class="space-y-2 font-sans font-sans">
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Document Link (PDF or Google Drive URL - Mandatory for Notes)</label>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Document Link (PDF or Google Drive URL - Mandatory for Notes)</label>
             <input type="url" id="payload-link" placeholder="https://drive.google.com/..." class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
         </div>
 
         <!-- Lectures wrapper -->
-        <div id="payload-lectures-wrapper" class="hidden space-y-2 font-sans">
+        <div id="payload-lectures-wrapper" class="hidden space-y-2 font-sans font-sans">
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans font-sans">Lecture Video URL (Optional)</label>
             <input type="url" id="payload-lecture-url" placeholder="https://youtube.com/... or empty" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Duration Description</label>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Duration Description</label>
             <input type="text" id="payload-lecture-duration" placeholder="e.g. 52 mins" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
         </div>
 
         <!-- DPPs & Tests wrapper -->
-        <div id="payload-dpp-wrapper" class="hidden space-y-3 font-sans">
+        <div id="payload-dpp-wrapper" class="hidden space-y-3 font-sans font-sans font-sans">
           <div class="flex items-center justify-between font-sans">
             <span class="text-xs font-bold text-emerald-400">Quiz / Test Questions Deck</span>
             <span id="payload-dpp-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-1 rounded">0 Quiz Questions</span>
@@ -759,27 +776,27 @@
           
           <div id="payload-dpp-compiled-list" class="space-y-1 text-xs max-h-[120px] overflow-y-auto custom-scrollbar font-sans font-sans"></div>
 
-          <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 space-y-2 font-sans font-sans">
-            <input type="text" id="payload-dpp-question" placeholder="Enter Problem Question Description..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none font-sans font-sans">
+          <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 space-y-2 font-sans font-sans font-sans">
+            <input type="text" id="payload-dpp-question" placeholder="Enter Problem Question Description..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none font-sans font-sans font-sans">
             
             <!-- Question Image with standard `+` helper button -->
             <div class="font-sans font-sans">
               <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Question Image / Diagram (Optional)</label>
               <div class="flex gap-2">
-                <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
+                <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
                 <button type="button" onclick="openDiagramHelper('payload-dpp-image')" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-3.5 rounded-xl text-xs transition flex items-center justify-center animate-none">
                   <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
             
-            <div class="grid grid-cols-2 gap-2 font-sans font-sans font-sans">
+            <div class="grid grid-cols-2 gap-2 font-sans font-sans font-sans font-sans">
               <input type="text" id="payload-dpp-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans font-sans">
-              <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+              <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
               <input type="text" id="payload-dpp-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none animate-none">
               <input type="text" id="payload-dpp-opt-d" placeholder="Option D" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
             </div>
-            <div class="font-sans">
+            <div class="font-sans font-sans">
               <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Correct Answer Value (EXACT MATCH of correct option, e.g. Mitochondria)</label>
               <input type="text" id="payload-dpp-correct-text" placeholder="Type correct option text value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
             </div>
@@ -789,13 +806,13 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-sans font-bold font-sans">Add Material Payload</button>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-sans font-bold">Add Material Payload</button>
       </form>
     </div>
   </div>
 
   <!-- ==================== AVATAR SELECTOR MODAL (UNIFIED AESTHETIC CLOUD DISPLAY) ==================== -->
-  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
+  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -848,42 +865,42 @@
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Max</span>
           </div>
           <!-- Sasha -->
-          <div onclick="changeUserAvatar('Sasha')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Sasha')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sasha" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Sasha">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Sasha</span>
           </div>
           <!-- Zoe -->
-          <div onclick="changeUserAvatar('Zoe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Zoe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Zoe">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Zoe</span>
           </div>
           <!-- Lily -->
-          <div onclick="changeUserAvatar('Lily')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Lily')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lily" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Lily">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Lily</span>
           </div>
           <!-- Maya -->
-          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maya" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Maya">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Maya</span>
           </div>
           <!-- Bella -->
-          <div onclick="changeUserAvatar('Bella')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Bella')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Bella" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Bella">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Bella</span>
           </div>
           <!-- Sophia -->
-          <div onclick="changeUserAvatar('Sophia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Sophia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sophia" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Sophia">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Sophia</span>
           </div>
           <!-- Mia -->
-          <div onclick="changeUserAvatar('Mia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Mia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Mia">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Mia</span>
           </div>
           <!-- Chloe -->
-          <div onclick="changeUserAvatar('Chloe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Chloe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Chloe">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Chloe</span>
           </div>
@@ -984,7 +1001,7 @@
             dppCount: 0, completedDpp: 0,
             items: [
               { id: "phy-ch1-item1", type: "Lectures", title: "L-01: Foundations & Grade 8 Concepts Brushup", duration: "35 mins", completed: false, link: "" },
-              { id: "phy-ch1-item2", type: "Notes", title: "Revision Guide Handout Text", text: "", link: "https://drive.google.com" }
+              { id: "phy-ch1-item2", type: "Notes", title: "Revision Guide Handout Text", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
             ]
           },
           {
@@ -1004,8 +1021,8 @@
               { id: "phy-ch2-item5", type: "DPPs", title: "Motion DPP 02 (Mcq Quiz)", questions: [
                 { q: "Which statement accurately describes displacement?", options: ["Always positive", "Shortest path between two points", "Longest path scalar value", "Identical to odometer distance"], correct: "Shortest path between two points", image: "" }
               ], completed: false },
-              { id: "phy-ch2-item6", type: "Notes", title: "Kinematics Formula Sheet Notes", text: "", link: "https://drive.google.com" },
-              { id: "phy-ch2-item7", type: "DPP PDFs", title: "DPP 01 Solution Guide Document", link: "https://drive.google.com" }
+              { id: "phy-ch2-item6", type: "Notes", title: "Kinematics Formula Sheet Notes", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" },
+              { id: "phy-ch2-item7", type: "DPP PDFs", title: "DPP 01 Solution Guide Document", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
             ]
           },
           {
@@ -1019,7 +1036,7 @@
               { id: "phy-ch3-item2", type: "DPPs", title: "Inertia Objective Assignment", questions: [
                 { q: "Which has maximum inertia?", options: ["A toy car", "A real cargo train", "A heavy bicycle", "A football"], correct: "A real cargo train", image: "" }
               ], completed: false },
-              { id: "phy-ch3-item3", type: "Notes", title: "Interactive Balanced vs Unbalanced Forces Summary", text: "", link: "https://drive.google.com" }
+              { id: "phy-ch3-item3", type: "Notes", title: "Interactive Balanced vs Unbalanced Forces Summary", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
             ]
           }
         ]
@@ -1038,7 +1055,7 @@
               { id: "chem-ch1-item2", type: "DPPs", title: "Chemistry Solutions DPP Quiz", questions: [
                 { q: "Which is a true solution?", options: ["Milk in water", "Salt dissolved in water", "Chalk powder mix", "Smoke in air"], correct: "Salt dissolved in water", image: "" }
               ], completed: false },
-              { id: "chem-ch1-item3", type: "Notes", title: "Molecule & Pure Element Handouts", text: "", link: "https://drive.google.com" }
+              { id: "chem-ch1-item3", type: "Notes", title: "Molecule & Pure Element Handouts", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
             ]
           }
         ]
@@ -1057,7 +1074,7 @@
               { id: "math-ch1-item2", type: "DPPs", title: "Algebra Identity Practice Sheet", questions: [
                 { q: "Evaluate (a + b)² formula match.", options: ["a² + b² + 2ab", "a² - b²", "a² + b² - 2ab", "a + b"], correct: "a² + b² + 2ab", image: "" }
               ], completed: false },
-              { id: "math-ch1-item3", type: "Notes", title: "Cartesian Quadrants Cheat Sheet", text: "", link: "https://drive.google.com" }
+              { id: "math-ch1-item3", type: "Notes", title: "Cartesian Quadrants Cheat Sheet", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
             ]
           }
         ]
@@ -1137,6 +1154,7 @@
       renderDashboardOverview();
       renderSubjectsView();
       setupBackButtonSupport();
+      setupInAppNoteSecurityWatchers();
     };
 
     // --- DECIDE VIEW LAYOUT POST-ANIMATION ---
@@ -1187,6 +1205,10 @@
           triggerCheatingPenalty("Egress attempted via browser Back navigation!");
           return;
         }
+        if (appState.currentViewingPdfId) {
+          handleCheatingDeduction("Back navigation attempted during an active study session!");
+          return;
+        }
 
         if (event.state && event.state.view) {
           const viewId = event.state.view;
@@ -1213,6 +1235,10 @@
     window.switchView = function(viewId, pushToHistory = true) {
       if (appState.activeExam) {
         triggerCheatingPenalty("System boundaries broken by switching internal views!");
+        return;
+      }
+      if (appState.currentViewingPdfId) {
+        handleCheatingDeduction("View switching was attempted while reading a notes document!");
         return;
       }
       transitionToView(viewId, pushToHistory);
@@ -1470,7 +1496,7 @@
       await loadCurriculumData();
 
       submitButton.disabled = false;
-      submitButton.innerText = "Access Study Workspace";
+      submitButton.innerText = "Access Study Deck";
       document.getElementById('view-login').classList.add('hidden');
       document.getElementById('view-dashboard').classList.remove('hidden');
     };
@@ -1586,7 +1612,7 @@
         else if (place === 3) rankBadgeClass = "text-amber-600 bg-amber-600/10 border-amber-700/30";
 
         const deleteMemberHTML = appState.role === "admin" ? `
-          <button onclick="removeStudentFromLeaderboard('${std.id}')" class="text-red-400/80 hover:text-red-400 p-1 bg-red-500/5 hover:bg-red-500/10 rounded-lg transition">
+          <button onclick="removeStudentFromLeaderboard('${std.id}')" class="text-red-400/80 hover:text-red-400 p-1 bg-red-500/5 hover:bg-red-500/10 rounded-lg transition animate-none">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         ` : '';
@@ -1833,9 +1859,9 @@
         const el = document.getElementById(`slot-tab-${tab}`);
         if (el) {
           if (appState.currentActiveTab === tab) {
-            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-[#A088FF] text-white transition shadow shrink-0 font-sans";
+            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-[#A088FF] text-white transition shadow shrink-0 font-sans animate-none";
           } else {
-            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-slate-400 hover:bg-slate-800 transition shrink-0 font-sans";
+            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-slate-400 hover:bg-slate-800 transition shrink-0 font-sans animate-none";
           }
         }
       });
@@ -1886,7 +1912,7 @@
             questionsArray = [{ q: item.question, options: item.options || [], correct: item.answer || "A", image: item.image || "" }];
           }
           actionButtonHTML = `
-            <button onclick="launchObjectiveDppSolving('${item.id}', '${item.title}', ${JSON.stringify(questionsArray).replace(/"/g, '&quot;')})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans">
+            <button onclick="launchObjectiveDppSolving('${item.id}', '${item.title}', ${JSON.stringify(questionsArray).replace(/"/g, '&quot;')})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans font-bold">
               Solve Quiz <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
             </button>
           `;
@@ -1984,135 +2010,232 @@
       renderSubjectsView();
     };
 
-    // --- TIME-BASED NOTE & PDF READING SESSION ---
-    let pdfStartTime = null;
-    let currentViewingPdfId = null;
-    let currentViewingPdfType = null; 
-
-    function calculateAndAwardPdfTrackedXp(isCheatingEvent = false) {
-      if (!pdfStartTime || !currentViewingPdfId) return;
-
-      const timeSpentSeconds = Math.floor((Date.now() - pdfStartTime) / 1000);
-      pdfStartTime = Date.now(); 
-
-      if (isCheatingEvent) {
-        showToast("⚠️ Study session paused! Leaving the tab or minimizing is flagged as cheating—no XP gained for this segment.", "error");
-        return;
-      }
-
-      if (appState.activeNoteReadingMinutes !== undefined) {
-        appState.activeNoteReadingMinutes += Math.floor(timeSpentSeconds / 60);
-        const elapsedEl = document.getElementById('pdf-timer-elapsed');
-        if (elapsedEl) {
-          const displaySecs = timeSpentSeconds % 60;
-          elapsedEl.innerText = `${appState.activeNoteReadingMinutes}m ${displaySecs}s`;
-        }
-        
-        const addedXp = Math.floor(timeSpentSeconds / 30);
-        const xpTextEl = document.getElementById('pdf-timer-xp-gained');
-        if (xpTextEl) {
-          const currentTotalXp = parseInt(xpTextEl.innerText) || 0;
-          xpTextEl.innerText = currentTotalXp + addedXp;
+    // --- HIGH RESOLUTION IN-APP EMBEDDED MODAL DOCUMENT VIEWER ---
+    function transformToGoogleViewerUrl(rawUrl) {
+      if (!rawUrl) return "";
+      
+      // Handle standard Google Drive Sharing Links to convert to Embed preview layout directly
+      if (rawUrl.includes("drive.google.com")) {
+        if (rawUrl.includes("/view")) {
+          return rawUrl.replace("/view", "/preview");
+        } else if (rawUrl.includes("/edit")) {
+          return rawUrl.replace("/edit", "/preview");
+        } else if (rawUrl.includes("?id=")) {
+          const urlObj = new URL(rawUrl);
+          const docId = urlObj.searchParams.get("id");
+          return `https://drive.google.com/file/d/${docId}/preview`;
         }
       }
-
-      if (timeSpentSeconds >= 15) {
-        const xpGained = Math.max(1, Math.floor(timeSpentSeconds / 30));
-        updateUserXp(xpGained);
-        showToast(`📚 Focused Reading: +${xpGained} XP synchronized!`, "success");
-      }
+      return rawUrl;
     }
 
+    function launchPdfInAppReader(url, title) {
+      const viewerModal = document.getElementById('modal-pdf-viewer');
+      const embedIframe = document.getElementById('pdf-viewer-embed');
+      const titleLabel = document.getElementById('pdf-viewer-title-label');
+      const loadingCover = document.getElementById('pdf-viewer-loading-cover');
+      const externalBtn = document.getElementById('pdf-viewer-external-btn');
+
+      if (!viewerModal || !embedIframe) return;
+
+      const structuredPreviewUrl = transformToGoogleViewerUrl(url);
+      activeFallbackUrl = url;
+      
+      if (titleLabel) titleLabel.innerText = title;
+      if (externalBtn) {
+        externalBtn.href = url;
+        externalBtn.classList.remove('hidden');
+      }
+
+      if (loadingCover) loadingCover.classList.remove('hidden');
+
+      embedIframe.removeAttribute('src');
+      embedIframe.src = structuredPreviewUrl || "about:blank";
+
+      embedIframe.onload = function() {
+        if (loadingCover) loadingCover.classList.add('hidden');
+      };
+
+      setTimeout(() => {
+        if (loadingCover) loadingCover.classList.add('hidden');
+      }, 2500);
+
+      viewerModal.classList.remove('hidden');
+      viewerModal.classList.add('flex');
+    }
+
+    // --- TIME-BASED NOTE & PDF READING SESSION ---
     window.launchNoteStudySession = function(id, title, text, link) {
-      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com';
-      if (!appState.completedItemsRegistry[id]) {
-        appState.completedItemsRegistry[id] = true;
-        updateUserXp(15);
-        showToast("Notes Handout Opened! +15 XP", "success");
+      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview';
+      
+      const isRegistered = appState.completedItemsRegistry[id] === true;
+      if (!isRegistered) {
+        showToast("Study Session Started! Stay active to earn continuous reward XP.", "success");
       } else {
-        showToast("Notes Handout reopened in Review Mode.", "info");
+        showToast("Review mode: Document reopened.", "info");
       }
 
       appState.activeNoteReadingMinutes = 0;
+      appState.currentViewingPdfId = id;
+      appState.pdfStartTime = Date.now();
       
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
         document.getElementById('pdf-timer-title').innerText = title;
-        document.getElementById('pdf-timer-elapsed').innerText = "0m 0s";
+        document.getElementById('pdf-timer-elapsed').innerText = "0 minutes 0s";
         document.getElementById('pdf-timer-xp-gained').innerText = "0";
-        pdfBar.classList.remove('opacity-0', '-translate-y-24');
-        pdfBar.classList.add('opacity-100', 'translate-y-0');
+        pdfBar.classList.remove('opacity-0', '-translate-y-32', 'timer-bounce');
+        void pdfBar.offsetWidth; // Trigger reflow to restart animation
+        pdfBar.classList.add('timer-bounce');
       }
 
-      window.open(pdfLink, '_blank');
-
-      pdfStartTime = Date.now();
-      currentViewingPdfId = id;
-      currentViewingPdfType = "Note";
+      launchPdfInAppReader(pdfLink, title);
+      startStudyStopwatchTracking();
     };
 
     window.launchPdfStudySession = function(id, title, link) {
-      if (!appState.completedItemsRegistry[id]) {
-        appState.completedItemsRegistry[id] = true;
-        updateUserXp(15);
-        showToast("PDF solution deck opened! +15 XP", "success");
+      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview';
+      
+      const isRegistered = appState.completedItemsRegistry[id] === true;
+      if (!isRegistered) {
+        showToast("Study Session Started! Stay active on this tab to earn reward XP.", "success");
       } else {
-        showToast("Review Mode: PDF reopened.", "info");
+        showToast("Review mode: PDF Document reopened.", "info");
       }
 
       appState.activeNoteReadingMinutes = 0;
+      appState.currentViewingPdfId = id;
+      appState.pdfStartTime = Date.now();
       
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
         document.getElementById('pdf-timer-title').innerText = title;
-        document.getElementById('pdf-timer-elapsed').innerText = "0m 0s";
+        document.getElementById('pdf-timer-elapsed').innerText = "0 minutes 0s";
         document.getElementById('pdf-timer-xp-gained').innerText = "0";
-        pdfBar.classList.remove('opacity-0', '-translate-y-24');
-        pdfBar.classList.add('opacity-100', 'translate-y-0');
+        pdfBar.classList.remove('opacity-0', '-translate-y-32', 'timer-bounce');
+        void pdfBar.offsetWidth; // Trigger reflow to restart animation
+        pdfBar.classList.add('timer-bounce');
       }
 
-      window.open(link, '_blank');
-
-      pdfStartTime = Date.now();
-      currentViewingPdfId = id;
-      currentViewingPdfType = "PDF";
+      launchPdfInAppReader(pdfLink, title);
+      startStudyStopwatchTracking();
     };
 
-    window.terminatePdfStudySession = function() {
-      calculateAndAwardPdfTrackedXp(false);
+    // --- ACCRUE STUDY STOPWATCH XP IN REAL TIME ---
+    function startStudyStopwatchTracking() {
+      if (studyStopwatchIntervalId) {
+        clearInterval(studyStopwatchIntervalId);
+      }
+      
+      studyStopwatchIntervalId = setInterval(() => {
+        if (!appState.currentViewingPdfId || !appState.pdfStartTime) return;
+        
+        const secondsElapsed = Math.floor((Date.now() - appState.pdfStartTime) / 1000);
+        const mins = Math.floor(secondsElapsed / 60);
+        const secs = secondsElapsed % 60;
+        
+        const elapsedString = `${mins} minutes ${secs}s`;
+        const elapsedEl = document.getElementById('pdf-timer-elapsed');
+        if (elapsedEl) elapsedEl.innerText = elapsedString;
+        
+        appState.activeNoteReadingMinutes = mins;
+        const xpGained = mins * 5;
+        const xpGainedEl = document.getElementById('pdf-timer-xp-gained');
+        if (xpGainedEl) xpGainedEl.innerText = xpGained;
+      }, 1000);
+    }
 
+    function stopStudyStopwatchTracking() {
+      if (studyStopwatchIntervalId) {
+        clearInterval(studyStopwatchIntervalId);
+        studyStopwatchIntervalId = null;
+      }
+    }
+
+    // --- SECURED IN-APP NOTE READING FOCUS SECURITY LOCKS ---
+    function setupInAppNoteSecurityWatchers() {
+      // Monitor if the browser window loses focus
+      window.addEventListener('blur', () => {
+        if (appState.currentViewingPdfId) {
+          handleCheatingDeduction("Cheating warning: Exited study window. Progress invalidated!");
+        }
+      });
+      
+      // Monitor if the user minimizes or changes tabs
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && appState.currentViewingPdfId) {
+          handleCheatingDeduction("Cheating warning: Tab switched away. Progress invalidated!");
+        }
+      });
+    }
+
+    function handleCheatingDeduction(reasonText) {
+      stopStudyStopwatchTracking();
+      updateUserXp(-20);
+      showToast(`${reasonText} -20 XP Penalty.`, "error");
+      cleanupInAppPdfView();
+    }
+
+    function cleanupInAppPdfView() {
+      stopStudyStopwatchTracking();
+      appState.currentViewingPdfId = null;
+      appState.pdfStartTime = null;
+      appState.activeNoteReadingMinutes = 0;
+      
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
-        pdfBar.classList.remove('opacity-100', 'translate-y-0');
-        pdfBar.classList.add('opacity-0', '-translate-y-24');
+        pdfBar.classList.remove('opacity-100', 'translate-y-0', 'timer-bounce');
+        pdfBar.classList.add('opacity-0', '-translate-y-32');
       }
 
-      pdfStartTime = null;
-      currentViewingPdfId = null;
-      currentViewingPdfType = null;
+      const viewerModal = document.getElementById('modal-pdf-viewer');
+      const embedIframe = document.getElementById('pdf-viewer-embed');
+      if (viewerModal) {
+        viewerModal.classList.add('hidden');
+        viewerModal.classList.remove('flex');
+      }
+      if (embedIframe) {
+        embedIframe.removeAttribute('src');
+      }
+      activeFallbackUrl = "";
+    }
 
+    window.terminatePdfStudySession = function() {
+      const activeId = appState.currentViewingPdfId;
+      if (!activeId) {
+        cleanupInAppPdfView();
+        return;
+      }
+
+      stopStudyStopwatchTracking();
+      
+      const minutesSpent = appState.activeNoteReadingMinutes;
+      const accruedXP = minutesSpent * 5;
+
+      const isAlreadyCompleted = appState.completedItemsRegistry[activeId] === true;
+      if (!isAlreadyCompleted) {
+        appState.completedItemsRegistry[activeId] = true;
+        
+        const totalAwarded = 15 + accruedXP;
+        updateUserXp(totalAwarded);
+        showToast(`Document completed! Spent ${minutesSpent} mins. +${totalAwarded} XP Saved!`, "success");
+      } else {
+        if (accruedXP > 0) {
+          updateUserXp(accruedXP);
+          showToast(`Accrued Study Points: +${accruedXP} XP Saved!`, "success");
+        } else {
+          showToast("Study Session closed. Progress saved successfully.", "success");
+        }
+      }
+
+      cleanupInAppPdfView();
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
-      showToast("Study session compiled and synchronized.");
     };
 
     window.terminateNoteSession = function() {
       window.terminatePdfStudySession();
     };
-
-    // --- AUTO DETECT IF STUDENT CUTS THE PAGE OR SWITCHES OUT OF TABS ---
-    document.addEventListener('visibilitychange', () => {
-      const pdfBar = document.getElementById('pdf-study-timer-bar');
-      if (pdfBar && !pdfBar.classList.contains('opacity-0')) {
-        if (document.hidden) {
-          calculateAndAwardPdfTrackedXp(true);
-          pdfStartTime = null; 
-        } else {
-          pdfStartTime = Date.now();
-          showToast("Study timer resumed! Stay on this tab to earn active study points.", "success");
-        }
-      }
-    });
 
     // --- PROCTORED ACTIVE OBSERVER LOCKS & PENALTIES ---
     let fullscreenLockCountdownId = null;
@@ -3083,6 +3206,7 @@
     window.openNameChangeModal = openNameChangeModal;
     window.closeNameChangeModal = closeNameChangeModal;
     window.handleSelfNameChange = handleSelfNameChange;
+    window.setupInAppNoteSecurityWatchers = setupInAppNoteSecurityWatchers;
   </script>
 </body>
 </html>
