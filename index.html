@@ -308,45 +308,6 @@
       </div>
     </div>
 
-    <!-- ADMIN NODE STATS DIRECTORY SECTION -->
-    <div id="admin-stats-panel" class="hidden bg-gradient-to-r from-slate-900 via-indigo-950/20 to-slate-900 border border-blue-500/30 rounded-3xl p-6 space-y-4 animate-in fade-in duration-200">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
-        <div class="flex items-center gap-2 font-sans">
-          <div class="p-2 bg-indigo-500/10 rounded-xl text-indigo-400">
-            <i data-lucide="shield" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-extrabold text-white font-sans font-bold font-sans font-sans">Ecosystem Statistics</h3>
-            <p class="text-xs text-slate-400 font-medium font-sans font-sans font-sans">Overview of student admissions and registered endpoints</p>
-          </div>
-        </div>
-        <span class="text-[10px] text-indigo-400 font-bold bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-wider animate-pulse font-mono">ADMIN NODE</span>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-sans">
-        <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-[10px] font-black uppercase text-slate-500 font-sans">Total Joined Members</p>
-            <p class="text-2xl font-black text-indigo-400 mt-1" id="admin-stats-joined-count">0</p>
-          </div>
-          <i data-lucide="users-round" class="w-8 h-8 text-indigo-500/30"></i>
-        </div>
-        <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-[10px] font-black uppercase text-slate-500 font-sans">Ecosystem Health</p>
-            <p class="text-2xl font-black text-emerald-400 mt-1">100% Secure</p>
-          </div>
-          <i data-lucide="heart" class="w-8 h-8 text-emerald-500/30"></i>
-        </div>
-        <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl flex items-center justify-between">
-          <div>
-            <p class="text-[10px] font-black uppercase text-slate-500 font-sans font-sans">Academic Target</p>
-            <p class="text-2xl font-black text-blue-400 mt-1">Target 2027</p>
-          </div>
-          <i data-lucide="award" class="w-8 h-8 text-blue-500/30"></i>
-        </div>
-      </div>
-    </div>
-
     <!-- MAIN BODY ROW: TIMETABLE & LEADERBOARD -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 font-sans font-sans">
       <!-- WEEKLY SCHEDULE -->
@@ -525,40 +486,23 @@
     </div>
   </div>
 
-  <!-- ==================== DEDICATED DIRECT IN-APP PDF VIEWER MODAL ==================== -->
-  <div id="modal-pdf-viewer" class="fixed inset-0 bg-[#070a12]/95 z-50 hidden flex-col p-4 md:p-6 animate-in fade-in duration-200">
-    <div class="max-w-6xl w-full mx-auto flex-grow flex flex-col space-y-4 h-full">
-      
-      <div class="flex items-center justify-between bg-slate-900/90 border border-slate-800/80 p-4 rounded-2xl shadow-xl shrink-0 font-sans">
-        <div class="flex items-center gap-3">
-          <div class="p-2 bg-rose-500/10 rounded-xl text-rose-400">
-            <i data-lucide="file-text" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 id="pdf-viewer-title-label" class="text-sm md:text-base font-bold text-white">Lesson Document Viewer</h3>
-            <p class="text-[11px] text-emerald-400 flex items-center gap-1 font-sans font-sans"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Study stopwatch running...</p>
-          </div>
+  <!-- ==================== CONTROLLER: NOTE STUDY WINDOW MODAL ==================== -->
+  <div id="modal-note-viewer" class="fixed inset-0 bg-slate-955/90 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh] space-y-6 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-start justify-between border-b border-slate-800/80 pb-3">
+        <div>
+          <h3 id="note-viewer-header" class="text-xl font-black text-white font-sans">Classroom Lesson Note</h3>
+          <p class="text-xs text-blue-400 mt-1 font-sans">Study session active. Keep reading to automatically gain dynamic XP bonuses!</p>
         </div>
-        <div class="flex items-center gap-2">
-          <!-- Fallback direct link is preserved in case standard iframes block local layout rendering -->
-          <a id="pdf-viewer-external-btn" href="#" target="_blank" class="hidden sm:flex bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition items-center gap-1.5">
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open in New Tab
-          </a>
-          <button onclick="terminatePdfStudySession()" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 font-bold font-bold font-bold">
-            <i data-lucide="x-square" class="w-4 h-4 font-sans"></i> Close & Save XP
-          </button>
+        <div class="bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 text-xs font-bold shrink-0 font-mono">
+          <i data-lucide="timer" class="w-4 h-4 animate-spin text-blue-400"></i>
+          <span id="note-session-timer">0 minutes</span>
         </div>
       </div>
-
-      <!-- Embedded high-performance Document Frame container -->
-      <div class="flex-grow w-full bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden relative shadow-2xl">
-        <iframe id="pdf-viewer-embed" class="w-full h-full border-none" src=""></iframe>
-        <div id="pdf-viewer-loading-cover" class="absolute inset-0 bg-[#070a12] flex flex-col items-center justify-center space-y-4">
-          <i data-lucide="loader-2" class="w-8 h-8 text-rose-400 animate-spin"></i>
-          <p class="text-xs text-slate-400 font-semibold uppercase tracking-widest font-mono">Loading Material Stream...</p>
-        </div>
+      <div class="flex-grow overflow-y-auto bg-slate-950/80 border border-slate-800 p-5 rounded-2xl text-slate-300 text-sm leading-relaxed whitespace-pre-wrap custom-scrollbar" id="note-viewer-text-content"></div>
+      <div class="flex justify-end gap-3 shrink-0 pt-3 border-t border-slate-800/80">
+        <button onclick="terminateNoteSession()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition transform active:scale-95 shadow-lg shadow-blue-500/20">Mark as Completed & Close</button>
       </div>
-
     </div>
   </div>
 
@@ -597,7 +541,7 @@
       <p class="text-[11px] text-slate-400 font-sans font-sans">Click a preset science vector diagram below to instantly assign it to the question, or paste a custom URL.</p>
       
       <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-1 font-sans">
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans font-sans">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg" class="max-h-full max-w-full object-contain" alt="Animal Cell">
           </div>
@@ -758,7 +702,7 @@
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Delivery Timing</label>
           <input type="text" id="form-class-time" placeholder="e.g. Monday 10:00 AM" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition animate-none font-bold">Publish Weekly Schedule</button>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-bold">Publish Weekly Schedule</button>
       </form>
     </div>
   </div>
@@ -822,7 +766,7 @@
             <div class="font-sans font-sans">
               <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Question Image / Diagram (Optional)</label>
               <div class="flex gap-2">
-                <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+                <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
                 <button type="button" onclick="openDiagramHelper('payload-dpp-image')" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-3.5 rounded-xl text-xs transition flex items-center justify-center animate-none">
                   <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
@@ -861,70 +805,87 @@
       </div>
 
       <div class="max-h-[60vh] overflow-y-auto pr-1 custom-scrollbar">
+        <!-- Merged Unified Avatar Selection Grid -->
         <div class="grid grid-cols-4 gap-3">
           <!-- Milo -->
-          <div onclick="changeUserAvatar('Milo')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" class="w-full h-full object-cover rounded-lg" alt="Milo">
+          <div onclick="changeUserAvatar('Milo')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Milo">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Milo</span>
+          </div>
+          <!-- Alexander -->
+          <div onclick="changeUserAvatar('Alexander')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alexander" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Alexander">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Alex</span>
           </div>
           <!-- Lucas -->
-          <div onclick="changeUserAvatar('Lucas')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucas" class="w-full h-full object-cover rounded-lg" alt="Lucas">
+          <div onclick="changeUserAvatar('Lucas')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lucas" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Lucas">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Lucas</span>
           </div>
           <!-- Ethan -->
-          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ethan" class="w-full h-full object-cover rounded-lg" alt="Ethan">
-          </div>
-          <!-- Leo -->
-          <div onclick="changeUserAvatar('Leo')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo" class="w-full h-full object-cover rounded-lg" alt="Leo">
+          <div onclick="changeUserAvatar('Ethan')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ethan" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Ethan">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Ethan</span>
           </div>
           <!-- Oliver -->
-          <div onclick="changeUserAvatar('Oliver')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver" class="w-full h-full object-cover rounded-lg" alt="Oliver">
+          <div onclick="changeUserAvatar('Oliver')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Oliver">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Oliver</span>
           </div>
           <!-- Jack -->
-          <div onclick="changeUserAvatar('Jack')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" class="w-full h-full object-cover rounded-lg" alt="Jack">
+          <div onclick="changeUserAvatar('Jack')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Jack">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Jack</span>
           </div>
-          <!-- Charlie -->
-          <div onclick="changeUserAvatar('Charlie')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Charlie" class="w-full h-full object-cover rounded-lg" alt="Charlie">
+          <!-- Leo -->
+          <div onclick="changeUserAvatar('Leo')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Leo">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Leo</span>
           </div>
           <!-- Max -->
-          <div onclick="changeUserAvatar('Max')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Max" class="w-full h-full object-cover rounded-lg" alt="Max">
-          </div>
-          <!-- Zoe -->
-          <div onclick="changeUserAvatar('Zoe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe" class="w-full h-full object-cover rounded-lg" alt="Zoe">
+          <div onclick="changeUserAvatar('Max')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Max" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Max">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Max</span>
           </div>
           <!-- Sasha -->
-          <div onclick="changeUserAvatar('Sasha')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sasha" class="w-full h-full object-cover rounded-lg" alt="Sasha">
+          <div onclick="changeUserAvatar('Sasha')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sasha" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Sasha">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Sasha</span>
           </div>
-          <!-- Bella -->
-          <div onclick="changeUserAvatar('Bella')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Bella" class="w-full h-full object-cover rounded-lg" alt="Bella">
-          </div>
-          <!-- Sophia -->
-          <div onclick="changeUserAvatar('Sophia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sophia" class="w-full h-full object-cover rounded-lg" alt="Sophia">
-          </div>
-          <!-- Mia -->
-          <div onclick="changeUserAvatar('Mia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia" class="w-full h-full object-cover rounded-lg" alt="Mia">
-          </div>
-          <!-- Emily -->
-          <div onclick="changeUserAvatar('Emily')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Emily" class="w-full h-full object-cover rounded-lg" alt="Emily">
+          <!-- Zoe -->
+          <div onclick="changeUserAvatar('Zoe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Zoe">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Zoe</span>
           </div>
           <!-- Lily -->
-          <div onclick="changeUserAvatar('Lily')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lily" class="w-full h-full object-cover rounded-lg" alt="Lily">
+          <div onclick="changeUserAvatar('Lily')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lily" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Lily">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Lily</span>
+          </div>
+          <!-- Maya -->
+          <div onclick="changeUserAvatar('Maya')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Maya" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Maya">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Maya</span>
+          </div>
+          <!-- Bella -->
+          <div onclick="changeUserAvatar('Bella')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Bella" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Bella">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Bella</span>
+          </div>
+          <!-- Sophia -->
+          <div onclick="changeUserAvatar('Sophia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sophia" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Sophia">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Sophia</span>
+          </div>
+          <!-- Mia -->
+          <div onclick="changeUserAvatar('Mia')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Mia">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Mia</span>
           </div>
           <!-- Chloe -->
-          <div onclick="changeUserAvatar('Chloe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe" class="w-full h-full object-cover rounded-lg" alt="Chloe">
+          <div onclick="changeUserAvatar('Chloe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Chloe">
+            <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Chloe</span>
           </div>
         </div>
       </div>
@@ -932,7 +893,7 @@
   </div>
 
   <!-- ==================== SYSTEM TOAST POPUPS ==================== -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full font-sans font-sans"></div>
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full font-sans"></div>
 
   <!-- MODULE SCRIPTS -->
   <script type="module">
@@ -976,7 +937,6 @@
     let currentImageTargetInputId = null;
 
     // Window Watchers for Closed-Tab Detections
-    let tabWatcherIntervalId = null;
     let activeFallbackUrl = "";
 
     // Timer Intervals for Study stopwatch
@@ -988,10 +948,12 @@
       { id: "abd kartik", name: "ABD KARTIK", streak: 1, xp: 1500, avatar: "Milo" },
       { id: "rd", name: "RD", streak: 1, xp: 1160, avatar: "Alexander" },
       { id: "deba", name: "DEBA", streak: 3, xp: 300, avatar: "Zoe" },
+      { id: "arunava", name: "Arunava", streak: 1, xp: 270, avatar: "Ethan" },
       { id: "arik", name: "ARIK", streak: 1, xp: 200, avatar: "Lucas" },
       { id: "ankush mondal", name: "ANKUSH MONDAL", streak: 1, xp: 60, avatar: "Milo" },
       { id: "naman kar", name: "NAMAN KAR", streak: 1, xp: 30, avatar: "Alexander" },
-      { id: "bijon chandra", name: "Bijon chandra", streak: 1, xp: 15, avatar: "Ethan" }
+      { id: "bijon chandra", name: "Bijon chandra", streak: 1, xp: 15, avatar: "Ethan" },
+      { id: "anushka manna", name: "Anushka Manna", streak: 1, xp: 0, avatar: "Sasha" }
     ];
 
     let defaultUpcomingClasses = [
@@ -1022,7 +984,7 @@
             dppCount: 0, completedDpp: 0,
             items: [
               { id: "phy-ch1-item1", type: "Lectures", title: "L-01: Foundations & Grade 8 Concepts Brushup", duration: "35 mins", completed: false, link: "" },
-              { id: "phy-ch1-item2", type: "Notes", title: "Revision Guide Handout Text", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
+              { id: "phy-ch1-item2", type: "Notes", title: "Revision Guide Handout Text", text: "", link: "https://drive.google.com" }
             ]
           },
           {
@@ -1042,8 +1004,8 @@
               { id: "phy-ch2-item5", type: "DPPs", title: "Motion DPP 02 (Mcq Quiz)", questions: [
                 { q: "Which statement accurately describes displacement?", options: ["Always positive", "Shortest path between two points", "Longest path scalar value", "Identical to odometer distance"], correct: "Shortest path between two points", image: "" }
               ], completed: false },
-              { id: "phy-ch2-item6", type: "Notes", title: "Kinematics Formula Sheet Notes", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" },
-              { id: "phy-ch2-item7", type: "DPP PDFs", title: "DPP 01 Solution Guide Document", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
+              { id: "phy-ch2-item6", type: "Notes", title: "Kinematics Formula Sheet Notes", text: "", link: "https://drive.google.com" },
+              { id: "phy-ch2-item7", type: "DPP PDFs", title: "DPP 01 Solution Guide Document", link: "https://drive.google.com" }
             ]
           },
           {
@@ -1057,7 +1019,7 @@
               { id: "phy-ch3-item2", type: "DPPs", title: "Inertia Objective Assignment", questions: [
                 { q: "Which has maximum inertia?", options: ["A toy car", "A real cargo train", "A heavy bicycle", "A football"], correct: "A real cargo train", image: "" }
               ], completed: false },
-              { id: "phy-ch3-item3", type: "Notes", title: "Interactive Balanced vs Unbalanced Forces Summary", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
+              { id: "phy-ch3-item3", type: "Notes", title: "Interactive Balanced vs Unbalanced Forces Summary", text: "", link: "https://drive.google.com" }
             ]
           }
         ]
@@ -1076,7 +1038,7 @@
               { id: "chem-ch1-item2", type: "DPPs", title: "Chemistry Solutions DPP Quiz", questions: [
                 { q: "Which is a true solution?", options: ["Milk in water", "Salt dissolved in water", "Chalk powder mix", "Smoke in air"], correct: "Salt dissolved in water", image: "" }
               ], completed: false },
-              { id: "chem-ch1-item3", type: "Notes", title: "Molecule & Pure Element Handouts", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
+              { id: "chem-ch1-item3", type: "Notes", title: "Molecule & Pure Element Handouts", text: "", link: "https://drive.google.com" }
             ]
           }
         ]
@@ -1095,7 +1057,7 @@
               { id: "math-ch1-item2", type: "DPPs", title: "Algebra Identity Practice Sheet", questions: [
                 { q: "Evaluate (a + b)² formula match.", options: ["a² + b² + 2ab", "a² - b²", "a² + b² - 2ab", "a + b"], correct: "a² + b² + 2ab", image: "" }
               ], completed: false },
-              { id: "math-ch1-item3", type: "Notes", title: "Cartesian Quadrants Cheat Sheet", text: "", link: "https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview" }
+              { id: "math-ch1-item3", type: "Notes", title: "Cartesian Quadrants Cheat Sheet", text: "", link: "https://drive.google.com" }
             ]
           }
         ]
@@ -1175,7 +1137,6 @@
       renderDashboardOverview();
       renderSubjectsView();
       setupBackButtonSupport();
-      setupInAppNoteSecurityWatchers();
     };
 
     // --- DECIDE VIEW LAYOUT POST-ANIMATION ---
@@ -1226,10 +1187,6 @@
           triggerCheatingPenalty("Egress attempted via browser Back navigation!");
           return;
         }
-        if (appState.currentViewingPdfId) {
-          handleCheatingDeduction("Back navigation attempted during an active study session!");
-          return;
-        }
 
         if (event.state && event.state.view) {
           const viewId = event.state.view;
@@ -1256,10 +1213,6 @@
     window.switchView = function(viewId, pushToHistory = true) {
       if (appState.activeExam) {
         triggerCheatingPenalty("System boundaries broken by switching internal views!");
-        return;
-      }
-      if (appState.currentViewingPdfId) {
-        handleCheatingDeduction("View switching was attempted while reading a notes document!");
         return;
       }
       transitionToView(viewId, pushToHistory);
@@ -1318,7 +1271,7 @@
       }
     }
 
-    // --- FIRESTORE REALTIME SYNC ---
+    // --- FIRESTORE REALTIME SYNC (RULES 1, 2) ---
     function setupFirestoreRealtimeSubscribers() {
       if (!db) return;
       
@@ -1336,15 +1289,7 @@
       const leaderboardCol = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
       onSnapshot(leaderboardCol, (snap) => {
         let items = [];
-        snap.forEach(d => {
-          const rowData = d.data();
-          const key = d.id;
-          if (rowData && rowData[key]) {
-            items.push(rowData[key]);
-          } else {
-            items.push({ id: d.id, ...rowData });
-          }
-        });
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
         if (items.length > 0) {
           const merged = [...fallbackLeaderboard];
           items.forEach(dbItem => {
@@ -1370,7 +1315,6 @@
       const adminPublishPayloadBtn = document.getElementById('admin-publish-payload-btn');
       const adminAddTestBtn = document.getElementById('admin-add-test-btn');
       const addChapterBtn = document.getElementById('add-chapter-btn');
-      const adminStatsPanel = document.getElementById('admin-stats-panel');
 
       if (roleBadge) {
         if (isAdmin) roleBadge.classList.remove('hidden');
@@ -1391,21 +1335,6 @@
       if (addChapterBtn) {
         if (isAdmin) addChapterBtn.classList.remove('hidden');
         else addChapterBtn.classList.add('hidden');
-      }
-      if (adminStatsPanel) {
-        if (isAdmin) adminStatsPanel.classList.remove('hidden');
-        else adminStatsPanel.classList.add('hidden');
-      }
-
-      if (isAdmin) {
-        updateAdminStatsPanelData();
-      }
-    }
-
-    function updateAdminStatsPanelData() {
-      const countEl = document.getElementById('admin-stats-joined-count');
-      if (countEl) {
-        countEl.innerText = fallbackLeaderboard.length;
       }
     }
 
@@ -1630,7 +1559,7 @@
                 </span>
               </div>
               <h3 class="text-base font-bold text-white mt-3 line-clamp-1">${item.topic}</h3>
-              <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5 font-sans font-medium font-sans">
+              <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5 font-sans">
                 <i data-lucide="user" class="w-3.5 h-3.5 text-blue-400"></i> ${item.teacher}
               </p>
             </div>
@@ -1657,12 +1586,11 @@
         else if (place === 3) rankBadgeClass = "text-amber-600 bg-amber-600/10 border-amber-700/30";
 
         const deleteMemberHTML = appState.role === "admin" ? `
-          <button onclick="removeStudentFromLeaderboard('${std.id}')" class="text-red-400/80 hover:text-red-400 p-1 bg-red-500/5 hover:bg-red-500/10 rounded-lg transition animate-none">
+          <button onclick="removeStudentFromLeaderboard('${std.id}')" class="text-red-400/80 hover:text-red-400 p-1 bg-red-500/5 hover:bg-red-500/10 rounded-lg transition">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         ` : '';
 
-        // PUBLIC XP & STREAK PROGRESS SHOWN IN HIGH RESOLUTION TO ALL
         target.innerHTML += `
           <div class="flex items-center justify-between p-3 rounded-2xl border ${isSelf ? 'bg-blue-600/10 border-blue-500/40 shadow shadow-blue-500/5' : 'bg-slate-955/40 border-slate-800/50'} hover:bg-slate-900/40 transition font-sans">
             <div class="flex items-center gap-3">
@@ -1690,147 +1618,10 @@
           </div>
         `;
       });
-      
-      if (appState.role === 'admin') {
-        updateAdminStatsPanelData();
-      }
-
       lucide.createIcons();
     }
 
-    // --- NAME CHANGE MODAL CONTROLS (Self Only) ---
-    window.openNameChangeModal = function() {
-      const modal = document.getElementById('modal-name-change');
-      const input = document.getElementById('name-change-input');
-      if (modal && input) {
-        input.value = appState.user;
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      }
-    };
-
-    window.closeNameChangeModal = function() {
-      const modal = document.getElementById('modal-name-change');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    };
-
-    window.handleSelfNameChange = async function(e) {
-      e.preventDefault();
-      const newName = document.getElementById('name-change-input').value.trim();
-      
-      if (!newName) {
-        showToast("Please enter a valid display name.", "error");
-        return;
-      }
-      if (newName.toLowerCase() === appState.user.toLowerCase()) {
-        closeNameChangeModal();
-        return;
-      }
-
-      const oldKey = appState.user.toLowerCase();
-      const newKey = newName.toLowerCase();
-      const submitBtn = e.submitter || e.currentTarget.querySelector('button[type="submit"]');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Saving Profile...";
-      }
-
-      // 1. Keep track of previous statistics
-      const savedXp = appState.xp;
-      const savedStreak = appState.streak;
-      const savedAvatar = appState.avatar;
-      const savedRegistry = { ...appState.completedItemsRegistry };
-      const savedPersonalNotes = { ...appState.personalNotes };
-
-      // 2. Clear old state data in localStorage
-      localStorage.removeItem(`science_ix_xp_${oldKey}`);
-      localStorage.removeItem(`science_ix_streak_${oldKey}`);
-      localStorage.removeItem(`science_ix_avatar_${oldKey}`);
-      localStorage.removeItem(`science_ix_registry_${oldKey}`);
-      localStorage.removeItem(`science_ix_notes_${oldKey}`);
-
-      // 3. Re-assign local App state to new Name
-      appState.user = newName;
-      document.getElementById('user-display-name').innerText = newName;
-
-      // 4. Save new records locally
-      localStorage.setItem("science_ix_saved_user", newName);
-      localStorage.setItem(`science_ix_xp_${newKey}`, savedXp);
-      localStorage.setItem(`science_ix_streak_${newKey}`, savedStreak);
-      localStorage.setItem(`science_ix_avatar_${newKey}`, savedAvatar);
-      localStorage.setItem(`science_ix_registry_${newKey}`, JSON.stringify(savedRegistry));
-      localStorage.setItem(`science_ix_notes_${newKey}`, JSON.stringify(savedPersonalNotes));
-
-      // 5. Update local fallback leaderboard registry to prevent duplication leaks
-      const oldIdx = fallbackLeaderboard.findIndex(x => x.id === oldKey);
-      const updatedRecord = {
-        id: newKey,
-        name: `${newName} (You)`,
-        streak: savedStreak,
-        xp: savedXp,
-        avatar: savedAvatar
-      };
-      if (oldIdx !== -1) {
-        fallbackLeaderboard[oldIdx] = updatedRecord;
-      } else {
-        fallbackLeaderboard.push(updatedRecord);
-      }
-
-      // 6. Write changes to the global Cloud database if online
-      if (db && auth && auth.currentUser) {
-        try {
-          // Put the new document
-          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', newKey);
-          await setDoc(studentDocRef, {
-            name: newName,
-            xp: savedXp,
-            streak: savedStreak,
-            avatar: savedAvatar,
-            completedItemsRegistry: savedRegistry,
-            personalNotes: savedPersonalNotes
-          });
-
-          const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', newKey);
-          await setDoc(leaderDocRef, {
-            [newKey]: {
-              id: newKey,
-              name: newName,
-              streak: savedStreak,
-              xp: savedXp,
-              avatar: savedAvatar
-            }
-          }, { merge: true });
-
-          // Purge the old documents from database
-          const oldStudentRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', oldKey);
-          await deleteDoc(oldStudentRef);
-
-          const oldLeaderRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', oldKey);
-          await deleteDoc(oldLeaderRef);
-
-        } catch (err) {
-          console.warn("Could not sync name rename to Firestore.", err);
-        }
-      }
-
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Confirm Name Update";
-      }
-
-      closeNameChangeModal();
-      renderLeaderboard();
-      showToast("Name modified successfully!", "success");
-    };
-
-    window.openNameChangeModal = openNameChangeModal;
-    window.closeNameChangeModal = closeNameChangeModal;
-    window.handleSelfNameChange = handleSelfNameChange;
-
-    // --- CURRICULUM PERSISTENCE ENGINE ---
+    // --- DOUBLE-SYNC GLOBAL CURRICULUM PERSISTENCE ENGINE ---
     async function saveCurriculumData() {
       localStorage.setItem('science_ix_curriculum', JSON.stringify(folderSystemData));
       localStorage.setItem('science_ix_exams', JSON.stringify(defaultMonthlyExams));
@@ -1905,7 +1696,7 @@
       return Math.round((completedItems / totalItems) * 100);
     }
 
-    // --- LEVEL 1: SUBJECTS VIEW ---
+    // --- LEVEL 1: RENDER SUBJECTS VIEW ---
     window.renderSubjectsView = function() {
       const target = document.getElementById('subject-cards-list');
       if (!target) return;
@@ -1985,7 +1776,7 @@
         ` : '';
 
         container.innerHTML += `
-          <div class="flex items-stretch gap-2 animate-in fade-in duration-200 font-sans">
+          <div class="flex items-stretch gap-2 animate-in fade-in duration-200">
             <div onclick="openChapterItemsDetails('${chap.id}')" class="flex-grow bg-[#0f1524] border border-slate-800 hover:border-slate-700 rounded-[20px] p-5 flex items-center justify-between cursor-pointer transition-all duration-300 transform active:scale-[0.99] no-select">
               <div class="space-y-2 min-w-0 pr-3 font-sans">
                 <span class="inline-block text-[10px] font-black tracking-wider text-[#A088FF] bg-[#A088FF]/10 border border-[#A088FF]/20 px-2.5 py-0.5 rounded-md uppercase font-mono">
@@ -1996,7 +1787,7 @@
                 <p class="text-xs text-slate-400 flex items-center flex-wrap gap-x-2 gap-y-1 font-medium font-sans">
                   <span>Monthly Tests: ${completedTests}/${totalTests}</span>
                   <span class="text-slate-600">•</span>
-                  <span>DPPs: ${completedDPPs}/${totalDPPs}</span>
+                  <span>DPP: ${completedDPPs}/${totalDPPs || chap.dppCount}</span>
                   <span class="text-slate-600">•</span>
                   <span>Notes: ${completedNotes}/${totalNotes}</span>
                 </p>
@@ -2042,9 +1833,9 @@
         const el = document.getElementById(`slot-tab-${tab}`);
         if (el) {
           if (appState.currentActiveTab === tab) {
-            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-[#A088FF] text-white transition shadow shrink-0 font-sans animate-none";
+            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-[#A088FF] text-white transition shadow shrink-0 font-sans";
           } else {
-            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-slate-400 hover:bg-slate-800 transition shrink-0 font-sans animate-none";
+            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-slate-400 hover:bg-slate-800 transition shrink-0 font-sans";
           }
         }
       });
@@ -2059,7 +1850,7 @@
         display.innerHTML = `
           <div class="text-center py-12 bg-slate-955/40 border border-slate-800/80 rounded-[20px] space-y-2">
             <i data-lucide="inbox" class="w-8 h-8 text-slate-600 mx-auto"></i>
-            <p class="text-xs text-slate-500 font-medium font-sans font-semibold">No items available in this slot category.</p>
+            <p class="text-xs text-slate-500 font-medium font-sans">No items available in this slot category.</p>
           </div>
         `;
         lucide.createIcons();
@@ -2085,7 +1876,7 @@
         } else if (item.type === "Notes") {
           const escapedNotesText = (item.text || '').replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/\n/g, "\\n");
           actionButtonHTML = `
-            <button onclick="launchNoteStudySession('${item.id}', '${item.title}', '${escapedNotesText}', '${item.link || ''}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans font-bold font-sans font-sans">
+            <button onclick="launchNoteStudySession('${item.id}', '${item.title}', '${escapedNotesText}', '${item.link || ''}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans">
               Read Notes <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
             </button>
           `;
@@ -2095,47 +1886,47 @@
             questionsArray = [{ q: item.question, options: item.options || [], correct: item.answer || "A", image: item.image || "" }];
           }
           actionButtonHTML = `
-            <button onclick="launchObjectiveDppSolving('${item.id}', '${item.title}', ${JSON.stringify(questionsArray).replace(/"/g, '&quot;')})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans font-bold font-sans font-sans">
+            <button onclick="launchObjectiveDppSolving('${item.id}', '${item.title}', ${JSON.stringify(questionsArray).replace(/"/g, '&quot;')})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans">
               Solve Quiz <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
             </button>
           `;
         } else if (item.type === "DPP PDFs") {
           actionButtonHTML = `
-            <button onclick="launchPdfStudySession('${item.id}', '${item.title}', '${item.link || 'https://drive.google.com'}')" class="bg-rose-600 hover:bg-rose-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans font-bold font-sans font-sans">
+            <button onclick="launchPdfStudySession('${item.id}', '${item.title}', '${item.link || 'https://drive.google.com'}')" class="bg-rose-600 hover:bg-rose-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans text-center">
               Open PDF <i data-lucide="download" class="w-3.5 h-3.5"></i>
             </button>
           `;
         } else if (item.type === "Monthly Tests") {
           let questionsArray = item.questions || [];
           actionButtonHTML = `
-            <button onclick="launchChapterMonthlyTest('${item.id}', '${item.title}', ${JSON.stringify(questionsArray).replace(/"/g, '&quot;')})" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans font-bold font-sans font-sans font-sans">
+            <button onclick="launchChapterMonthlyTest('${item.id}', '${item.title}', ${JSON.stringify(questionsArray).replace(/"/g, '&quot;')})" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1 font-sans">
               Start Exam <i data-lucide="shield" class="w-3.5 h-3.5"></i>
             </button>
           `;
         }
 
         const adminDeleteResourceHTML = appState.role === "admin" ? `
-          <button onclick="deleteResourceItem('${item.id}')" class="text-red-400 hover:text-red-300 p-2 rounded-xl bg-red-500/10 border border-red-500/20 transition shrink-0 font-semibold font-bold">
+          <button onclick="deleteResourceItem('${item.id}')" class="text-red-400 hover:text-red-300 p-2 rounded-xl bg-red-500/10 border border-red-500/20 transition shrink-0 font-semibold">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         ` : '';
 
         display.innerHTML += `
-          <div class="bg-[#0f1524] border ${isDone ? 'border-emerald-500/20 bg-emerald-955/5' : 'border-slate-800'} p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition hover:border-slate-700 animate-in fade-in duration-150 font-sans">
+          <div class="bg-[#0f1524] border ${isDone ? 'border-emerald-500/20 bg-emerald-950/5' : 'border-slate-800'} p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition hover:border-slate-700 animate-in fade-in duration-150 font-sans">
             <div class="space-y-1.5 min-w-0 flex-1">
               <div class="flex items-center gap-2">
-                <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${typeBadgeColor} font-sans font-semibold font-bold">
+                <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${typeBadgeColor} font-sans">
                   ${item.type}
                 </span>
                 ${isDone ? `
-                  <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-1 font-sans font-bold">
+                  <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-1">
                     <i data-lucide="check" class="w-2.5 h-2.5"></i> Completed
                   </span>
                 ` : `<span class="text-slate-500 text-[10px] font-mono">${item.duration || (item.questions ? item.questions.length + ' Qs' : 'Study Handout')}</span>`}
               </div>
               <h4 class="text-xs sm:text-sm font-bold text-slate-200 leading-snug truncate">${item.title}</h4>
             </div>
-            <div class="shrink-0 flex items-center gap-2 font-sans">
+            <div class="shrink-0 flex items-center gap-2">
               ${actionButtonHTML}
               ${adminDeleteResourceHTML}
             </div>
@@ -2180,7 +1971,7 @@
       closeDiagramHelperModal();
     };
 
-    // --- STUDY CORE ACTIONS (ONE-TIME XP ALLOCATION) ---
+    // --- STUDY CORE ACTIONS (ONE-TIME XP ALLOCATION STRICT RULE) ---
     window.simulateLectureWatch = function(id) {
       if (!appState.completedItemsRegistry[id]) {
         appState.completedItemsRegistry[id] = true;
@@ -2193,239 +1984,135 @@
       renderSubjectsView();
     };
 
-    // --- DIRECT IN-APP EMBEDDED PDF WORKSPACE VIEWER ENGINE ---
-    function transformToGoogleViewerUrl(rawUrl) {
-      if (!rawUrl) return "";
-      
-      // Handle standard Google Drive Sharing Links to convert to Embed preview layout directly
-      if (rawUrl.includes("drive.google.com")) {
-        if (rawUrl.includes("/view")) {
-          return rawUrl.replace("/view", "/preview");
-        } else if (rawUrl.includes("/edit")) {
-          return rawUrl.replace("/edit", "/preview");
-        } else if (rawUrl.includes("?id=")) {
-          const urlObj = new URL(rawUrl);
-          const docId = urlObj.searchParams.get("id");
-          return `https://drive.google.com/file/d/${docId}/preview`;
-        }
-      }
-      return rawUrl;
-    }
+    // --- TIME-BASED NOTE & PDF READING SESSION ---
+    let pdfStartTime = null;
+    let currentViewingPdfId = null;
+    let currentViewingPdfType = null; 
 
-    function launchPdfInAppReader(url, title) {
-      const viewerModal = document.getElementById('modal-pdf-viewer');
-      const embedIframe = document.getElementById('pdf-viewer-embed');
-      const titleLabel = document.getElementById('pdf-viewer-title-label');
-      const loadingCover = document.getElementById('pdf-viewer-loading-cover');
-      const externalBtn = document.getElementById('pdf-viewer-external-btn');
+    function calculateAndAwardPdfTrackedXp(isCheatingEvent = false) {
+      if (!pdfStartTime || !currentViewingPdfId) return;
 
-      if (!viewerModal || !embedIframe) return;
+      const timeSpentSeconds = Math.floor((Date.now() - pdfStartTime) / 1000);
+      pdfStartTime = Date.now(); 
 
-      const structuredPreviewUrl = transformToGoogleViewerUrl(url);
-      activeFallbackUrl = url;
-      
-      if (titleLabel) titleLabel.innerText = title;
-      if (externalBtn) {
-        externalBtn.href = url;
-        externalBtn.classList.remove('hidden');
-      }
-
-      if (loadingCover) loadingCover.classList.remove('hidden');
-
-      embedIframe.removeAttribute('src');
-      embedIframe.src = structuredPreviewUrl || "about:blank";
-
-      embedIframe.onload = function() {
-        if (loadingCover) loadingCover.classList.add('hidden');
-      };
-
-      setTimeout(() => {
-        if (loadingCover) loadingCover.classList.add('hidden');
-      }, 2500);
-
-      viewerModal.classList.remove('hidden');
-      viewerModal.classList.add('flex');
-    }
-
-    window.launchNoteStudySession = function(id, title, text, link) {
-      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview';
-      
-      const isRegistered = appState.completedItemsRegistry[id] === true;
-      if (!isRegistered) {
-        showToast("Study Session Started! Stay active to earn continuous reward XP.", "success");
-      } else {
-        showToast("Review mode: Document reopened.", "info");
-      }
-
-      appState.activeNoteReadingMinutes = 0;
-      appState.currentViewingPdfId = id;
-      appState.pdfStartTime = Date.now();
-      
-      const pdfBar = document.getElementById('pdf-study-timer-bar');
-      if (pdfBar) {
-        document.getElementById('pdf-timer-title').innerText = title;
-        document.getElementById('pdf-timer-elapsed').innerText = "0 minutes 0s";
-        document.getElementById('pdf-timer-xp-gained').innerText = "0";
-        pdfBar.classList.remove('opacity-0', '-translate-y-32', 'timer-bounce');
-        void pdfBar.offsetWidth; // Trigger reflow to restart animation
-        pdfBar.classList.add('timer-bounce');
-      }
-
-      launchPdfInAppReader(pdfLink, title);
-      startStudyStopwatchTracking();
-    };
-
-    window.launchPdfStudySession = function(id, title, link) {
-      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com/file/d/1R_Fsh54b0z133RNDqPHeC_99pGqQv6Kx/preview';
-      
-      const isRegistered = appState.completedItemsRegistry[id] === true;
-      if (!isRegistered) {
-        showToast("Study Session Started! Stay active on this tab to earn reward XP.", "success");
-      } else {
-        showToast("Review mode: PDF Document reopened.", "info");
-      }
-
-      appState.activeNoteReadingMinutes = 0;
-      appState.currentViewingPdfId = id;
-      appState.pdfStartTime = Date.now();
-      
-      const pdfBar = document.getElementById('pdf-study-timer-bar');
-      if (pdfBar) {
-        document.getElementById('pdf-timer-title').innerText = title;
-        document.getElementById('pdf-timer-elapsed').innerText = "0 minutes 0s";
-        document.getElementById('pdf-timer-xp-gained').innerText = "0";
-        pdfBar.classList.remove('opacity-0', '-translate-y-32', 'timer-bounce');
-        void pdfBar.offsetWidth; // Trigger reflow to restart animation
-        pdfBar.classList.add('timer-bounce');
-      }
-
-      launchPdfInAppReader(pdfLink, title);
-      startStudyStopwatchTracking();
-    };
-
-    // --- ACCRUE STUDY STOPWATCH XP IN REAL TIME ---
-    function startStudyStopwatchTracking() {
-      if (studyStopwatchIntervalId) {
-        clearInterval(studyStopwatchIntervalId);
-      }
-      
-      studyStopwatchIntervalId = setInterval(() => {
-        if (!appState.currentViewingPdfId || !appState.pdfStartTime) return;
-        
-        const secondsElapsed = Math.floor((Date.now() - appState.pdfStartTime) / 1000);
-        const mins = Math.floor(secondsElapsed / 60);
-        const secs = secondsElapsed % 60;
-        
-        const elapsedString = `${mins} minutes ${secs}s`;
-        const elapsedEl = document.getElementById('pdf-timer-elapsed');
-        if (elapsedEl) elapsedEl.innerText = elapsedString;
-        
-        // Award +5 XP per complete minute studied
-        appState.activeNoteReadingMinutes = mins;
-        const xpGained = mins * 5;
-        const xpGainedEl = document.getElementById('pdf-timer-xp-gained');
-        if (xpGainedEl) xpGainedEl.innerText = xpGained;
-      }, 1000);
-    }
-
-    function stopStudyStopwatchTracking() {
-      if (studyStopwatchIntervalId) {
-        clearInterval(studyStopwatchIntervalId);
-        studyStopwatchIntervalId = null;
-      }
-    }
-
-    // --- SECURED IN-APP NOTE READING FOCUS SECURITY LOCKS ---
-    function setupInAppNoteSecurityWatchers() {
-      // Monitor if the browser window loses focus
-      window.addEventListener('blur', () => {
-        if (appState.currentViewingPdfId) {
-          handleCheatingDeduction("Cheating warning: Exited study window. Progress invalidated!");
-        }
-      });
-      
-      // Monitor if the user minimizes or changes tabs
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden && appState.currentViewingPdfId) {
-          handleCheatingDeduction("Cheating warning: Tab switched away. Progress invalidated!");
-        }
-      });
-    }
-
-    function handleCheatingDeduction(reasonText) {
-      stopStudyStopwatchTracking();
-      
-      // Deduct penalty XP for violating focus rules during notes session
-      updateUserXp(-20);
-      showToast(`${reasonText} -20 XP Penalty.`, "error");
-      
-      // Forcefully terminate note study workspace and discard all pending reward accruals
-      cleanupInAppPdfView();
-    }
-
-    function cleanupInAppPdfView() {
-      stopStudyStopwatchTracking();
-      appState.currentViewingPdfId = null;
-      appState.pdfStartTime = null;
-      appState.activeNoteReadingMinutes = 0;
-      
-      // Hide stopwatch UI header smoothly
-      const pdfBar = document.getElementById('pdf-study-timer-bar');
-      if (pdfBar) {
-        pdfBar.classList.remove('opacity-100', 'translate-y-0', 'timer-bounce');
-        pdfBar.classList.add('opacity-0', '-translate-y-32');
-      }
-
-      // Hide iframe reader modal
-      const viewerModal = document.getElementById('modal-pdf-viewer');
-      const embedIframe = document.getElementById('pdf-viewer-embed');
-      if (viewerModal) {
-        viewerModal.classList.add('hidden');
-        viewerModal.classList.remove('flex');
-      }
-      if (embedIframe) {
-        embedIframe.removeAttribute('src');
-      }
-      activeFallbackUrl = "";
-    }
-
-    window.terminatePdfStudySession = function() {
-      const activeId = appState.currentViewingPdfId;
-      if (!activeId) {
-        cleanupInAppPdfView();
+      if (isCheatingEvent) {
+        showToast("⚠️ Study session paused! Leaving the tab or minimizing is flagged as cheating—no XP gained for this segment.", "error");
         return;
       }
 
-      stopStudyStopwatchTracking();
-      
-      const minutesSpent = appState.activeNoteReadingMinutes;
-      const accruedXP = minutesSpent * 5;
-
-      const isAlreadyCompleted = appState.completedItemsRegistry[activeId] === true;
-      if (!isAlreadyCompleted) {
-        appState.completedItemsRegistry[activeId] = true;
+      if (appState.activeNoteReadingMinutes !== undefined) {
+        appState.activeNoteReadingMinutes += Math.floor(timeSpentSeconds / 60);
+        const elapsedEl = document.getElementById('pdf-timer-elapsed');
+        if (elapsedEl) {
+          const displaySecs = timeSpentSeconds % 60;
+          elapsedEl.innerText = `${appState.activeNoteReadingMinutes}m ${displaySecs}s`;
+        }
         
-        // Award the calculated XP balance
-        const totalAwarded = 15 + accruedXP;
-        updateUserXp(totalAwarded);
-        showToast(`Document completed! Spent ${minutesSpent} mins. +${totalAwarded} XP Saved!`, "success");
-      } else {
-        if (accruedXP > 0) {
-          updateUserXp(accruedXP);
-          showToast(`Accrued Study Points: +${accruedXP} XP Saved!`, "success");
-        } else {
-          showToast("Study Session closed. Progress saved successfully.", "success");
+        const addedXp = Math.floor(timeSpentSeconds / 30);
+        const xpTextEl = document.getElementById('pdf-timer-xp-gained');
+        if (xpTextEl) {
+          const currentTotalXp = parseInt(xpTextEl.innerText) || 0;
+          xpTextEl.innerText = currentTotalXp + addedXp;
         }
       }
 
-      cleanupInAppPdfView();
+      if (timeSpentSeconds >= 15) {
+        const xpGained = Math.max(1, Math.floor(timeSpentSeconds / 30));
+        updateUserXp(xpGained);
+        showToast(`📚 Focused Reading: +${xpGained} XP synchronized!`, "success");
+      }
+    }
+
+    window.launchNoteStudySession = function(id, title, text, link) {
+      const pdfLink = link && link.trim() !== '' ? link : 'https://drive.google.com';
+      if (!appState.completedItemsRegistry[id]) {
+        appState.completedItemsRegistry[id] = true;
+        updateUserXp(15);
+        showToast("Notes Handout Opened! +15 XP", "success");
+      } else {
+        showToast("Notes Handout reopened in Review Mode.", "info");
+      }
+
+      appState.activeNoteReadingMinutes = 0;
+      
+      const pdfBar = document.getElementById('pdf-study-timer-bar');
+      if (pdfBar) {
+        document.getElementById('pdf-timer-title').innerText = title;
+        document.getElementById('pdf-timer-elapsed').innerText = "0m 0s";
+        document.getElementById('pdf-timer-xp-gained').innerText = "0";
+        pdfBar.classList.remove('opacity-0', '-translate-y-24');
+        pdfBar.classList.add('opacity-100', 'translate-y-0');
+      }
+
+      window.open(pdfLink, '_blank');
+
+      pdfStartTime = Date.now();
+      currentViewingPdfId = id;
+      currentViewingPdfType = "Note";
+    };
+
+    window.launchPdfStudySession = function(id, title, link) {
+      if (!appState.completedItemsRegistry[id]) {
+        appState.completedItemsRegistry[id] = true;
+        updateUserXp(15);
+        showToast("PDF solution deck opened! +15 XP", "success");
+      } else {
+        showToast("Review Mode: PDF reopened.", "info");
+      }
+
+      appState.activeNoteReadingMinutes = 0;
+      
+      const pdfBar = document.getElementById('pdf-study-timer-bar');
+      if (pdfBar) {
+        document.getElementById('pdf-timer-title').innerText = title;
+        document.getElementById('pdf-timer-elapsed').innerText = "0m 0s";
+        document.getElementById('pdf-timer-xp-gained').innerText = "0";
+        pdfBar.classList.remove('opacity-0', '-translate-y-24');
+        pdfBar.classList.add('opacity-100', 'translate-y-0');
+      }
+
+      window.open(link, '_blank');
+
+      pdfStartTime = Date.now();
+      currentViewingPdfId = id;
+      currentViewingPdfType = "PDF";
+    };
+
+    window.terminatePdfStudySession = function() {
+      calculateAndAwardPdfTrackedXp(false);
+
+      const pdfBar = document.getElementById('pdf-study-timer-bar');
+      if (pdfBar) {
+        pdfBar.classList.remove('opacity-100', 'translate-y-0');
+        pdfBar.classList.add('opacity-0', '-translate-y-24');
+      }
+
+      pdfStartTime = null;
+      currentViewingPdfId = null;
+      currentViewingPdfType = null;
+
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
+      showToast("Study session compiled and synchronized.");
     };
 
     window.terminateNoteSession = function() {
       window.terminatePdfStudySession();
     };
+
+    // --- AUTO DETECT IF STUDENT CUTS THE PAGE OR SWITCHES OUT OF TABS ---
+    document.addEventListener('visibilitychange', () => {
+      const pdfBar = document.getElementById('pdf-study-timer-bar');
+      if (pdfBar && !pdfBar.classList.contains('opacity-0')) {
+        if (document.hidden) {
+          calculateAndAwardPdfTrackedXp(true);
+          pdfStartTime = null; 
+        } else {
+          pdfStartTime = Date.now();
+          showToast("Study timer resumed! Stay on this tab to earn active study points.", "success");
+        }
+      }
+    });
 
     // --- PROCTORED ACTIVE OBSERVER LOCKS & PENALTIES ---
     let fullscreenLockCountdownId = null;
@@ -2507,7 +2194,6 @@
       handleFullscreenChange();
     }
 
-    // --- PENALTY CONTROL ---
     function triggerCheatingPenalty(reasonText) {
       updateUserXp(-50);
       showToast(`PROCTOR EXAM BREACH: ${reasonText} Penalty of -50 XP applied!`, "error");
@@ -2604,7 +2290,7 @@
       options.forEach((opt, idx) => {
         const isChecked = (chosenAnswer === opt) ? 'checked' : '';
         optStructure += `
-          <label class="flex items-center gap-3 bg-[#0b0f19] p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition cursor-pointer text-xs text-slate-300 font-sans">
+          <label class="flex items-center gap-3 bg-slate-955 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition cursor-pointer text-xs text-slate-300 font-sans">
             <input type="radio" name="sandbox_opt" value="${opt}" ${isChecked} onchange="saveExamAnswerSelection(${qIndex}, '${opt}')" class="text-blue-600 bg-slate-900 border-slate-700 focus:ring-0">
             <span><strong class="text-blue-400 mr-1">${labels[idx] || (idx + 1)}.</strong> ${opt}</span>
           </label>
@@ -2617,11 +2303,11 @@
         </div>
       ` : '';
 
-      qBox.innerHTML += `
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 animate-in fade-in duration-250">
+      qBox.innerHTML = `
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 font-sans animate-in fade-in duration-250">
           <h4 class="text-sm font-bold text-slate-200">${question.q}</h4>
           ${diagramHTML}
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 font-sans">${optStructure}</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">${optStructure}</div>
         </div>
       `;
 
@@ -2690,9 +2376,9 @@
       if (!appState.completedItemsRegistry[exam.id]) {
         appState.completedItemsRegistry[exam.id] = true;
         updateUserXp(scoredXP);
-        showToast("Assessment Complete! Score: " + correctAnswersCount + "/" + totalQs + " (" + scorePercentage + "%). +" + scoredXP + " XP gained.", "success");
+        showToast(`Assessment Complete! Score: ${correctAnswersCount}/${totalQs} (${scorePercentage}%). +${scoredXP} XP gained.`, "success");
       } else {
-        showToast("Score Summary: " + correctAnswersCount + "/" + totalQs + " (" + scorePercentage + "%). Review completed.", "info");
+        showToast(`Score Summary: ${correctAnswersCount}/${totalQs} (${scorePercentage}%). Review completed.`, "info");
       }
 
       terminateSecureAssessment();
@@ -2795,14 +2481,14 @@
       const counter = document.getElementById('form-test-questions-counter');
       if (!container || !counter) return;
 
-      counter.innerText = tempTestQuestions.length + " Questions Added";
+      counter.innerText = `${tempTestQuestions.length} Questions Added`;
       container.innerHTML = '';
 
       tempTestQuestions.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="bg-[#0b0f19] p-2.5 rounded-lg border border-slate-800 text-xs flex justify-between items-center font-sans">
-            <span class="truncate font-medium text-slate-300"><strong class="text-purple-400 font-mono">Q${idx+1}:</strong> ${item.q}</span>
-            <button type="button" onclick="removeQuestionFromFormTestDeck(${index})" class="text-red-400 hover:text-red-300 ml-2 font-sans font-bold">Delete</button>
+          <div class="bg-slate-955 p-2.5 rounded-lg border border-slate-800 text-xs flex justify-between items-center">
+            <span class="truncate font-medium text-slate-300"><strong class="text-purple-400">Q${idx+1}:</strong> ${item.q}</span>
+            <button type="button" onclick="removeQuestionFromFormTestDeck(${idx})" class="text-red-400 hover:text-red-300 ml-2">Delete</button>
           </div>
         `;
       });
@@ -2842,7 +2528,7 @@
       closeAdminAddTestModal();
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
-      showToast("Secure assessment published to " + appState.currentSubject + "!", "success");
+      showToast(`Secure assessment published to ${appState.currentSubject}!`, "success");
     };
 
     // --- ADMIN CHAPTER ADDITIONS ---
@@ -2881,7 +2567,7 @@
       await saveCurriculumData();
       closeAddChapterModal();
       renderChaptersList(appState.currentSubject);
-      showToast("Created Chapter Module: " + title + "!", "success");
+      showToast(`Created Chapter Module: ${title}!`, "success");
     };
 
     window.deleteChapterModule = async function(chapterId) {
@@ -2898,7 +2584,7 @@
 
     // --- ADMIN MULTI-QUESTION DPP PAYLOAD CREATION ---
     window.openAdminContentPublishModal = function() {
-      document.getElementById('admin-publisher-subject-title').innerText = "Publish to " + appState.currentSubject;
+      document.getElementById('admin-publisher-subject-title').innerText = `Publish to ${appState.currentSubject}`;
       document.getElementById('modal-admin-publisher').classList.remove('hidden');
       document.getElementById('modal-admin-publisher').classList.add('flex');
       
@@ -2978,14 +2664,14 @@
       const counter = document.getElementById('payload-dpp-counter');
       if (!container || !counter) return;
 
-      counter.innerText = tempDppQuestions.length + " Questions logged";
+      counter.innerText = `${tempDppQuestions.length} Questions logged`;
       container.innerHTML = '';
 
       tempDppQuestions.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="bg-[#0b0f19] p-2 rounded-lg border border-slate-855 text-slate-300 flex justify-between items-center font-sans font-medium">
-            <span class="truncate"><strong class="text-emerald-400 font-sans font-sans">#${idx+1}:</strong> ${item.q}</span>
-            <button type="button" onclick="removeQuestionFromFormDppDeck(${idx})" class="text-red-400 hover:text-red-300 ml-2 text-[10px] font-sans font-bold">Remove</button>
+          <div class="bg-slate-955 p-2 rounded-lg border border-slate-855 text-slate-300 flex justify-between items-center">
+            <span class="truncate"><strong class="text-emerald-400">#${idx+1}:</strong> ${item.q}</span>
+            <button type="button" onclick="removeQuestionFromFormDppDeck(${idx})" class="text-red-400 hover:text-red-300 ml-2 text-[10px]">Remove</button>
           </div>
         `;
       });
@@ -3062,7 +2748,7 @@
       showToast("Study resource deleted permanently.", "info");
     };
 
-    // --- TIMETABLE OPERATIONS (LIVE MULTI-DEVICE SYNC TO ALL) ---
+    // --- TIMETABLE OPERATIONS (SECURED LIVE MULTI-DEVICE SYNC) ---
     window.openAdminSchedulerModal = function() {
       document.getElementById('modal-admin-scheduler').classList.remove('hidden');
       document.getElementById('modal-admin-scheduler').classList.add('flex');
@@ -3091,9 +2777,7 @@
 
       if (db && auth && auth.currentUser) {
         try {
-          // Write directly to the dynamic Firestore collection following Rule 1.
-          const scheduleDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'classes', newId);
-          await setDoc(scheduleDocRef, payload);
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', newId), payload);
         } catch (e) {
           console.warn("Offline - skipped cloud sync.", e);
         }
@@ -3126,15 +2810,15 @@
 
       if (notesList.length === 0) {
         container.innerHTML = `
-          <p class="text-slate-500 text-xs italic py-2">No personal reminders or subject keynotes added. Append notes below!</p>
+          <p class="text-slate-500 text-xs italic py-2 font-sans">No personal reminders or subject keynotes added. Append notes below!</p>
         `;
         return;
       }
 
       notesList.forEach((note, idx) => {
         container.innerHTML += `
-          <div class="bg-slate-955 p-3 rounded-xl border border-slate-800 flex justify-between items-start gap-2 animate-in fade-in duration-150 font-sans">
-            <p class="text-xs text-slate-300 leading-relaxed">${note}</p>
+          <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 flex justify-between items-start gap-2 animate-in fade-in duration-150 font-sans">
+            <p class="text-xs text-slate-300 leading-relaxed font-sans">${note}</p>
             <button onclick="deletePersonalNote(${idx})" class="text-slate-500 hover:text-red-400 transition shrink-0">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
@@ -3194,39 +2878,33 @@
       document.getElementById('modal-avatar-selector').classList.remove('hidden');
       document.getElementById('modal-avatar-selector').classList.add('flex');
     };
-    
     window.closeAvatarSelectorModal = function() {
       document.getElementById('modal-avatar-selector').classList.add('hidden');
       document.getElementById('modal-avatar-selector').classList.remove('flex');
     };
-    
     window.updateAllAvatarImages = function() {
       const imgs = document.querySelectorAll('.user-avatar-img');
       imgs.forEach(img => {
         img.src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
       });
     };
-    
     window.changeUserAvatar = async function(seed) {
       try {
         appState.avatar = seed;
         updateAllAvatarImages();
         
-        const selfId = appState.user ? appState.user.toLowerCase() : "";
-        const self = selfId ? fallbackLeaderboard.find(x => x.id === selfId) : null;
+        const self = fallbackLeaderboard.find(x => x.id === appState.user.toLowerCase());
         if (self) {
           self.avatar = seed;
           renderLeaderboard();
         }
 
-        if (appState.user) {
-          localStorage.setItem(`science_ix_avatar_${appState.user.toLowerCase()}`, seed);
-        }
+        localStorage.setItem(`science_ix_avatar_${appState.user.toLowerCase()}`, seed);
 
         if (db && auth && auth.currentUser && appState.user) {
           const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
           await setDoc(studentDocRef, { avatar: seed }, { merge: true });
-          
+
           const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', appState.user.toLowerCase());
           await setDoc(leaderDocRef, {
             [appState.user.toLowerCase()]: {
@@ -3252,8 +2930,8 @@
       if (!parent) return;
       const box = document.createElement('div');
       const statusIcon = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-triangle' : 'info';
-      const styling = type === 'success' ? 'bg-emerald-955 border-emerald-500/50 text-emerald-300' :
-                        type === 'error' ? 'bg-red-955 border-red-500/50 text-red-300' :
+      const styling = type === 'success' ? 'bg-[#0f241b] border-emerald-500/50 text-emerald-300' :
+                        type === 'error' ? 'bg-[#2d0f11] border-red-500/50 text-red-300' :
                         'bg-slate-900 border-slate-800 text-slate-300';
 
       box.className = `flex items-center gap-3 p-4 rounded-2xl border ${styling} shadow-xl backdrop-blur font-sans toast-bounce transition-all duration-300`;
@@ -3277,11 +2955,134 @@
       showToast("Member successfully purged from batch rankings.");
     };
 
+    // --- NAME CHANGE HANDLERS ---
+    window.openNameChangeModal = function() {
+      const modal = document.getElementById('modal-name-change');
+      const input = document.getElementById('name-change-input');
+      if (modal && input) {
+        input.value = appState.user;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    };
+
+    window.closeNameChangeModal = function() {
+      const modal = document.getElementById('modal-name-change');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    };
+
+    window.handleSelfNameChange = async function(e) {
+      e.preventDefault();
+      const newName = document.getElementById('name-change-input').value.trim();
+      
+      if (!newName) {
+        showToast("Please enter a valid display name.", "error");
+        return;
+      }
+      if (newName.toLowerCase() === appState.user.toLowerCase()) {
+        closeNameChangeModal();
+        return;
+      }
+
+      const oldKey = appState.user.toLowerCase();
+      const newKey = newName.toLowerCase();
+      const submitBtn = e.submitter || e.currentTarget.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Saving Profile...";
+      }
+
+      const savedXp = appState.xp;
+      const savedStreak = appState.streak;
+      const savedAvatar = appState.avatar;
+      const savedRegistry = { ...appState.completedItemsRegistry };
+      const savedPersonalNotes = { ...appState.personalNotes };
+
+      localStorage.removeItem(`science_ix_xp_${oldKey}`);
+      localStorage.removeItem(`science_ix_streak_${oldKey}`);
+      localStorage.removeItem(`science_ix_avatar_${oldKey}`);
+      localStorage.removeItem(`science_ix_registry_${oldKey}`);
+      localStorage.removeItem(`science_ix_notes_${oldKey}`);
+
+      appState.user = newName;
+      document.getElementById('user-display-name').innerText = newName;
+
+      localStorage.setItem("science_ix_saved_user", newName);
+      localStorage.setItem(`science_ix_xp_${newKey}`, savedXp);
+      localStorage.setItem(`science_ix_streak_${newKey}`, savedStreak);
+      localStorage.setItem(`science_ix_avatar_${newKey}`, savedAvatar);
+      localStorage.setItem(`science_ix_registry_${newKey}`, JSON.stringify(savedRegistry));
+      localStorage.setItem(`science_ix_notes_${newKey}`, JSON.stringify(savedPersonalNotes));
+
+      const oldIdx = fallbackLeaderboard.findIndex(x => x.id === oldKey);
+      const updatedRecord = {
+        id: newKey,
+        name: `${newName} (You)`,
+        streak: savedStreak,
+        xp: savedXp,
+        avatar: savedAvatar
+      };
+      if (oldIdx !== -1) {
+        fallbackLeaderboard[oldIdx] = updatedRecord;
+      } else {
+        fallbackLeaderboard.push(updatedRecord);
+      }
+
+      if (db && auth && auth.currentUser) {
+        try {
+          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', newKey);
+          await setDoc(studentDocRef, {
+            name: newName,
+            xp: savedXp,
+            streak: savedStreak,
+            avatar: savedAvatar,
+            completedItemsRegistry: savedRegistry,
+            personalNotes: savedPersonalNotes
+          });
+
+          const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', newKey);
+          await setDoc(leaderDocRef, {
+            [newKey]: {
+              id: newKey,
+              name: newName,
+              streak: savedStreak,
+              xp: savedXp,
+              avatar: savedAvatar
+            }
+          }, { merge: true });
+
+          const oldStudentRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', oldKey);
+          await deleteDoc(oldStudentRef);
+
+          const oldLeaderRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', oldKey);
+          await deleteDoc(oldLeaderRef);
+
+        } catch (err) {
+          console.warn("Could not sync name rename to Firestore.", err);
+        }
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Confirm Name Update";
+      }
+
+      closeNameChangeModal();
+      renderLeaderboard();
+      showToast("Name modified successfully!", "success");
+    };
+
     // --- GLOBAL SCOPE EXPOSURE CONTROLS ---
     window.openAvatarSelectorModal = openAvatarSelectorModal;
     window.closeAvatarSelectorModal = closeAvatarSelectorModal;
     window.updateAllAvatarImages = updateAllAvatarImages;
     window.changeUserAvatar = changeUserAvatar;
+    window.openNameChangeModal = openNameChangeModal;
+    window.closeNameChangeModal = closeNameChangeModal;
+    window.handleSelfNameChange = handleSelfNameChange;
   </script>
 </body>
 </html>
