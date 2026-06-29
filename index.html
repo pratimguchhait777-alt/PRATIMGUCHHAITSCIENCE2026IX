@@ -286,7 +286,7 @@
             Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
           </p>
         </div>
-        <div class="text-xs text-slate-500 font-mono mt-4 font-sans">Automated Cycle Version 2.9.0</div>
+        <div class="text-xs text-slate-500 font-mono mt-4 font-sans font-sans font-sans">Automated Cycle Version 2.9.0</div>
       </div>
 
       <!-- MY BATCH PORTAL -->
@@ -413,7 +413,7 @@
 
         <form id="add-personal-note-form" onsubmit="handlePersonalNoteSubmit(event)" class="flex gap-2">
           <input type="text" id="personal-note-input" placeholder="Type a reminder note (e.g. Remember to study Gravitation Formulas on Thursday...)" class="flex-grow bg-[#0b0f19] border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-pink-500" required>
-          <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white font-bold px-4 rounded-xl text-xs transition flex items-center gap-1 font-sans font-bold">
+          <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white font-bold px-4 rounded-xl text-xs transition flex items-center gap-1 font-sans">
             <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Note
           </button>
         </form>
@@ -422,7 +422,7 @@
   </div>
 
   <!-- ==================== VIEW 4: CHAPTER CONTENT TABS (LEVEL 3) ==================== -->
-  <div id="view-chapter-details" class="max-w-4xl w-full mx-auto px-4 py-8 hidden space-y-6 animate-in fade-in duration-200 font-sans">
+  <div id="view-chapter-details" class="max-w-4xl w-full mx-auto px-4 py-8 hidden space-y-6 animate-in fade-in duration-200">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
       <div class="flex items-center gap-3">
         <button onclick="switchView('view-chapters')" class="bg-[#0f1524] border border-slate-800 p-2 rounded-xl text-slate-400 hover:text-white transition group">
@@ -443,7 +443,7 @@
         <button id="admin-publish-payload-btn" onclick="openAdminContentPublishModal()" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 hidden animate-pulse">
           <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Publish Resource
         </button>
-        <button id="admin-add-test-btn" onclick="openAdminAddTestModal()" class="bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 hidden">
+        <button id="admin-add-test-btn" onclick="openAdminAddTestModal()" class="bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/20 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 hidden animate-none">
           <i data-lucide="shield-plus" class="w-3.5 h-3.5"></i> Add Secure Test
         </button>
       </div>
@@ -476,28 +476,28 @@
       <div id="exam-question-target" class="space-y-4"></div>
     </div>
 
-    <div class="max-w-3xl w-full mx-auto flex items-center justify-between pt-4 border-t border-slate-800/80">
+    <div class="max-w-3xl w-full mx-auto flex items-center justify-between pt-4 border-t border-slate-800/80 font-sans">
       <button onclick="terminateSecureAssessment()" class="text-xs font-bold text-slate-400 hover:text-white transition">Exit Exam View</button>
       <div class="flex gap-3">
-        <button id="exam-prev-btn" onclick="handleExamQuestionNavigation(-1)" class="bg-[#0f1524] text-slate-200 text-xs px-4 py-2.5 rounded-xl font-bold transition hover:bg-slate-800 hidden">Previous</button>
-        <button id="exam-next-btn" onclick="handleExamQuestionNavigation(1)" class="bg-blue-600 text-white text-xs px-5 py-2.5 rounded-xl font-bold transition hover:bg-blue-500">Next Question</button>
-        <button id="exam-submit-btn" onclick="commitSecureExamAnswers()" class="bg-emerald-600 text-white text-xs px-5 py-2.5 rounded-xl font-bold transition hover:bg-emerald-500 hidden">Submit Assessment</button>
+        <button id="exam-prev-btn" onclick="handleExamQuestionNavigation(-1)" class="bg-[#0f1524] text-slate-200 text-xs px-4 py-2.5 rounded-xl font-bold transition hover:bg-slate-800 hidden font-bold">Previous</button>
+        <button id="exam-next-btn" onclick="handleExamQuestionNavigation(1)" class="bg-blue-600 text-white text-xs px-5 py-2.5 rounded-xl font-bold transition hover:bg-blue-500 font-bold">Next Question</button>
+        <button id="exam-submit-btn" onclick="commitSecureExamAnswers()" class="bg-emerald-600 text-white text-xs px-5 py-2.5 rounded-xl font-bold transition hover:bg-emerald-500 hidden font-sans font-bold">Submit Assessment</button>
       </div>
     </div>
   </div>
 
   <!-- ==================== DEDICATED DIRECT IN-APP PDF / VIDEO VIEWER MODAL ==================== -->
   <div id="modal-pdf-viewer" class="fixed inset-0 bg-[#070a12]/95 z-50 hidden flex-col p-4 md:p-6 animate-in fade-in duration-200">
-    <div class="max-w-6xl w-full mx-auto flex-grow flex flex-col space-y-4 h-full">
+    <div class="max-w-6xl w-full mx-auto flex-grow flex flex-col space-y-4 h-full relative">
       
       <div class="flex items-center justify-between bg-slate-900/90 border border-slate-800/80 p-4 rounded-2xl shadow-xl shrink-0 font-sans">
         <div class="flex items-center gap-3">
-          <div class="p-2 bg-rose-500/10 rounded-xl text-rose-400">
+          <div class="p-2 bg-rose-500/10 rounded-xl text-rose-400" id="media-viewer-icon-wrapper">
             <i data-lucide="file-text" class="w-5 h-5"></i>
           </div>
           <div>
             <h3 id="pdf-viewer-title-label" class="text-sm md:text-base font-bold text-white">Lesson Document Viewer</h3>
-            <p class="text-[11px] text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Study stopwatch running...</p>
+            <p class="text-[11px] text-emerald-400 flex items-center gap-1 font-sans"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Study stopwatch running...</p>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -505,16 +505,57 @@
           <a id="pdf-viewer-external-btn" href="#" target="_blank" class="hidden sm:flex bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition items-center gap-1.5">
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open in New Tab
           </a>
-          <button onclick="terminatePdfStudySession()" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-            <i data-lucide="x-square" class="w-4 h-4"></i> Close & Save XP
+          <button onclick="terminatePdfStudySession()" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 font-bold">
+            <i data-lucide="x-square" class="w-4 h-4 font-sans"></i> Close & Save XP
           </button>
         </div>
       </div>
 
-      <!-- Embedded high-performance Document Frame container -->
-      <div class="flex-grow w-full bg-slate-955 border border-slate-800/80 rounded-2xl overflow-hidden relative shadow-2xl">
-        <iframe id="pdf-viewer-embed" class="w-full h-full border-none" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-        <div id="pdf-viewer-loading-cover" class="absolute inset-0 bg-[#070a12] flex flex-col items-center justify-center space-y-4">
+      <!-- Embedded high-performance Document Frame & Custom Video Player Container -->
+      <div class="flex-grow w-full bg-slate-955 border border-slate-800/80 rounded-2xl overflow-hidden relative shadow-2xl flex items-center justify-center">
+        <!-- PDF / Document Frame -->
+        <iframe id="pdf-viewer-embed" class="w-full h-full border-none" src=""></iframe>
+        
+        <!-- Premium Custom Video Player Target (HTML5 and Youtube) -->
+        <div id="video-player-viewport" class="absolute inset-0 bg-black hidden flex-col items-center justify-center">
+          <!-- YouTube Iframe Mount Node -->
+          <div id="youtube-player-mount" class="w-full h-full"></div>
+          
+          <!-- Native HTML5 Video Node -->
+          <video id="html5-video-mount" class="w-full h-full object-contain hidden" playsinline></video>
+          
+          <!-- Aesthetic Premium Custom Glassmorphic Overlay Controls Deck -->
+          <div id="custom-video-control-deck" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md border border-slate-800/60 px-6 py-3 rounded-2xl flex items-center gap-6 shadow-2xl z-30 transition-all duration-300">
+            <!-- Skip Backward Button -->
+            <button onclick="seekVideoOffset(-10)" class="text-slate-400 hover:text-white transition transform active:scale-90 p-2 rounded-full hover:bg-slate-800/40" title="Rewind 10s">
+              <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            </button>
+            
+            <!-- Dynamic Play / Pause Toggle Button -->
+            <button id="video-play-pause-btn" onclick="toggleVideoPlaybackState()" class="w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition transform active:scale-95 shadow-lg shadow-blue-500/25">
+              <i data-lucide="play" class="w-5 h-5 fill-white" id="video-play-icon"></i>
+              <i data-lucide="pause" class="w-5 h-5 fill-white hidden" id="video-pause-icon"></i>
+            </button>
+            
+            <!-- Skip Forward Button -->
+            <button onclick="seekVideoOffset(10)" class="text-slate-400 hover:text-white transition transform active:scale-90 p-2 rounded-full hover:bg-slate-800/40" title="Skip Forward 10s">
+              <i data-lucide="rotate-cw" class="w-5 h-5"></i>
+            </button>
+            
+            <!-- Vertical Divider -->
+            <div class="h-6 w-[1px] bg-slate-800"></div>
+            
+            <!-- Time Duration indicator -->
+            <div class="text-xs font-mono font-bold text-slate-300 select-none flex items-center gap-1">
+              <span id="custom-video-current">0:00</span>
+              <span class="text-slate-500">/</span>
+              <span id="custom-video-duration">0:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shared Loading Screen -->
+        <div id="pdf-viewer-loading-cover" class="absolute inset-0 bg-[#070a12] flex flex-col items-center justify-center space-y-4 z-20">
           <i data-lucide="loader-2" class="w-8 h-8 text-rose-400 animate-spin"></i>
           <p class="text-xs text-slate-400 font-semibold uppercase tracking-widest font-mono">Loading Material Stream...</p>
         </div>
@@ -530,7 +571,7 @@
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
           <i data-lucide="user-cog" class="w-4 h-4 text-blue-400"></i> Change Display Name
         </h3>
-        <button onclick="closeNameChangeModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="closeNameChangeModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4 font-sans"></i></button>
       </div>
       <form onsubmit="handleSelfNameChange(event)" class="space-y-4">
         <div>
@@ -538,7 +579,7 @@
           <input type="text" id="name-change-input" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-blue-500 font-sans" placeholder="Type new name..." required>
           <p class="text-[10px] text-slate-500 mt-1.5 font-sans">Your streak, XP count, avatars, and completed worksheets registry will migrate immediately.</p>
         </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs transition font-sans">
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs transition font-bold font-sans">
           Confirm Name Update
         </button>
       </form>
@@ -550,45 +591,45 @@
     <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4 font-sans">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2">
         <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5 font-sans">
-          <i data-lucide="image" class="w-4 h-4 text-blue-400"></i> Diagram Picker
+          <i data-lucide="image" class="w-4 h-4 text-blue-400 font-sans"></i> Diagram Picker
         </h4>
         <button onclick="closeDiagramHelperModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       
-      <p class="text-[11px] text-slate-400 font-sans">Click a preset science vector diagram below to instantly assign it to the question, or paste a custom URL.</p>
+      <p class="text-[11px] text-slate-400 font-sans font-sans">Click a preset science vector diagram below to instantly assign it to the question, or paste a custom URL.</p>
       
       <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-1 font-sans">
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg" class="max-h-full max-w-full object-contain" alt="Animal Cell">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold">Animal Cell</span>
+          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Animal Cell</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded animate-none">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg" class="max-h-full max-w-full object-contain" alt="Lithium Atom">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold">Lithium Atom</span>
+          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Lithium Atom</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg" class="max-h-full max-w-full object-contain" alt="Cartesian Coordinates">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold">Cartesian Grid</span>
+          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Cartesian Grid</span>
         </div>
         <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg" class="max-h-full max-w-full object-contain" alt="Dispersive Prism">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold">Light Prism</span>
+          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Light Prism</span>
         </div>
       </div>
 
-      <div class="pt-2 border-t border-slate-800 font-sans animate-none">
-        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Custom Diagram Image URL</label>
+      <div class="pt-2 border-t border-slate-800 font-sans">
+        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Custom Diagram Image URL</label>
         <div class="flex gap-2">
           <input type="text" id="custom-diagram-url" placeholder="https://example.com/custom.png" class="flex-grow bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
-          <button onclick="selectCustomDiagramUrl()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 rounded-xl text-xs transition">Apply</button>
+          <button onclick="selectCustomDiagramUrl()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 rounded-xl text-xs transition font-sans">Apply</button>
         </div>
       </div>
     </div>
@@ -597,66 +638,66 @@
   <!-- ==================== ADMIN: ADD CHAPTERS MODAL ==================== -->
   <div id="modal-admin-add-chapter" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 font-sans">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
           <i data-lucide="plus-circle" class="w-5 h-5 text-purple-400"></i> Add Chapter Module
         </h3>
-        <button onclick="closeAddChapterModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="closeAddChapterModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4 font-sans"></i></button>
       </div>
-      <form onsubmit="handleAddChapterSubmit(event)" class="space-y-3">
+      <form onsubmit="handleAddChapterSubmit(event)" class="space-y-3 font-sans">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Chapter Index Code</label>
           <input type="text" id="form-chap-code" placeholder="e.g. CH - 04" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Chapter Title Banner</label>
-          <input type="text" id="form-chap-title" placeholder="e.g. Ch - 5 : Atoms and Elements Structure" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+          <input type="text" id="form-chap-title" placeholder="e.g. Ch - 5 : Atoms and Elements Structure" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans" required>
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-3 font-sans">
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Estimated Lectures Count</label>
-            <input type="number" id="form-chap-lectures" min="0" placeholder="e.g. 10" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+            <input type="number" id="form-chap-lectures" min="0" placeholder="e.g. 10" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans" required>
           </div>
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Estimated DPPs Count</label>
-            <input type="number" id="form-chap-dpps" min="0" placeholder="e.g. 5" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
+            <input type="number" id="form-chap-dpps" min="0" placeholder="e.g. 5" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans" required>
           </div>
         </div>
-        <button type="submit" class="w-full bg-[#A088FF] hover:bg-[#8e73ff] text-white font-bold py-2.5 rounded-xl text-xs transition">Create Chapter Directory</button>
+        <button type="submit" class="w-full bg-[#A088FF] hover:bg-[#8e73ff] text-white font-bold py-2.5 rounded-xl text-xs transition font-sans">Create Chapter Directory</button>
       </form>
     </div>
   </div>
 
   <!-- ==================== ADMIN ADD TEST MODAL ==================== -->
   <div id="modal-admin-add-test" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar font-sans">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="shield-plus" class="w-5 h-5 text-purple-400"></i> Add Secure Test Environment</h3>
         <button onclick="closeAdminAddTestModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <form onsubmit="handleSecureTestSubmit(event)" class="space-y-4">
+      <form onsubmit="handleSecureTestSubmit(event)" class="space-y-4 font-sans">
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Test Title</label>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Test Title</label>
           <input type="text" id="form-test-title" placeholder="e.g. Gravity and Motion Final Assessment" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
 
         <!-- Multi-Question Panel Indicator -->
-        <div class="border-t border-slate-850 pt-3 space-y-3">
-          <div class="flex items-center justify-between">
+        <div class="border-t border-slate-850 pt-3 space-y-3 font-sans">
+          <div class="flex items-center justify-between font-sans">
             <span class="text-xs font-bold text-purple-400">Questions Deck List</span>
-            <span id="form-test-questions-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2.5 py-1 rounded-full border border-slate-800">0 Questions Added</span>
+            <span id="form-test-questions-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2.5 py-1 rounded-full border border-slate-800 font-mono">0 Questions Added</span>
           </div>
 
           <!-- Sandbox Area showing compiled test questions -->
-          <div id="form-test-compiled-list" class="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar"></div>
+          <div id="form-test-compiled-list" class="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar font-sans"></div>
 
           <!-- Inputs for currently building question -->
-          <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl space-y-2.5">
-            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Question Builder</p>
+          <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl space-y-2.5 font-sans">
+            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans">Question Builder</p>
             
-            <input type="text" id="form-test-question" placeholder="e.g. What is the value of gravitational acceleration g?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+            <input type="text" id="form-test-question" placeholder="e.g. What is the value of gravitational acceleration g?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
             
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2 font-sans">
               <input type="text" id="form-test-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
@@ -664,8 +705,8 @@
             </div>
 
             <!-- Image input with modern `+` selector helper button -->
-            <div>
-              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Insert Diagram / Diagram URL (Optional)</label>
+            <div class="font-sans">
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Insert Diagram / Diagram URL (Optional)</label>
               <div class="flex gap-2">
                 <input type="url" id="form-test-image" placeholder="https://example.com/question-image.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
                 <button type="button" onclick="openDiagramHelper('form-test-image')" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-3.5 rounded-xl text-xs transition flex items-center justify-center">
@@ -674,18 +715,18 @@
               </div>
             </div>
 
-            <div>
-              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Correct Answer Match (EXACT option value, e.g. 9.8 m/s²)</label>
-              <input type="text" id="form-test-correct" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+            <div class="font-sans">
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Correct Answer Match (EXACT option value, e.g. 9.8 m/s²)</label>
+              <input type="text" id="form-test-correct" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
             </div>
             
-            <button type="button" onclick="addQuestionToFormTestDeck()" class="w-full bg-[#0f1524] hover:bg-slate-800 text-slate-300 font-bold py-2 rounded-xl text-xs border border-slate-800 transition flex items-center justify-center gap-1.5 font-bold">
+            <button type="button" onclick="addQuestionToFormTestDeck()" class="w-full bg-[#0f1524] hover:bg-slate-800 text-slate-300 font-bold py-2 rounded-xl text-xs border border-slate-800 transition flex items-center justify-center gap-1.5 font-bold font-sans">
               <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-purple-400"></i> Save Question to Deck
             </button>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Create Test Environment</button>
+        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-bold font-sans">Create Test Environment</button>
       </form>
     </div>
   </div>
@@ -693,11 +734,11 @@
   <!-- ==================== ADMIN OPERATIONS SCHEDULER MODAL ==================== -->
   <div id="modal-admin-scheduler" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 font-sans">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-500"></i> Add Weekly Schedule</h3>
         <button onclick="closeAdminSchedulerModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <form onsubmit="handleClassSchedulingSubmit(event)" class="space-y-3">
+      <form onsubmit="handleClassSchedulingSubmit(event)" class="space-y-3 font-sans">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Subject</label>
           <select id="form-class-subject" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
@@ -713,28 +754,28 @@
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Assigned Instructor / Teacher</label>
-          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
+          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Delivery Timing</label>
           <input type="text" id="form-class-time" placeholder="e.g. Monday 10:00 AM" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Publish Weekly Schedule</button>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-bold">Publish Weekly Schedule</button>
       </form>
     </div>
   </div>
 
   <!-- ==================== ADMIN CONTENT PAYLOAD PUBLISHER MODAL ==================== -->
   <div id="modal-admin-publisher" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar font-sans">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 id="admin-publisher-subject-title" class="text-sm font-bold text-white uppercase tracking-wider">Publish New Material Entry</h3>
         <button onclick="closeAdminContentPublishModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <form onsubmit="handlePayloadSubmission(event)" class="space-y-3">
+      <form onsubmit="handlePayloadSubmission(event)" class="space-y-3 font-sans">
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Module Slot Type</label>
-          <select id="payload-type" onchange="toggleFormFieldsBasedOnPayload()" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Target Module Slot Type</label>
+          <select id="payload-type" onchange="toggleFormFieldsBasedOnPayload()" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans">
             <option value="Lectures">Lecture Entry</option>
             <option value="DPPs">Objective DPP (Multiple Choice)</option>
             <option value="Notes">Classroom Note Handout</option>
@@ -743,23 +784,23 @@
           </select>
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Topic / Title</label>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Topic / Title</label>
           <input type="text" id="payload-title" placeholder="e.g. Atoms and Molecules Practice" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         
         <!-- Notes/PDFs wrapper -->
-        <div id="payload-notes-wrapper" class="space-y-2">
+        <div id="payload-notes-wrapper" class="space-y-2 font-sans">
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Document Link (PDF or Google Drive URL - Mandatory for Notes)</label>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Document Link (PDF or Google Drive URL - Mandatory for Notes)</label>
             <input type="url" id="payload-link" placeholder="https://drive.google.com/..." class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
         </div>
 
         <!-- Lectures wrapper (Mandatory URL input) -->
-        <div id="payload-lectures-wrapper" class="hidden space-y-2">
+        <div id="payload-lectures-wrapper" class="hidden space-y-2 font-sans">
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Lecture Video URL (Mandatory)</label>
-            <input type="url" id="payload-lecture-url" placeholder="https://youtube.com/... (YouTube link required)" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Lecture Video URL (Mandatory)</label>
+            <input type="url" id="payload-lecture-url" placeholder="https://youtube.com/... or raw video link" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
           </div>
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Duration Description</label>
@@ -768,45 +809,45 @@
         </div>
 
         <!-- DPPs & Tests wrapper -->
-        <div id="payload-dpp-wrapper" class="hidden space-y-3">
-          <div class="flex items-center justify-between">
+        <div id="payload-dpp-wrapper" class="hidden space-y-3 font-sans">
+          <div class="flex items-center justify-between font-sans">
             <span class="text-xs font-bold text-emerald-400">Quiz / Test Questions Deck</span>
             <span id="payload-dpp-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-1 rounded">0 Quiz Questions</span>
           </div>
           
-          <div id="payload-dpp-compiled-list" class="space-y-1 text-xs max-h-[120px] overflow-y-auto custom-scrollbar"></div>
+          <div id="payload-dpp-compiled-list" class="space-y-1 text-xs max-h-[120px] overflow-y-auto custom-scrollbar font-sans"></div>
 
-          <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 space-y-2">
-            <input type="text" id="payload-dpp-question" placeholder="Enter Problem Question Description..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
+          <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 space-y-2 font-sans">
+            <input type="text" id="payload-dpp-question" placeholder="Enter Problem Question Description..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none font-sans">
             
             <!-- Question Image with standard `+` helper button -->
-            <div>
-              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Question Image / Diagram (Optional)</label>
+            <div class="font-sans">
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Question Image / Diagram (Optional)</label>
               <div class="flex gap-2">
-                <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
+                <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
                 <button type="button" onclick="openDiagramHelper('payload-dpp-image')" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-3.5 rounded-xl text-xs transition flex items-center justify-center">
                   <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
             
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="payload-dpp-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+            <div class="grid grid-cols-2 gap-2 font-sans">
+              <input type="text" id="payload-dpp-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
               <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="payload-dpp-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
-              <input type="text" id="payload-dpp-opt-d" placeholder="Option D" class="bg-[#0f1524] border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+              <input type="text" id="payload-dpp-opt-d" placeholder="Option D" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
             </div>
-            <div>
-              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Correct Answer Value (EXACT MATCH of correct option, e.g. Mitochondria)</label>
-              <input type="text" id="payload-dpp-correct-text" placeholder="Type correct option text value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
+            <div class="font-sans">
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Correct Answer Match</label>
+              <input type="text" id="payload-dpp-correct-text" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
             </div>
-            <button type="button" onclick="addQuestionToFormDppDeck()" class="w-full bg-slate-900 hover:bg-slate-855 text-slate-300 font-bold py-1.5 rounded-lg text-xs transition border border-slate-800">
+            <button type="button" onclick="addQuestionToFormDppDeck()" class="w-full bg-slate-900 hover:bg-slate-855 text-slate-300 font-bold py-1.5 rounded-lg text-xs transition border border-slate-800 font-sans font-bold">
               Add Question to Deck List
             </button>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Add Material Payload</button>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-sans">Add Material Payload</button>
       </form>
     </div>
   </div>
@@ -932,11 +973,12 @@
       currentActiveTab: "Lectures", 
       currentStatusFilter: "Pending",
 
-      // Study notes stopwatch variables
-      activeNoteTimerId: null,
+      // Study stopwatch variables
       activeNoteReadingMinutes: 0,
       currentViewingPdfId: null,
       pdfStartTime: null,
+      currentViewingPdfType: null, // "Note", "PDF", or "Lecture"
+      lectureIsPlaying: false,
       
       // Multi-Question Proctor State
       activeExam: null,
@@ -958,6 +1000,7 @@
 
     // Timer Intervals for Study stopwatch
     let studyStopwatchIntervalId = null;
+    let ytPlayerInstance = null; // Stores YT Player Instantiation
 
     // --- PRELOADED LEADERBOARD DATA ---
     let fallbackLeaderboard = [
@@ -1155,6 +1198,12 @@
       renderSubjectsView();
       setupBackButtonSupport();
       setupInAppNoteSecurityWatchers();
+
+      // Async Load YouTube IFrame API Script Node
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(firstScriptTag, tag);
     };
 
     // --- DECIDE VIEW LAYOUT POST-ANIMATION ---
@@ -2016,12 +2065,12 @@
       renderSubjectsView();
     };
 
-    // --- HIGH-PERFORMANCE IN-APP EMBEDDED MODAL DOCUMENT & VIDEO VIEWER ---
+    // --- HIGH RESOLUTION IN-APP EMBEDDED MODAL DOCUMENT & VIDEO VIEWER ---
     function transformToGoogleViewerUrl(rawUrl) {
       if (!rawUrl) return "";
       let url = rawUrl.trim();
       
-      // YouTube Watch url translator
+      // YouTube Watch URL parser
       if (url.includes("youtube.com/watch") || url.includes("youtu.be/")) {
         let videoId = "";
         try {
@@ -2033,16 +2082,16 @@
           }
         } catch(e) {}
         if (videoId) {
-          return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=0&rel=0&modestbranding=1&disablekb=1&fs=0`;
         }
       }
       
-      // YouTube Shorts url translator
+      // YouTube Shorts parser
       if (url.includes("youtube.com/shorts/")) {
         try {
           const videoId = url.split("shorts/")[1].split("?")[0].split("/")[0];
           if (videoId) {
-            return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=0&rel=0&modestbranding=1&disablekb=1&fs=0`;
           }
         } catch(e) {}
       }
@@ -2064,18 +2113,19 @@
       return url;
     }
 
-    function launchPdfInAppReader(url, title) {
+    function launchPdfInAppReader(url, title, type) {
       const viewerModal = document.getElementById('modal-pdf-viewer');
       const embedIframe = document.getElementById('pdf-viewer-embed');
+      const videoViewport = document.getElementById('video-player-viewport');
       const titleLabel = document.getElementById('pdf-viewer-title-label');
       const loadingCover = document.getElementById('pdf-viewer-loading-cover');
       const externalBtn = document.getElementById('pdf-viewer-external-btn');
+      const mountYT = document.getElementById('youtube-player-mount');
+      const mountVideo = document.getElementById('html5-video-mount');
 
-      if (!viewerModal || !embedIframe) return;
+      if (!viewerModal) return;
 
-      const structuredPreviewUrl = transformToGoogleViewerUrl(url);
       activeFallbackUrl = url;
-      
       if (titleLabel) titleLabel.innerText = title;
       if (externalBtn) {
         externalBtn.href = url;
@@ -2084,38 +2134,200 @@
 
       if (loadingCover) loadingCover.classList.remove('hidden');
 
-      embedIframe.removeAttribute('src');
-      embedIframe.src = structuredPreviewUrl || "about:blank";
+      // Clear video state elements
+      appState.lectureIsPlaying = false;
+      document.getElementById('video-play-icon').classList.remove('hidden');
+      document.getElementById('video-pause-icon').classList.add('hidden');
+      document.getElementById('custom-video-current').innerText = "0:00";
+      document.getElementById('custom-video-duration').innerText = "0:00";
 
-      embedIframe.onload = function() {
-        if (loadingCover) loadingCover.classList.add('hidden');
-      };
+      if (type === "Lecture") {
+        if (embedIframe) embedIframe.classList.add('hidden');
+        if (videoViewport) videoViewport.classList.remove('hidden');
 
-      setTimeout(() => {
-        if (loadingCover) loadingCover.classList.add('hidden');
-      }, 2500);
+        // Check if YouTube
+        if (url.includes("youtube.com") || url.includes("youtu.be")) {
+          if (mountVideo) mountVideo.classList.add('hidden');
+          if (mountYT) mountYT.classList.remove('hidden');
+          
+          let videoId = "";
+          try {
+            if (url.includes("youtube.com/watch")) {
+              const urlObj = new URL(url);
+              videoId = urlObj.searchParams.get("v");
+            } else if (url.includes("youtu.be/")) {
+              videoId = url.split("youtu.be/")[1].split("?")[0].split("/")[0];
+            } else if (url.includes("youtube.com/embed/")) {
+              videoId = url.split("embed/")[1].split("?")[0].split("/")[0];
+            } else if (url.includes("youtube.com/shorts/")) {
+              videoId = url.split("shorts/")[1].split("?")[0].split("/")[0];
+            }
+          } catch(e) {}
+
+          if (videoId) {
+            if (window.YT && window.YT.Player) {
+              ytPlayerInstance = new YT.Player('youtube-player-mount', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: {
+                  'controls': 0,
+                  'rel': 0,
+                  'modestbranding': 1,
+                  'disablekb': 1,
+                  'fs': 0,
+                  'showinfo': 0,
+                  'iv_load_policy': 3
+                },
+                events: {
+                  'onReady': (event) => {
+                    if (loadingCover) loadingCover.classList.add('hidden');
+                    // Polling duration and current playhead
+                    setInterval(updateVideoProgressIndicator, 500);
+                  },
+                  'onStateChange': (event) => {
+                    if (event.data === YT.PlayerState.PLAYING) {
+                      appState.lectureIsPlaying = true;
+                      document.getElementById('video-play-icon').classList.add('hidden');
+                      document.getElementById('video-pause-icon').classList.remove('hidden');
+                    } else {
+                      appState.lectureIsPlaying = false;
+                      document.getElementById('video-play-icon').classList.remove('hidden');
+                      document.getElementById('video-pause-icon').classList.add('hidden');
+                    }
+                  }
+                }
+              });
+            } else {
+              showToast("YouTube API not initialized. Attempting fallback.", "error");
+              if (loadingCover) loadingCover.classList.add('hidden');
+            }
+          }
+        } else {
+          // Fallback to Native HTML5 video player if raw/other video source link
+          if (mountYT) mountYT.classList.add('hidden');
+          if (mountVideo) {
+            mountVideo.classList.remove('hidden');
+            mountVideo.src = url;
+            mountVideo.load();
+            
+            mountVideo.onloadedmetadata = () => {
+              if (loadingCover) loadingCover.classList.add('hidden');
+              document.getElementById('custom-video-duration').innerText = formatVideoTimestamp(mountVideo.duration);
+            };
+
+            mountVideo.ontimeupdate = () => {
+              document.getElementById('custom-video-current').innerText = formatVideoTimestamp(mountVideo.currentTime);
+            };
+
+            mountVideo.onplay = () => {
+              appState.lectureIsPlaying = true;
+              document.getElementById('video-play-icon').classList.add('hidden');
+              document.getElementById('video-pause-icon').classList.remove('hidden');
+            };
+
+            mountVideo.onpause = () => {
+              appState.lectureIsPlaying = false;
+              document.getElementById('video-play-icon').classList.remove('hidden');
+              document.getElementById('video-pause-icon').classList.add('hidden');
+            };
+
+            mountVideo.onerror = () => {
+              showToast("Failed to load video source. Browser restrictions may apply.", "error");
+              if (loadingCover) loadingCover.classList.add('hidden');
+            };
+          }
+        }
+      } else {
+        // Handle normal static note previews & PDF files
+        if (videoViewport) videoViewport.classList.add('hidden');
+        if (embedIframe) {
+          embedIframe.classList.remove('hidden');
+          embedIframe.removeAttribute('src');
+          embedIframe.src = transformToGoogleViewerUrl(url) || "about:blank";
+          embedIframe.onload = function() {
+            if (loadingCover) loadingCover.classList.add('hidden');
+          };
+        }
+        setTimeout(() => {
+          if (loadingCover) loadingCover.classList.add('hidden');
+        }, 2500);
+      }
 
       viewerModal.classList.remove('hidden');
       viewerModal.classList.add('flex');
     }
 
-    // --- TIME-BASED NOTE, PDF & LECTURE WATCHING SESSION ---
+    // --- REWRITE VIDEO TICK PROGRESS POLLER ---
+    function updateVideoProgressIndicator() {
+      if (ytPlayerInstance && typeof ytPlayerInstance.getCurrentTime === 'function') {
+        const curTime = ytPlayerInstance.getCurrentTime() || 0;
+        const totalDuration = ytPlayerInstance.getDuration() || 0;
+        document.getElementById('custom-video-current').innerText = formatVideoTimestamp(curTime);
+        document.getElementById('custom-video-duration').innerText = formatVideoTimestamp(totalDuration);
+      }
+    }
+
+    function formatVideoTimestamp(seconds) {
+      if (isNaN(seconds) || seconds === Infinity) return "0:00";
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // --- GLOBAL VIDEO PLAYER MANIPULATION HANDLERS ---
+    window.toggleVideoPlaybackState = function() {
+      const mountVideo = document.getElementById('html5-video-mount');
+      const isYoutube = ytPlayerInstance && !document.getElementById('youtube-player-mount').classList.contains('hidden');
+
+      if (isYoutube) {
+        const state = ytPlayerInstance.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) {
+          ytPlayerInstance.pauseVideo();
+        } else {
+          ytPlayerInstance.playVideo();
+        }
+      } else if (mountVideo && !mountVideo.classList.contains('hidden')) {
+        if (mountVideo.paused) {
+          mountVideo.play().catch(e => console.warn("Autoplay block:", e));
+        } else {
+          mountVideo.pause();
+        }
+      }
+    };
+
+    window.seekVideoOffset = function(offsetSeconds) {
+      const mountVideo = document.getElementById('html5-video-mount');
+      const isYoutube = ytPlayerInstance && !document.getElementById('youtube-player-mount').classList.contains('hidden');
+
+      if (isYoutube) {
+        const cur = ytPlayerInstance.getCurrentTime() || 0;
+        const dest = Math.max(0, cur + offsetSeconds);
+        ytPlayerInstance.seekTo(dest, true);
+      } else if (mountVideo && !mountVideo.classList.contains('hidden')) {
+        mountVideo.currentTime = Math.max(0, mountVideo.currentTime + offsetSeconds);
+      }
+    };
+
+    // --- TIME-BASED NOTE & PDF READING SESSION ---
     window.launchLectureStudySession = function(id, title, url) {
       if (!url || url.trim() === '') {
-        showToast("Configure a valid lecture video URL to stream content.", "error");
+        showToast("Please publish a valid lecture link to view video.", "error");
         return;
       }
       
       const isRegistered = appState.completedItemsRegistry[id] === true;
       if (!isRegistered) {
-        showToast("Lecture Video Started! Stay on the tab to accumulate focused study XP.", "success");
+        showToast("Lecture watching session started! Stay active on video play to gain study XP.", "success");
       } else {
-        showToast("Lecture Video reopened in Review Mode.", "info");
+        showToast("Review Mode: Lecture reopened.", "info");
       }
 
       appState.activeNoteReadingMinutes = 0;
       appState.currentViewingPdfId = id;
       appState.pdfStartTime = Date.now();
+      appState.currentViewingPdfType = "Lecture";
+      appState.lectureIsPlaying = false;
       
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
@@ -2127,7 +2339,11 @@
         pdfBar.classList.add('timer-bounce');
       }
 
-      launchPdfInAppReader(url, title);
+      const wrapper = document.getElementById('media-viewer-icon-wrapper');
+      if (wrapper) wrapper.innerHTML = `<i data-lucide="video" class="w-5 h-5 text-purple-400"></i>`;
+      lucide.createIcons();
+
+      launchPdfInAppReader(url, title, "Lecture");
       startStudyStopwatchTracking();
     };
 
@@ -2144,6 +2360,7 @@
       appState.activeNoteReadingMinutes = 0;
       appState.currentViewingPdfId = id;
       appState.pdfStartTime = Date.now();
+      appState.currentViewingPdfType = "Note";
       
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
@@ -2155,7 +2372,11 @@
         pdfBar.classList.add('timer-bounce');
       }
 
-      launchPdfInAppReader(pdfLink, title);
+      const wrapper = document.getElementById('media-viewer-icon-wrapper');
+      if (wrapper) wrapper.innerHTML = `<i data-lucide="file-text" class="w-5 h-5 text-rose-400"></i>`;
+      lucide.createIcons();
+
+      launchPdfInAppReader(pdfLink, title, "Note");
       startStudyStopwatchTracking();
     };
 
@@ -2172,6 +2393,7 @@
       appState.activeNoteReadingMinutes = 0;
       appState.currentViewingPdfId = id;
       appState.pdfStartTime = Date.now();
+      appState.currentViewingPdfType = "PDF";
       
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
@@ -2183,7 +2405,11 @@
         pdfBar.classList.add('timer-bounce');
       }
 
-      launchPdfInAppReader(pdfLink, title);
+      const wrapper = document.getElementById('media-viewer-icon-wrapper');
+      if (wrapper) wrapper.innerHTML = `<i data-lucide="file-text" class="w-5 h-5 text-rose-400"></i>`;
+      lucide.createIcons();
+
+      launchPdfInAppReader(pdfLink, title, "PDF");
       startStudyStopwatchTracking();
     };
 
@@ -2193,12 +2419,20 @@
         clearInterval(studyStopwatchIntervalId);
       }
       
+      let accumSeconds = 0;
+
       studyStopwatchIntervalId = setInterval(() => {
         if (!appState.currentViewingPdfId || !appState.pdfStartTime) return;
         
-        const secondsElapsed = Math.floor((Date.now() - appState.pdfStartTime) / 1000);
-        const mins = Math.floor(secondsElapsed / 60);
-        const secs = secondsElapsed % 60;
+        // PAUSE RULE: Halt count if active media item is Lecture and state is PAUSED!
+        if (appState.currentViewingPdfType === "Lecture" && !appState.lectureIsPlaying) {
+          return; 
+        }
+
+        accumSeconds++;
+
+        const mins = Math.floor(accumSeconds / 60);
+        const secs = accumSeconds % 60;
         
         const elapsedString = `${mins} minutes ${secs}s`;
         const elapsedEl = document.getElementById('pdf-timer-elapsed');
@@ -2244,9 +2478,25 @@
 
     function cleanupInAppPdfView() {
       stopStudyStopwatchTracking();
+
+      // Pause and release media devices securely
+      const mountVideo = document.getElementById('html5-video-mount');
+      if (mountVideo) {
+        mountVideo.pause();
+        mountVideo.src = "";
+      }
+      if (ytPlayerInstance && typeof ytPlayerInstance.destroy === 'function') {
+        try {
+          ytPlayerInstance.destroy();
+        } catch(e) {}
+        ytPlayerInstance = null;
+      }
+
       appState.currentViewingPdfId = null;
       appState.pdfStartTime = null;
+      appState.currentViewingPdfType = null;
       appState.activeNoteReadingMinutes = 0;
+      appState.lectureIsPlaying = false;
       
       const pdfBar = document.getElementById('pdf-study-timer-bar');
       if (pdfBar) {
@@ -2283,16 +2533,9 @@
         appState.completedItemsRegistry[activeId] = true;
         
         let baseCompletionXp = 15;
-        // Determine if item type is Lecture watch session
-        const subData = folderSystemData[appState.currentSubject];
-        if (subData && subData.chapters) {
-          const chap = subData.chapters.find(c => c.id === appState.currentChapterId);
-          if (chap && chap.items) {
-            const item = chap.items.find(i => i.id === activeId);
-            if (item && item.type === "Lectures") {
-              baseCompletionXp = 20;
-            }
-          }
+        // Check if watch session
+        if (appState.currentViewingPdfType === "Lecture") {
+          baseCompletionXp = 20;
         }
 
         const totalAwarded = baseCompletionXp + accruedXP;
