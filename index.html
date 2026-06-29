@@ -286,7 +286,7 @@
             Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
           </p>
         </div>
-        <div class="text-xs text-slate-500 font-mono mt-4 font-sans font-sans font-sans">Automated Cycle Version 2.9.0</div>
+        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.9.0</div>
       </div>
 
       <!-- MY BATCH PORTAL -->
@@ -501,7 +501,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <!-- Fallback direct link is preserved in case standard iframes block local layout rendering -->
+          <!-- Fallback direct link is preserved in case standard iframes block local layout rendering (Strictly hidden for Lectures) -->
           <a id="pdf-viewer-external-btn" href="#" target="_blank" class="hidden sm:flex bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition items-center gap-1.5">
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open in New Tab
           </a>
@@ -511,7 +511,7 @@
         </div>
       </div>
 
-      <!-- Embedded high-performance Document Frame & Custom Video Player Container -->
+      <!-- Embedded Document Frame & Custom Video Player Container -->
       <div class="flex-grow w-full bg-slate-955 border border-slate-800/80 rounded-2xl overflow-hidden relative shadow-2xl flex items-center justify-center">
         <!-- PDF / Document Frame -->
         <iframe id="pdf-viewer-embed" class="w-full h-full border-none" src=""></iframe>
@@ -591,45 +591,45 @@
     <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4 font-sans">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2">
         <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5 font-sans">
-          <i data-lucide="image" class="w-4 h-4 text-blue-400 font-sans"></i> Diagram Picker
+          <i data-lucide="image" class="w-4 h-4 text-blue-400 animate-none"></i> Diagram Picker
         </h4>
         <button onclick="closeDiagramHelperModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       
-      <p class="text-[11px] text-slate-400 font-sans font-sans">Click a preset science vector diagram below to instantly assign it to the question, or paste a custom URL.</p>
+      <p class="text-[11px] text-slate-400 font-sans">Click a preset science vector diagram below to instantly assign it to the question, or paste a custom URL.</p>
       
       <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-1 font-sans">
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Animal_cell_structure_en.svg" class="max-h-full max-w-full object-contain" alt="Animal Cell">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Animal Cell</span>
+          <span class="text-[10px] text-slate-400 block font-semibold">Animal Cell</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded animate-none">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Stylised_Lithium_Atom.svg" class="max-h-full max-w-full object-contain" alt="Lithium Atom">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Lithium Atom</span>
+          <span class="text-[10px] text-slate-400 block font-semibold">Lithium Atom</span>
         </div>
-        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
+        <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Cartesian_coordinates_2D.svg" class="max-h-full max-w-full object-contain" alt="Cartesian Coordinates">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Cartesian Grid</span>
+          <span class="text-[10px] text-slate-400 block font-semibold">Cartesian Grid</span>
         </div>
         <div onclick="selectPresetDiagram('https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg')" class="bg-[#0b0f19] p-2 border border-slate-800 rounded-lg hover:border-blue-500 cursor-pointer text-center space-y-1 font-sans">
           <div class="h-16 flex items-center justify-center overflow-hidden bg-white/5 rounded">
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Dispersive_Prism_Schematic.svg" class="max-h-full max-w-full object-contain" alt="Dispersive Prism">
           </div>
-          <span class="text-[10px] text-slate-400 block font-semibold font-sans">Light Prism</span>
+          <span class="text-[10px] text-slate-400 block font-semibold">Light Prism</span>
         </div>
       </div>
 
       <div class="pt-2 border-t border-slate-800 font-sans">
-        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Custom Diagram Image URL</label>
+        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Custom Diagram Image URL</label>
         <div class="flex gap-2">
           <input type="text" id="custom-diagram-url" placeholder="https://example.com/custom.png" class="flex-grow bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
-          <button onclick="selectCustomDiagramUrl()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 rounded-xl text-xs transition font-sans">Apply</button>
+          <button onclick="selectCustomDiagramUrl()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 rounded-xl text-xs transition">Apply</button>
         </div>
       </div>
     </div>
@@ -638,66 +638,66 @@
   <!-- ==================== ADMIN: ADD CHAPTERS MODAL ==================== -->
   <div id="modal-admin-add-chapter" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 font-sans">
+      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
           <i data-lucide="plus-circle" class="w-5 h-5 text-purple-400"></i> Add Chapter Module
         </h3>
         <button onclick="closeAddChapterModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4 font-sans"></i></button>
       </div>
-      <form onsubmit="handleAddChapterSubmit(event)" class="space-y-3 font-sans">
+      <form onsubmit="handleAddChapterSubmit(event)" class="space-y-3">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Chapter Index Code</label>
           <input type="text" id="form-chap-code" placeholder="e.g. CH - 04" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Chapter Title Banner</label>
-          <input type="text" id="form-chap-title" placeholder="e.g. Ch - 5 : Atoms and Elements Structure" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans" required>
+          <input type="text" id="form-chap-title" placeholder="e.g. Ch - 5 : Atoms and Elements Structure" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
         </div>
-        <div class="grid grid-cols-2 gap-3 font-sans">
+        <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Estimated Lectures Count</label>
-            <input type="number" id="form-chap-lectures" min="0" placeholder="e.g. 10" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans" required>
+            <input type="number" id="form-chap-lectures" min="0" placeholder="e.g. 10" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
           </div>
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Estimated DPPs Count</label>
-            <input type="number" id="form-chap-dpps" min="0" placeholder="e.g. 5" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans" required>
+            <input type="number" id="form-chap-dpps" min="0" placeholder="e.g. 5" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none" required>
           </div>
         </div>
-        <button type="submit" class="w-full bg-[#A088FF] hover:bg-[#8e73ff] text-white font-bold py-2.5 rounded-xl text-xs transition font-sans">Create Chapter Directory</button>
+        <button type="submit" class="w-full bg-[#A088FF] hover:bg-[#8e73ff] text-white font-bold py-2.5 rounded-xl text-xs transition">Create Chapter Directory</button>
       </form>
     </div>
   </div>
 
   <!-- ==================== ADMIN ADD TEST MODAL ==================== -->
   <div id="modal-admin-add-test" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar font-sans">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="shield-plus" class="w-5 h-5 text-purple-400"></i> Add Secure Test Environment</h3>
         <button onclick="closeAdminAddTestModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <form onsubmit="handleSecureTestSubmit(event)" class="space-y-4 font-sans">
+      <form onsubmit="handleSecureTestSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Test Title</label>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Test Title</label>
           <input type="text" id="form-test-title" placeholder="e.g. Gravity and Motion Final Assessment" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
 
         <!-- Multi-Question Panel Indicator -->
-        <div class="border-t border-slate-850 pt-3 space-y-3 font-sans">
-          <div class="flex items-center justify-between font-sans">
+        <div class="border-t border-slate-850 pt-3 space-y-3">
+          <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-purple-400">Questions Deck List</span>
-            <span id="form-test-questions-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2.5 py-1 rounded-full border border-slate-800 font-mono">0 Questions Added</span>
+            <span id="form-test-questions-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2.5 py-1 rounded-full border border-slate-800">0 Questions Added</span>
           </div>
 
           <!-- Sandbox Area showing compiled test questions -->
-          <div id="form-test-compiled-list" class="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar font-sans"></div>
+          <div id="form-test-compiled-list" class="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar"></div>
 
           <!-- Inputs for currently building question -->
-          <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl space-y-2.5 font-sans">
-            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans">Question Builder</p>
+          <div class="bg-[#0b0f19] p-4 border border-slate-800 rounded-2xl space-y-2.5">
+            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Question Builder</p>
             
-            <input type="text" id="form-test-question" placeholder="e.g. What is the value of gravitational acceleration g?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
+            <input type="text" id="form-test-question" placeholder="e.g. What is the value of gravitational acceleration g?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
             
-            <div class="grid grid-cols-2 gap-2 font-sans">
+            <div class="grid grid-cols-2 gap-2">
               <input type="text" id="form-test-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
@@ -705,8 +705,8 @@
             </div>
 
             <!-- Image input with modern `+` selector helper button -->
-            <div class="font-sans">
-              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Insert Diagram / Diagram URL (Optional)</label>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Insert Diagram / Diagram URL (Optional)</label>
               <div class="flex gap-2">
                 <input type="url" id="form-test-image" placeholder="https://example.com/question-image.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
                 <button type="button" onclick="openDiagramHelper('form-test-image')" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-3.5 rounded-xl text-xs transition flex items-center justify-center">
@@ -715,18 +715,18 @@
               </div>
             </div>
 
-            <div class="font-sans">
-              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1 font-sans">Correct Answer Match (EXACT option value, e.g. 9.8 m/s²)</label>
-              <input type="text" id="form-test-correct" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Correct Answer Match (EXACT option value, e.g. 9.8 m/s²)</label>
+              <input type="text" id="form-test-correct" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
             </div>
             
-            <button type="button" onclick="addQuestionToFormTestDeck()" class="w-full bg-[#0f1524] hover:bg-slate-800 text-slate-300 font-bold py-2 rounded-xl text-xs border border-slate-800 transition flex items-center justify-center gap-1.5 font-bold font-sans">
+            <button type="button" onclick="addQuestionToFormTestDeck()" class="w-full bg-[#0f1524] hover:bg-slate-800 text-slate-300 font-bold py-2 rounded-xl text-xs border border-slate-800 transition flex items-center justify-center gap-1.5 font-bold">
               <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-purple-400"></i> Save Question to Deck
             </button>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition font-bold font-sans">Create Test Environment</button>
+        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Create Test Environment</button>
       </form>
     </div>
   </div>
@@ -734,11 +734,11 @@
   <!-- ==================== ADMIN OPERATIONS SCHEDULER MODAL ==================== -->
   <div id="modal-admin-scheduler" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 font-sans">
+      <div class="flex items-center justify-between border-b border-slate-805/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-500"></i> Add Weekly Schedule</h3>
         <button onclick="closeAdminSchedulerModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <form onsubmit="handleClassSchedulingSubmit(event)" class="space-y-3 font-sans">
+      <form onsubmit="handleClassSchedulingSubmit(event)" class="space-y-3">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Subject</label>
           <select id="form-class-subject" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none">
@@ -754,7 +754,7 @@
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Assigned Instructor / Teacher</label>
-          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans" required>
+          <input type="text" id="form-class-teacher" placeholder="e.g. Alakh Pandey Sir" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none" required>
         </div>
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Delivery Timing</label>
@@ -767,12 +767,12 @@
 
   <!-- ==================== ADMIN CONTENT PAYLOAD PUBLISHER MODAL ==================== -->
   <div id="modal-admin-publisher" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar font-sans">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <h3 id="admin-publisher-subject-title" class="text-sm font-bold text-white uppercase tracking-wider">Publish New Material Entry</h3>
         <button onclick="closeAdminContentPublishModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <form onsubmit="handlePayloadSubmission(event)" class="space-y-3 font-sans">
+      <form onsubmit="handlePayloadSubmission(event)" class="space-y-3">
         <div>
           <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Target Module Slot Type</label>
           <select id="payload-type" onchange="toggleFormFieldsBasedOnPayload()" class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none font-sans">
@@ -789,7 +789,7 @@
         </div>
         
         <!-- Notes/PDFs wrapper -->
-        <div id="payload-notes-wrapper" class="space-y-2 font-sans">
+        <div id="payload-notes-wrapper" class="space-y-2">
           <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-sans">Document Link (PDF or Google Drive URL - Mandatory for Notes)</label>
             <input type="url" id="payload-link" placeholder="https://drive.google.com/..." class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none">
@@ -833,7 +833,7 @@
             
             <div class="grid grid-cols-2 gap-2 font-sans">
               <input type="text" id="payload-dpp-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
-              <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+              <input type="text" id="payload-dpp-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none animate-none">
               <input type="text" id="payload-dpp-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="payload-dpp-opt-d" placeholder="Option D" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
             </div>
@@ -853,7 +853,7 @@
   </div>
 
   <!-- ==================== AVATAR SELECTOR MODAL ==================== -->
-  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
+  <div id="modal-avatar-selector" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -973,7 +973,7 @@
       currentActiveTab: "Lectures", 
       currentStatusFilter: "Pending",
 
-      // Study stopwatch variables
+      // Study notes stopwatch variables
       activeNoteReadingMinutes: 0,
       currentViewingPdfId: null,
       pdfStartTime: null,
@@ -1913,9 +1913,9 @@
         const el = document.getElementById(`slot-tab-${tab}`);
         if (el) {
           if (appState.currentActiveTab === tab) {
-            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-[#A088FF] text-white transition shadow shrink-0 font-sans";
+            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-[#A088FF] text-white transition shadow shrink-0 font-sans animate-none";
           } else {
-            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-slate-400 hover:bg-slate-800 transition shrink-0 font-sans";
+            el.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-slate-400 hover:bg-slate-800 transition shrink-0 font-sans animate-none";
           }
         }
       });
@@ -2127,9 +2127,15 @@
 
       activeFallbackUrl = url;
       if (titleLabel) titleLabel.innerText = title;
+      
+      // STOPS students from clicking "Open in New Tab" for Lectures specifically
       if (externalBtn) {
-        externalBtn.href = url;
-        externalBtn.classList.remove('hidden');
+        if (type === "Lecture") {
+          externalBtn.classList.add('hidden');
+        } else {
+          externalBtn.href = url;
+          externalBtn.classList.remove('hidden');
+        }
       }
 
       if (loadingCover) loadingCover.classList.remove('hidden');
@@ -2204,7 +2210,7 @@
             }
           }
         } else {
-          // Fallback to Native HTML5 video player if raw/other video source link
+          // Fallback to Native HTML5 video player if raw/other video source link (ANY MP4 video file from different websites)
           if (mountYT) mountYT.classList.add('hidden');
           if (mountVideo) {
             mountVideo.classList.remove('hidden');
@@ -2641,7 +2647,7 @@
 
     function triggerCheatingPenalty(reasonText) {
       updateUserXp(-50);
-      showToast(`PROCTOR EXAM BREACH: ${reasonText} Penalty of -50 XP applied!`, "error");
+      showToast("PROCTOR EXAM BREACH: " + reasonText + " Penalty of -50 XP applied!", "error");
       terminateSecureAssessment();
     }
 
@@ -2721,7 +2727,7 @@
       const question = exam.questions[qIndex];
 
       const progressIndexEl = document.getElementById('exam-progress-index');
-      if (progressIndexEl) progressIndexEl.innerText = `Question ${qIndex + 1} of ${exam.questions.length}`;
+      if (progressIndexEl) progressIndexEl.innerText = "Question " + (qIndex + 1) + " of " + exam.questions.length;
 
       const qBox = document.getElementById('exam-question-target');
       if (!qBox) return;
@@ -2821,9 +2827,9 @@
       if (!appState.completedItemsRegistry[exam.id]) {
         appState.completedItemsRegistry[exam.id] = true;
         updateUserXp(scoredXP);
-        showToast(`Assessment Complete! Score: ${correctAnswersCount}/${totalQs} (${scorePercentage}%). +${scoredXP} XP gained.`, "success");
+        showToast("Assessment Complete! Score: " + correctAnswersCount + "/" + totalQs + " (" + scorePercentage + "%). +" + scoredXP + " XP gained.", "success");
       } else {
-        showToast(`Score Summary: ${correctAnswersCount}/${totalQs} (${scorePercentage}%). Review completed.`, "info");
+        showToast("Score Summary: " + correctAnswersCount + "/" + totalQs + " (" + scorePercentage + "%). Review completed.", "info");
       }
 
       terminateSecureAssessment();
@@ -2846,8 +2852,8 @@
           renderLeaderboard();
         }
 
-        localStorage.setItem(`science_ix_xp_${appState.user.toLowerCase()}`, appState.xp);
-        localStorage.setItem(`science_ix_registry_${appState.user.toLowerCase()}`, JSON.stringify(appState.completedItemsRegistry));
+        localStorage.setItem("science_ix_xp_" + appState.user.toLowerCase(), appState.xp);
+        localStorage.setItem("science_ix_registry_" + appState.user.toLowerCase(), JSON.stringify(appState.completedItemsRegistry));
 
         if (db && auth && auth.currentUser) {
           const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
@@ -2926,7 +2932,7 @@
       const counter = document.getElementById('form-test-questions-counter');
       if (!container || !counter) return;
 
-      counter.innerText = `${tempTestQuestions.length} Questions Added`;
+      counter.innerText = tempTestQuestions.length + " Questions Added";
       container.innerHTML = '';
 
       tempTestQuestions.forEach((item, idx) => {
@@ -2973,7 +2979,7 @@
       closeAdminAddTestModal();
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
-      showToast(`Secure assessment published to ${appState.currentSubject}!`, "success");
+      showToast("Secure assessment published to " + appState.currentSubject + "!", "success");
     };
 
     // --- ADMIN CHAPTER ADDITIONS ---
@@ -3012,7 +3018,7 @@
       await saveCurriculumData();
       closeAddChapterModal();
       renderChaptersList(appState.currentSubject);
-      showToast(`Created Chapter Module: ${title}!`, "success");
+      showToast("Created Chapter Module: " + title + "!", "success");
     };
 
     window.deleteChapterModule = async function(chapterId) {
@@ -3029,7 +3035,7 @@
 
     // --- ADMIN MULTI-QUESTION DPP PAYLOAD CREATION ---
     window.openAdminContentPublishModal = function() {
-      document.getElementById('admin-publisher-subject-title').innerText = `Publish to ${appState.currentSubject}`;
+      document.getElementById('admin-publisher-subject-title').innerText = "Publish to " + appState.currentSubject;
       document.getElementById('modal-admin-publisher').classList.remove('hidden');
       document.getElementById('modal-admin-publisher').classList.add('flex');
       
@@ -3111,7 +3117,7 @@
       const counter = document.getElementById('payload-dpp-counter');
       if (!container || !counter) return;
 
-      counter.innerText = `${tempDppQuestions.length} Questions logged`;
+      counter.innerText = tempDppQuestions.length + " Questions logged";
       container.innerHTML = '';
 
       tempDppQuestions.forEach((item, idx) => {
@@ -3295,7 +3301,7 @@
       appState.personalNotes[subject].push(text);
       input.value = '';
 
-      localStorage.setItem(`science_ix_notes_${appState.user.toLowerCase()}`, JSON.stringify(appState.personalNotes));
+      localStorage.setItem("science_ix_notes_" + appState.user.toLowerCase(), JSON.stringify(appState.personalNotes));
       renderPersonalNotes();
       showToast("Reminder added!", "success");
 
@@ -3306,7 +3312,7 @@
       const subject = appState.currentSubject;
       if (appState.personalNotes[subject]) {
         appState.personalNotes[subject].splice(index, 1);
-        localStorage.setItem(`science_ix_notes_${appState.user.toLowerCase()}`, JSON.stringify(appState.personalNotes));
+        localStorage.setItem("science_ix_notes_" + appState.user.toLowerCase(), JSON.stringify(appState.personalNotes));
         renderPersonalNotes();
         showToast("Study note removed.");
         syncPersonalNotesToCloud();
@@ -3336,7 +3342,7 @@
     window.updateAllAvatarImages = function() {
       const imgs = document.querySelectorAll('.user-avatar-img');
       imgs.forEach(img => {
-        img.src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${appState.avatar}`;
+        img.src = "https://api.dicebear.com/7.x/adventurer/svg?seed=" + appState.avatar;
       });
     };
     window.changeUserAvatar = async function(seed) {
@@ -3350,7 +3356,7 @@
           renderLeaderboard();
         }
 
-        localStorage.setItem(`science_ix_avatar_${appState.user.toLowerCase()}`, seed);
+        localStorage.setItem("science_ix_avatar_" + appState.user.toLowerCase(), seed);
 
         if (db && auth && auth.currentUser && appState.user) {
           const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
@@ -3385,7 +3391,7 @@
                         type === 'error' ? 'bg-[#2d0f11] border-red-500/50 text-red-300' :
                         'bg-slate-900 border-slate-800 text-slate-300';
 
-      box.className = `flex items-center gap-3 p-4 rounded-2xl border ${styling} shadow-xl backdrop-blur font-sans toast-bounce transition-all duration-300`;
+      box.className = "flex items-center gap-3 p-4 rounded-2xl border " + styling + " shadow-xl backdrop-blur font-sans toast-bounce transition-all duration-300";
       box.innerHTML = `
         <i data-lucide="${statusIcon}" class="w-5 h-5 shrink-0 ${type === 'success' ? 'text-emerald-400' : 'text-blue-400'}"></i>
         <span class="text-xs font-semibold">${message}</span>
@@ -3452,26 +3458,26 @@
       const savedRegistry = { ...appState.completedItemsRegistry };
       const savedPersonalNotes = { ...appState.personalNotes };
 
-      localStorage.removeItem(`science_ix_xp_${oldKey}`);
-      localStorage.removeItem(`science_ix_streak_${oldKey}`);
-      localStorage.removeItem(`science_ix_avatar_${oldKey}`);
-      localStorage.removeItem(`science_ix_registry_${oldKey}`);
-      localStorage.removeItem(`science_ix_notes_${oldKey}`);
+      localStorage.removeItem("science_ix_xp_" + oldKey);
+      localStorage.removeItem("science_ix_streak_" + oldKey);
+      localStorage.removeItem("science_ix_avatar_" + oldKey);
+      localStorage.removeItem("science_ix_registry_" + oldKey);
+      localStorage.removeItem("science_ix_notes_" + oldKey);
 
       appState.user = newName;
       document.getElementById('user-display-name').innerText = newName;
 
       localStorage.setItem("science_ix_saved_user", newName);
-      localStorage.setItem(`science_ix_xp_${newKey}`, savedXp);
-      localStorage.setItem(`science_ix_streak_${newKey}`, savedStreak);
-      localStorage.setItem(`science_ix_avatar_${newKey}`, savedAvatar);
-      localStorage.setItem(`science_ix_registry_${newKey}`, JSON.stringify(savedRegistry));
-      localStorage.setItem(`science_ix_notes_${newKey}`, JSON.stringify(savedPersonalNotes));
+      localStorage.setItem("science_ix_xp_" + newKey, savedXp);
+      localStorage.setItem("science_ix_streak_" + newKey, savedStreak);
+      localStorage.setItem("science_ix_avatar_" + newKey, savedAvatar);
+      localStorage.setItem("science_ix_registry_" + newKey, JSON.stringify(savedRegistry));
+      localStorage.setItem("science_ix_notes_" + newKey, JSON.stringify(savedPersonalNotes));
 
       const oldIdx = fallbackLeaderboard.findIndex(x => x.id === oldKey);
       const updatedRecord = {
         id: newKey,
-        name: `${newName} (You)`,
+        name: newName + " (You)",
         streak: savedStreak,
         xp: savedXp,
         avatar: savedAvatar
