@@ -34,6 +34,51 @@
       -webkit-user-select: none;
     }
 
+    /* ==================== SCREEN PROTECTIONS (ANTI-SCREENSHOT) ==================== */
+    @media print {
+      body {
+        display: none !important;
+      }
+    }
+
+    /* Active Rolling-Shutter Cam interference Strobe layer */
+    @keyframes fast-flicker {
+      0% { opacity: 0.04; }
+      50% { opacity: 0.08; }
+      100% { opacity: 0.04; }
+    }
+    .anti-cam-strobe {
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(255, 255, 255, 0.08) 2px,
+        rgba(255, 255, 255, 0.08) 4px
+      );
+      animation: fast-flicker 0.02s infinite;
+    }
+
+    /* ==================== PARTY POPPER CELEBRATIONS ==================== */
+    @keyframes popper-float {
+      0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-20vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+    .popper-particle {
+      position: absolute;
+      pointer-events: none;
+      animation: popper-float 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
     /* ==================== BOUNCY SPRING POP-IN ANIMATIONS ==================== */
     @keyframes springy-bounce {
       0% {
@@ -80,7 +125,7 @@
     }
   </style>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col selection:bg-blue-500 selection:text-white transition-all duration-300 font-sans">
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col selection:bg-blue-500 selection:text-white transition-all duration-300 font-sans select-none">
 
   <!-- ==================== 3-SECOND HIGH-DEF LOGO SPLASH OVERLAY ==================== -->
   <div id="view-loading" class="fixed inset-0 bg-[#0b0f19] z-50 flex flex-col items-center justify-center transition-all duration-1000 ease-in-out opacity-100">
@@ -114,6 +159,9 @@
 
     </div>
   </div>
+
+  <!-- ==================== PARTY POPPER CELEBRATION CONTAINER ==================== -->
+  <div id="celebration-overlay" class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"></div>
 
   <!-- ==================== PROCTOR LOCK WARNING OVERLAY ==================== -->
   <div id="proctor-fullscreen-lock" class="fixed inset-0 bg-[#070a13] z-50 flex-col items-center justify-center p-6 hidden">
@@ -270,23 +318,101 @@
 
     <!-- HERO BANNER & MY BATCH DIRECTORY CARD -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Workspace Info Banner -->
-      <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl shadow-black/20 flex flex-col justify-between min-h-[240px]">
+      <!-- Workspace Info Banner with Auto-Sliding Carousel -->
+      <div id="workspace-info-carousel" class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-[#111827] border border-slate-800/80 rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl shadow-black/20 flex flex-col justify-between min-h-[240px]">
         <div class="absolute -right-10 -top-10 w-44 h-44 bg-blue-500/10 rounded-full blur-3xl"></div>
         <div class="absolute right-20 bottom-0 w-60 h-60 bg-indigo-500/5 rounded-full blur-3xl"></div>
         
-        <div class="relative">
-          <span class="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-blue-500/20 mb-4 font-mono">
-            <span class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></span> Target 2027
-          </span>
-          <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-snug">
-            Platform Guidelines & Live System Index
-          </h1>
-          <p class="text-slate-400 mt-2 text-xs md:text-sm max-w-lg leading-relaxed">
-            Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
-          </p>
+        <!-- Slide container with overflow-hidden and accurate layout containment -->
+        <div class="relative overflow-hidden w-full flex-grow flex flex-col justify-between">
+          <div id="carousel-slides" class="flex transition-transform duration-500 ease-in-out h-full w-full" style="transform: translateX(0%);">
+            
+            <!-- Slide 1: Platform Overview -->
+            <div class="w-full flex-shrink-0 flex-grow-0 flex flex-col justify-between h-full pr-4 box-border">
+              <div>
+                <span class="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-blue-500/20 mb-4 font-mono">
+                  <span class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></span> Target 2027
+                </span>
+                <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-snug">
+                  Platform Guidelines &amp; Live System Index
+                </h1>
+                <p class="text-slate-400 mt-2 text-xs md:text-sm leading-relaxed">
+                  Welcome to the structured learning pipeline. This cloud core centralizes all specialized academic assignments, interactive tracking indices, and verified study repositories seamlessly for the batch.
+                </p>
+              </div>
+              <div class="text-[10px] text-slate-500 font-mono mt-4 flex items-center justify-between">
+                <span>Automated Cycle Version 2.9.0</span>
+                <span class="font-bold text-blue-400">Guide 1/4</span>
+              </div>
+            </div>
+
+            <!-- Slide 2: Rules & Regulations -->
+            <div class="w-full flex-shrink-0 flex-grow-0 flex flex-col justify-between h-full pr-4 box-border">
+              <div>
+                <span class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-emerald-500/20 mb-4 font-mono">
+                  <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Active Regulations
+                </span>
+                <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-snug">
+                  Rules &amp; Regulations
+                </h1>
+                <p class="text-slate-400 mt-2 text-xs md:text-sm leading-relaxed">
+                  Be regular in your study habits. Your video completion and active note reading are secured and monitored on our servers. Avoid reloading active timers arbitrarily and make sure to fully stream materials to earn authentic academic credits.
+                </p>
+              </div>
+              <div class="text-[10px] text-slate-500 font-mono mt-4 flex items-center justify-between">
+                <span>Ecosystem Rules Handbook</span>
+                <span class="font-bold text-emerald-400">Guide 2/4</span>
+              </div>
+            </div>
+
+            <!-- Slide 3: Things You Shouldn't Do -->
+            <div class="w-full flex-shrink-0 flex-grow-0 flex flex-col justify-between h-full pr-4 box-border">
+              <div>
+                <span class="inline-flex items-center gap-1.5 bg-red-500/10 text-red-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-red-500/20 mb-4 font-mono">
+                  <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span> Security Blockers
+                </span>
+                <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-snug">
+                  Things You Shouldn't Do
+                </h1>
+                <p class="text-slate-400 mt-2 text-xs md:text-sm leading-relaxed">
+                  Do not attempt to modify Javascript local states using inspector dev tools or run automated click/playback simulation scripts. Bypassing note security modal screens or abusing system triggers will lock your profile UID.
+                </p>
+              </div>
+              <div class="text-[10px] text-slate-500 font-mono mt-4 flex items-center justify-between">
+                <span>Security Guardrail Protocols</span>
+                <span class="font-bold text-red-400">Guide 3/4</span>
+              </div>
+            </div>
+
+            <!-- Slide 4: How to Access Lectures & Notes -->
+            <div class="w-full flex-shrink-0 flex-grow-0 flex flex-col justify-between h-full pr-4 box-border">
+              <div>
+                <span class="inline-flex items-center gap-1.5 bg-purple-500/10 text-purple-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-purple-500/20 mb-4 font-mono">
+                  <span class="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"></span> Guide Overview
+                </span>
+                <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-snug">
+                  How to Open Lectures &amp; Notes
+                </h1>
+                <p class="text-slate-400 mt-2 text-xs md:text-sm leading-relaxed">
+                  Go to "View Classes", select your active subject, and open any chapter. Click on "Lectures" to load the video player with integrated playback controls, or select "Notes" to launch the secured reading timer handout.
+                </p>
+              </div>
+              <div class="text-[10px] text-slate-500 font-mono mt-4 flex items-center justify-between">
+                <span>Interactive Directory Manual</span>
+                <span class="font-bold text-purple-400">Guide 4/4</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div class="text-xs text-slate-500 font-mono mt-4">Automated Cycle Version 2.9.0</div>
+
+        <!-- Carousel indicators dot layout -->
+        <div class="flex items-center gap-2 mt-2 z-10">
+          <button onclick="setCarouselSlideIndex(0)" class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-all duration-300" id="carousel-dot-0" aria-label="Slide 1"></button>
+          <button onclick="setCarouselSlideIndex(1)" class="w-2 h-2 rounded-full bg-slate-700 transition-all duration-300" id="carousel-dot-1" aria-label="Slide 2"></button>
+          <button onclick="setCarouselSlideIndex(2)" class="w-2 h-2 rounded-full bg-slate-700 transition-all duration-300" id="carousel-dot-2" aria-label="Slide 3"></button>
+          <button onclick="setCarouselSlideIndex(3)" class="w-2 h-2 rounded-full bg-slate-700 transition-all duration-300" id="carousel-dot-3" aria-label="Slide 4"></button>
+        </div>
       </div>
 
       <!-- MY BATCH PORTAL -->
@@ -488,6 +614,9 @@
 
   <!-- ==================== DEDICATED DIRECT IN-APP PDF / VIDEO VIEWER MODAL ==================== -->
   <div id="modal-pdf-viewer" class="fixed inset-0 bg-[#070a12]/95 z-50 hidden flex-col p-4 md:p-6 animate-in fade-in duration-200">
+    <!-- Active anti-screenshot watermarks dynamically placed in background -->
+    <div id="anti-screenshot-watermark" class="absolute pointer-events-none text-slate-700/10 text-[10px] select-none uppercase font-extrabold tracking-widest z-10 select-none"></div>
+
     <div class="max-w-6xl w-full mx-auto flex-grow flex flex-col space-y-4 h-full relative">
       
       <div class="flex items-center justify-between bg-slate-900/90 border border-slate-800/80 p-4 rounded-2xl shadow-xl shrink-0 font-sans">
@@ -516,41 +645,30 @@
         <!-- PDF / Document Frame -->
         <iframe id="pdf-viewer-embed" class="w-full h-full border-none" src=""></iframe>
         
-        <!-- Premium Custom Video Player Target (HTML5 and Youtube) -->
-        <div id="video-player-viewport" class="absolute inset-0 bg-black hidden flex-col items-center justify-center">
-          <!-- YouTube Iframe Mount Node -->
-          <div id="youtube-player-mount" class="w-full h-full"></div>
+        <!-- Premium Video Player Target (Clean Player, utilizing only Native player buttons) -->
+        <div id="video-player-viewport" class="absolute inset-0 bg-black hidden flex flex-col items-center justify-center">
           
-          <!-- Native HTML5 Video Node -->
-          <video id="html5-video-mount" class="w-full h-full object-contain hidden" playsinline></video>
+          <!-- YouTube Iframe Wrapper -->
+          <div id="youtube-player-wrapper" class="w-full h-full">
+            <div id="youtube-player-mount" class="w-full h-full"></div>
+          </div>
           
-          <!-- Aesthetic Premium Custom Glassmorphic Overlay Controls Deck -->
-          <div id="custom-video-control-deck" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md border border-slate-800/60 px-6 py-3 rounded-2xl flex items-center gap-6 shadow-2xl z-30 transition-all duration-300">
-            <!-- Skip Backward Button -->
-            <button onclick="seekVideoOffset(-10)" class="text-slate-400 hover:text-white transition transform active:scale-90 p-2 rounded-full hover:bg-slate-800/40" title="Rewind 10s">
-              <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
-            </button>
-            
-            <!-- Dynamic Play / Pause Toggle Button -->
-            <button id="video-play-pause-btn" onclick="toggleVideoPlaybackState()" class="w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition transform active:scale-95 shadow-lg shadow-blue-500/25">
-              <i data-lucide="play" class="w-5 h-5 fill-white" id="video-play-icon"></i>
-              <i data-lucide="pause" class="w-5 h-5 fill-white hidden" id="video-pause-icon"></i>
-            </button>
-            
-            <!-- Skip Forward Button -->
-            <button onclick="seekVideoOffset(10)" class="text-slate-400 hover:text-white transition transform active:scale-90 p-2 rounded-full hover:bg-slate-800/40" title="Skip Forward 10s">
-              <i data-lucide="rotate-cw" class="w-5 h-5"></i>
-            </button>
-            
-            <!-- Vertical Divider -->
-            <div class="h-6 w-[1px] bg-slate-800"></div>
-            
-            <!-- Time Duration indicator -->
-            <div class="text-xs font-mono font-bold text-slate-300 select-none flex items-center gap-1">
-              <span id="custom-video-current">0:00</span>
-              <span class="text-slate-500">/</span>
-              <span id="custom-video-duration">0:00</span>
+          <!-- Native HTML5 Video Node (Standard Controls Only) -->
+          <video id="html5-video-mount" class="w-full h-full object-contain hidden" playsinline controls controlsList="nodownload"></video>
+
+          <!-- External Website Generic Iframe Mount -->
+          <iframe id="html5-iframe-mount" class="w-full h-full hidden" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          
+          <!-- Active Anti-Recording Camera Strobe Interference layer -->
+          <div class="absolute inset-0 anti-cam-strobe z-20"></div>
+
+          <!-- Anti-Record Pitch Black Shield Layer (Triggers automatically if defocus or screenshot utilities are active) -->
+          <div id="security-blanket-overlay" class="absolute inset-0 bg-black z-30 flex flex-col items-center justify-center text-center p-6 hidden">
+            <div class="w-16 h-16 bg-red-600/10 border border-red-500/20 text-red-500 rounded-full flex items-center justify-center mb-4">
+              <i data-lucide="eye-off" class="w-8 h-8 animate-pulse"></i>
             </div>
+            <h4 class="text-md font-bold text-white tracking-wide">SECURE SHIELD ACTIVE</h4>
+            <p class="text-xs text-slate-400 mt-2 max-w-sm leading-relaxed">Lecture playback has been completely blanked because you left the browser tab or minimized focus. Please keep this tab active to resume.</p>
           </div>
         </div>
 
@@ -682,10 +800,10 @@
         </div>
 
         <!-- Multi-Question Panel Indicator -->
-        <div class="border-t border-slate-850 pt-3 space-y-3">
+        <div class="border-t border-slate-855 pt-3 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-purple-400">Questions Deck List</span>
-            <span id="form-test-questions-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2.5 py-1 rounded-full border border-slate-800">0 Questions Added</span>
+            <span id="form-test-questions-counter" class="text-[10px] text-slate-400 font-mono bg-slate-955 px-2.5 py-1 rounded-full border border-slate-800">0 Questions Added</span>
           </div>
 
           <!-- Sandbox Area showing compiled test questions -->
@@ -700,8 +818,8 @@
             <div class="grid grid-cols-2 gap-2">
               <input type="text" id="form-test-opt-a" placeholder="Option A" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
               <input type="text" id="form-test-opt-b" placeholder="Option B" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
-              <input type="text" id="form-test-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
-              <input type="text" id="form-test-opt-d" placeholder="Option D" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none">
+              <input type="text" id="form-test-opt-c" placeholder="Option C" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
+              <input type="text" id="form-test-opt-d" placeholder="Option D" class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none font-sans">
             </div>
 
             <!-- Image input with modern `+` selector helper button -->
@@ -734,7 +852,7 @@
   <!-- ==================== ADMIN OPERATIONS SCHEDULER MODAL ==================== -->
   <div id="modal-admin-scheduler" class="fixed inset-0 bg-slate-955/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 font-sans">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-slate-805/80 pb-3">
+      <div class="flex items-center justify-between border-b border-slate-855/80 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-500"></i> Add Weekly Schedule</h3>
         <button onclick="closeAdminSchedulerModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
@@ -812,7 +930,7 @@
         <div id="payload-dpp-wrapper" class="hidden space-y-3 font-sans">
           <div class="flex items-center justify-between font-sans">
             <span class="text-xs font-bold text-emerald-400">Quiz / Test Questions Deck</span>
-            <span id="payload-dpp-counter" class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-1 rounded">0 Quiz Questions</span>
+            <span id="payload-dpp-counter" class="text-[10px] text-slate-400 font-mono bg-slate-955 px-2 py-1 rounded">0 Quiz Questions</span>
           </div>
           
           <div id="payload-dpp-compiled-list" class="space-y-1 text-xs max-h-[120px] overflow-y-auto custom-scrollbar font-sans"></div>
@@ -826,7 +944,7 @@
               <div class="flex gap-2">
                 <input type="url" id="payload-dpp-image" placeholder="https://example.com/diagram.jpg" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none font-sans">
                 <button type="button" onclick="openDiagramHelper('payload-dpp-image')" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 px-3.5 rounded-xl text-xs transition flex items-center justify-center">
-                  <i data-lucide="plus" class="w-4 h-4"></i>
+                  <i data-lucide="plus" class="w-4 h-4 font-sans"></i>
                 </button>
               </div>
             </div>
@@ -839,7 +957,7 @@
             </div>
             <div class="font-sans">
               <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Correct Answer Match</label>
-              <input type="text" id="payload-dpp-correct-text" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
+              <input type="text" id="payload-dpp-correct-text" placeholder="Type correct option value EXACTLY" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none font-sans">
             </div>
             <button type="button" onclick="addQuestionToFormDppDeck()" class="w-full bg-slate-900 hover:bg-slate-855 text-slate-300 font-bold py-1.5 rounded-lg text-xs transition border border-slate-800 font-sans font-bold">
               Add Question to Deck List
@@ -859,7 +977,7 @@
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
           <i data-lucide="smile" class="w-4 h-4 text-emerald-400"></i> Select Your Avatar
         </h3>
-        <button onclick="closeAvatarSelectorModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="closeAvatarSelectorModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4 font-sans"></i></button>
       </div>
 
       <div class="max-h-[60vh] overflow-y-auto pr-1 custom-scrollbar">
@@ -871,7 +989,7 @@
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Milo</span>
           </div>
           <!-- Alexander -->
-          <div onclick="changeUserAvatar('Alexander')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Alexander')" class="cursor-pointer p-1 rounded-xl border border-slate-855 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alexander" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Alexander">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Alex</span>
           </div>
@@ -886,7 +1004,7 @@
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Ethan</span>
           </div>
           <!-- Oliver -->
-          <div onclick="changeUserAvatar('Oliver')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
+          <div onclick="changeUserAvatar('Oliver')" class="cursor-pointer p-1 rounded-xl border border-slate-855 hover:border-emerald-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
             <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Oliver">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Oliver</span>
           </div>
@@ -942,7 +1060,7 @@
           </div>
           <!-- Chloe -->
           <div onclick="changeUserAvatar('Chloe')" class="cursor-pointer p-1 rounded-xl border border-slate-850 hover:border-pink-500 bg-[#0b0f19] transition-all hover:scale-105 active:scale-95 text-center">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Chloe">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe" class="w-12 h-12 mx-auto object-cover rounded-lg" alt="Chloe font-sans">
             <span class="text-[9px] text-slate-400 block mt-1 font-semibold truncate">Chloe</span>
           </div>
         </div>
@@ -1000,9 +1118,12 @@
 
     // Timer Intervals for Study stopwatch
     let studyStopwatchIntervalId = null;
-    let ytPlayerInstance = null; // Stores YT Player Instantiation
+    let ytPlayerInstance = null; // YouTube Iframe API instance placeholder
 
-    // --- PRELOADED LEADERBOARD DATA ---
+    // Interactive Media Playback Simulation Configs
+    let activePlayerType = "Native"; // "YouTube", "Native", "Iframe"
+
+    // --- PRELOADED LEADERBOARD DATA (FALLBACK) ---
     let fallbackLeaderboard = [
       { id: "rajdeep chakroborty", name: "RAJDEEP CHAKROBORTY", streak: 8, xp: 1825, avatar: "Lucas" },
       { id: "abd kartik", name: "ABD KARTIK", streak: 1, xp: 1500, avatar: "Milo" },
@@ -1177,6 +1298,42 @@
       resolveAuthReady = resolve;
     });
 
+    // --- AUTO-SLIDING DASHBOARD CAROUSEL PARAMETERS ---
+    let currentDashboardSlide = 0;
+    const totalDashboardSlides = 4;
+    let dashboardCarouselInterval = null;
+
+    function startDashboardCarousel() {
+      if (dashboardCarouselInterval) clearInterval(dashboardCarouselInterval);
+      dashboardCarouselInterval = setInterval(() => {
+        currentDashboardSlide = (currentDashboardSlide + 1) % totalDashboardSlides;
+        updateDashboardCarouselUI();
+      }, 5000); // exactly every 5 seconds
+    }
+
+    function updateDashboardCarouselUI() {
+      const slidesContainer = document.getElementById('carousel-slides');
+      if (slidesContainer) {
+        slidesContainer.style.transform = `translateX(-${currentDashboardSlide * 100}%)`;
+      }
+      for (let i = 0; i < totalDashboardSlides; i++) {
+        const dot = document.getElementById(`carousel-dot-${i}`);
+        if (dot) {
+          if (i === currentDashboardSlide) {
+            dot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 transition-all duration-300";
+          } else {
+            dot.className = "w-2 h-2 rounded-full bg-slate-700 transition-all duration-300";
+          }
+        }
+      }
+    }
+
+    window.setCarouselSlideIndex = function(idx) {
+      currentDashboardSlide = idx;
+      updateDashboardCarouselUI();
+      startDashboardCarousel(); // Restart interval on manual interact
+    };
+
     // --- INITIALIZATION ---
     window.onload = function() {
       lucide.createIcons();
@@ -1198,6 +1355,9 @@
       renderSubjectsView();
       setupBackButtonSupport();
       setupInAppNoteSecurityWatchers();
+
+      // Start Dashboard Slide Transitions
+      startDashboardCarousel();
 
       // Async Load YouTube IFrame API Script Node
       const tag = document.createElement('script');
@@ -1236,6 +1396,11 @@
 
         pushCurrentStudentIntoLeaderboard();
         await loadCurriculumData();
+
+        // Celebrates Streak Milestones on login (multiples of 5 or 10 days)
+        if (appState.streak > 1 && (appState.streak % 5 === 0 || appState.streak % 10 === 0)) {
+          triggerPartyPopper(`${appState.streak} DAYS STREAK!`, "Keep up your exceptional dedication to daily studies!");
+        }
         
         document.getElementById('view-dashboard').classList.remove('hidden');
         document.getElementById('view-login').classList.add('hidden');
@@ -1364,18 +1529,23 @@
       const leaderboardCol = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
       onSnapshot(leaderboardCol, (snap) => {
         let items = [];
-        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        snap.forEach(d => {
+          const data = d.data();
+          if (data && data.name) {
+            items.push({ id: d.id, ...data });
+          }
+        });
         if (items.length > 0) {
-          const merged = [...fallbackLeaderboard];
+          let updatedLeaderboard = [...fallbackLeaderboard];
           items.forEach(dbItem => {
-            const index = merged.findIndex(x => x.id === dbItem.id);
+            const index = updatedLeaderboard.findIndex(x => x.id === dbItem.id);
             if (index !== -1) {
-              merged[index] = { ...merged[index], ...dbItem };
+              updatedLeaderboard[index] = { ...updatedLeaderboard[index], ...dbItem };
             } else {
-              merged.push(dbItem);
+              updatedLeaderboard.push(dbItem);
             }
           });
-          fallbackLeaderboard = merged;
+          fallbackLeaderboard = updatedLeaderboard;
           renderLeaderboard();
         }
       }, (err) => console.warn("Leaderboard sync offline."));
@@ -1430,6 +1600,47 @@
       }
     };
 
+    // --- CELEBRATION PARTY POPPER SYSTEM ---
+    function triggerPartyPopper(title, subtitle) {
+      const overlay = document.getElementById('celebration-overlay');
+      if (!overlay) return;
+
+      overlay.innerHTML = '';
+      overlay.classList.remove('hidden');
+
+      // Create popups
+      const cheerCard = document.createElement('div');
+      cheerCard.className = "absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900/95 border-2 border-yellow-400 p-8 rounded-3xl text-center shadow-2xl z-50 pointer-events-auto transition-all duration-500 scale-90 opacity-0 transform";
+      cheerCard.innerHTML = `
+        <div class="text-5xl mb-2">🎉</div>
+        <h2 class="text-2xl font-black text-yellow-400 uppercase tracking-tight">${title}</h2>
+        <p class="text-xs text-slate-300 mt-2 font-semibold">${subtitle}</p>
+        <button onclick="this.parentElement.remove()" class="mt-4 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition">Fantastic!</button>
+      `;
+      overlay.appendChild(cheerCard);
+      setTimeout(() => {
+        cheerCard.classList.remove('scale-90', 'opacity-0');
+        cheerCard.classList.add('scale-100', 'opacity-100');
+      }, 50);
+
+      // Spark falling poppers
+      const emojis = ["🎉", "✨", "🥳", "⭐", "💙", "🔥"];
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.className = "popper-particle text-2xl select-none";
+        p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.animationDelay = Math.random() * 0.8 + "s";
+        p.style.animationDuration = (2 + Math.random() * 2) + "s";
+        overlay.appendChild(p);
+      }
+
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        overlay.innerHTML = '';
+      }, 5000);
+    }
+
     // --- LOGIN HANDLER ---
     window.handleUserRegistration = async function(e) {
       e.preventDefault();
@@ -1449,7 +1660,7 @@
 
       if (adminRequested) {
         const passValue = document.getElementById('login-admin-pass').value.trim();
-        if (passValue !== "PRATIM") {
+        if (passValue !== "RIJU") {
           showToast("Incorrect Administration secret key!", "error");
           submitButton.disabled = false;
           submitButton.innerText = "Access Study Deck";
@@ -1541,6 +1752,11 @@
       const streakCount = document.getElementById('header-streak-count');
       if (streakCount) streakCount.innerText = appState.streak;
 
+      // Celebrate Streak Milestones on Login (multiples of 5 or 10 days)
+      if (appState.streak > 1 && (appState.streak % 5 === 0 || appState.streak % 10 === 0)) {
+        triggerPartyPopper(`${appState.streak} DAYS STREAK!`, "Unstoppable dedication! Keep learning daily.");
+      }
+
       await pushCurrentStudentIntoLeaderboard();
       await loadCurriculumData();
 
@@ -1591,8 +1807,16 @@
         renderLeaderboard();
 
         if (db && auth && auth.currentUser) {
-          const leaderRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', selfId);
-          await setDoc(leaderRef, { [selfId]: studentRecord }, { merge: true });
+          const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', selfId);
+          await setDoc(leaderDocRef, studentRecord, { merge: true });
+
+          const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', selfId);
+          await setDoc(studentDocRef, {
+            name: appState.user,
+            xp: appState.xp,
+            streak: appState.streak,
+            avatar: appState.avatar
+          }, { merge: true });
         }
       } catch (err) {
         console.warn("Leaderboard registration failed safely:", err);
@@ -1805,7 +2029,7 @@
             <div class="flex items-center gap-4 font-sans">
               <div class="text-right">
                 <span class="text-xs font-bold text-slate-300 font-sans">${liveProgress}%</span>
-                <div class="w-16 bg-slate-950 h-1.5 rounded-full mt-1 overflow-hidden">
+                <div class="w-16 bg-slate-955 h-1.5 rounded-full mt-1 overflow-hidden">
                   <div class="bg-[#10B981] h-full rounded-full transition-all duration-500" style="width: ${liveProgress}%"></div>
                 </div>
               </div>
@@ -2052,19 +2276,6 @@
       closeDiagramHelperModal();
     };
 
-    // --- STUDY CORE ACTIONS (ONE-TIME XP ALLOCATION STRICT RULE) ---
-    window.simulateLectureWatch = function(id) {
-      if (!appState.completedItemsRegistry[id]) {
-        appState.completedItemsRegistry[id] = true;
-        updateUserXp(20);
-        showToast("Lecture progress saved! +20 XP awarded.", "success");
-      } else {
-        showToast("Lecture reopened. Review mode active.", "info");
-      }
-      renderChapterDetails(appState.currentSubject, appState.currentChapterId);
-      renderSubjectsView();
-    };
-
     // --- HIGH RESOLUTION IN-APP EMBEDDED MODAL DOCUMENT & VIDEO VIEWER ---
     function transformToGoogleViewerUrl(rawUrl) {
       if (!rawUrl) return "";
@@ -2082,7 +2293,8 @@
           }
         } catch(e) {}
         if (videoId) {
-          return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=0&rel=0&modestbranding=1&disablekb=1&fs=0`;
+          // YT native player controls rendered securely (controls=1)
+          return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=1&rel=0&modestbranding=1&fs=1`;
         }
       }
       
@@ -2091,7 +2303,7 @@
         try {
           const videoId = url.split("shorts/")[1].split("?")[0].split("/")[0];
           if (videoId) {
-            return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=0&rel=0&modestbranding=1&disablekb=1&fs=0`;
+            return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&controls=1&rel=0&modestbranding=1&fs=1`;
           }
         } catch(e) {}
       }
@@ -2113,6 +2325,19 @@
       return url;
     }
 
+    // Dynamic anti-screenshot floating watermark updates
+    function updateSecurityWatermark() {
+      const parent = document.getElementById('anti-screenshot-watermark');
+      if (!parent) return;
+
+      const userTag = appState.user || "STUDENT";
+      let textHTML = '';
+      for (let i = 0; i < 15; i++) {
+        textHTML += `<div style="position: absolute; left: ${Math.random() * 85}%; top: ${Math.random() * 85}%; transform: rotate(${Math.random() * 20 - 10}deg)">STUDENT: ${userTag} | CAMERA SECURED PORTAL | CLOUD ID: ${appState.avatar}</div>`;
+      }
+      parent.innerHTML = textHTML;
+    }
+
     function launchPdfInAppReader(url, title, type) {
       const viewerModal = document.getElementById('modal-pdf-viewer');
       const embedIframe = document.getElementById('pdf-viewer-embed');
@@ -2120,18 +2345,18 @@
       const titleLabel = document.getElementById('pdf-viewer-title-label');
       const loadingCover = document.getElementById('pdf-viewer-loading-cover');
       const externalBtn = document.getElementById('pdf-viewer-external-btn');
-      const mountYT = document.getElementById('youtube-player-mount');
+      const mountYTWrapper = document.getElementById('youtube-player-wrapper');
       const mountVideo = document.getElementById('html5-video-mount');
+      const iframeMount = document.getElementById('html5-iframe-mount');
 
       if (!viewerModal) return;
 
       activeFallbackUrl = url;
       if (titleLabel) titleLabel.innerText = title;
       
-      // STOPS students from clicking "Open in New Tab" for Lectures specifically
       if (externalBtn) {
         if (type === "Lecture") {
-          externalBtn.classList.add('hidden');
+          externalBtn.classList.add('hidden'); // Block direct link openings of lectures to avoid out-of-context viewing
         } else {
           externalBtn.href = url;
           externalBtn.classList.remove('hidden');
@@ -2142,20 +2367,14 @@
 
       // Clear video state elements
       appState.lectureIsPlaying = false;
-      document.getElementById('video-play-icon').classList.remove('hidden');
-      document.getElementById('video-pause-icon').classList.add('hidden');
-      document.getElementById('custom-video-current').innerText = "0:00";
-      document.getElementById('custom-video-duration').innerText = "0:00";
+      updateSecurityWatermark();
 
       if (type === "Lecture") {
         if (embedIframe) embedIframe.classList.add('hidden');
         if (videoViewport) videoViewport.classList.remove('hidden');
 
-        // Check if YouTube
+        // Check if YouTube link
         if (url.includes("youtube.com") || url.includes("youtu.be")) {
-          if (mountVideo) mountVideo.classList.add('hidden');
-          if (mountYT) mountYT.classList.remove('hidden');
-          
           let videoId = "";
           try {
             if (url.includes("youtube.com/watch")) {
@@ -2171,77 +2390,101 @@
           } catch(e) {}
 
           if (videoId) {
-            if (window.YT && window.YT.Player) {
+            // Check if YouTube iframe API loaded. If yes, construct player object
+            if (window.YT && window.YT.Player && typeof window.YT.Player === 'function') {
+              activePlayerType = "YouTube";
+              if (mountVideo) mountVideo.classList.add('hidden');
+              if (iframeMount) iframeMount.classList.add('hidden');
+              if (mountYTWrapper) {
+                mountYTWrapper.classList.remove('hidden');
+                mountYTWrapper.innerHTML = '<div id="youtube-player-mount" class="w-full h-full"></div>';
+              }
+              
               ytPlayerInstance = new YT.Player('youtube-player-mount', {
                 height: '100%',
                 width: '100%',
                 videoId: videoId,
                 playerVars: {
-                  'controls': 0,
+                  'controls': 1, // ENABLE standard YouTube controls directly
                   'rel': 0,
                   'modestbranding': 1,
-                  'disablekb': 1,
-                  'fs': 0,
-                  'showinfo': 0,
-                  'iv_load_policy': 3
+                  'fs': 1,
+                  'showinfo': 0
                 },
                 events: {
-                  'onReady': (event) => {
+                  'onReady': () => {
                     if (loadingCover) loadingCover.classList.add('hidden');
-                    // Polling duration and current playhead
-                    setInterval(updateVideoProgressIndicator, 500);
                   },
                   'onStateChange': (event) => {
                     if (event.data === YT.PlayerState.PLAYING) {
                       appState.lectureIsPlaying = true;
-                      document.getElementById('video-play-icon').classList.add('hidden');
-                      document.getElementById('video-pause-icon').classList.remove('hidden');
                     } else {
                       appState.lectureIsPlaying = false;
-                      document.getElementById('video-play-icon').classList.remove('hidden');
-                      document.getElementById('video-pause-icon').classList.add('hidden');
                     }
                   }
                 }
               });
             } else {
-              showToast("YouTube API not initialized. Attempting fallback.", "error");
+              // Graceful instant fallback: load via standard high-speed embedded iframe player!
+              activePlayerType = "Iframe";
+              if (mountYTWrapper) mountYTWrapper.classList.add('hidden');
+              if (mountVideo) mountVideo.classList.add('hidden');
+              if (iframeMount) {
+                iframeMount.classList.remove('hidden');
+                iframeMount.src = `https://www.youtube.com/embed/${videoId}?controls=1&rel=0&modestbranding=1&fs=1&autoplay=1`;
+              }
               if (loadingCover) loadingCover.classList.add('hidden');
+              appState.lectureIsPlaying = true; // keep learning timer active
             }
+          } else {
+            showToast("Invalid YouTube URL format.", "error");
+            if (loadingCover) loadingCover.classList.add('hidden');
           }
         } else {
-          // Fallback to Native HTML5 video player if raw/other video source link (ANY MP4 video file from different websites)
-          if (mountYT) mountYT.classList.add('hidden');
-          if (mountVideo) {
-            mountVideo.classList.remove('hidden');
-            mountVideo.src = url;
-            mountVideo.load();
-            
-            mountVideo.onloadedmetadata = () => {
-              if (loadingCover) loadingCover.classList.add('hidden');
-              document.getElementById('custom-video-duration').innerText = formatVideoTimestamp(mountVideo.duration);
-            };
+          // Check standard format direct link matches
+          const isDirectVideo = url.toLowerCase().endsWith('.mp4') || 
+                                url.toLowerCase().endsWith('.webm') || 
+                                url.toLowerCase().endsWith('.ogg') ||
+                                url.includes('drive.google.com/uc') ||
+                                url.includes('raw=1');
 
-            mountVideo.ontimeupdate = () => {
-              document.getElementById('custom-video-current').innerText = formatVideoTimestamp(mountVideo.currentTime);
-            };
+          if (isDirectVideo) {
+            activePlayerType = "Native";
+            if (mountYTWrapper) mountYTWrapper.classList.add('hidden');
+            if (iframeMount) iframeMount.classList.add('hidden');
+            if (mountVideo) {
+              mountVideo.classList.remove('hidden');
+              mountVideo.src = url;
+              mountVideo.load();
+              
+              mountVideo.onloadedmetadata = () => {
+                if (loadingCover) loadingCover.classList.add('hidden');
+              };
 
-            mountVideo.onplay = () => {
-              appState.lectureIsPlaying = true;
-              document.getElementById('video-play-icon').classList.add('hidden');
-              document.getElementById('video-pause-icon').classList.remove('hidden');
-            };
+              mountVideo.onplay = () => {
+                appState.lectureIsPlaying = true;
+              };
 
-            mountVideo.onpause = () => {
-              appState.lectureIsPlaying = false;
-              document.getElementById('video-play-icon').classList.remove('hidden');
-              document.getElementById('video-pause-icon').classList.add('hidden');
-            };
+              mountVideo.onpause = () => {
+                appState.lectureIsPlaying = false;
+              };
 
-            mountVideo.onerror = () => {
-              showToast("Failed to load video source. Browser restrictions may apply.", "error");
-              if (loadingCover) loadingCover.classList.add('hidden');
-            };
+              mountVideo.onerror = () => {
+                showToast("Failed to render native video streaming. Retrying generic viewer...", "error");
+                if (loadingCover) loadingCover.classList.add('hidden');
+              };
+            }
+          } else {
+            // General embedded viewer fallback for standard shared URLs (e.g. Google Drive Preview, Vimeo, custom streams, etc.)
+            activePlayerType = "Iframe";
+            if (mountYTWrapper) mountYTWrapper.classList.add('hidden');
+            if (mountVideo) mountVideo.classList.add('hidden');
+            if (iframeMount) {
+              iframeMount.classList.remove('hidden');
+              iframeMount.src = transformToGoogleViewerUrl(url); // Auto converts Google Drive standard layout links to embeds
+            }
+            if (loadingCover) loadingCover.classList.add('hidden');
+            appState.lectureIsPlaying = true; // Mark as playing to keep study stopwatch running
           }
         }
       } else {
@@ -2264,57 +2507,6 @@
       viewerModal.classList.add('flex');
     }
 
-    // --- REWRITE VIDEO TICK PROGRESS POLLER ---
-    function updateVideoProgressIndicator() {
-      if (ytPlayerInstance && typeof ytPlayerInstance.getCurrentTime === 'function') {
-        const curTime = ytPlayerInstance.getCurrentTime() || 0;
-        const totalDuration = ytPlayerInstance.getDuration() || 0;
-        document.getElementById('custom-video-current').innerText = formatVideoTimestamp(curTime);
-        document.getElementById('custom-video-duration').innerText = formatVideoTimestamp(totalDuration);
-      }
-    }
-
-    function formatVideoTimestamp(seconds) {
-      if (isNaN(seconds) || seconds === Infinity) return "0:00";
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    // --- GLOBAL VIDEO PLAYER MANIPULATION HANDLERS ---
-    window.toggleVideoPlaybackState = function() {
-      const mountVideo = document.getElementById('html5-video-mount');
-      const isYoutube = ytPlayerInstance && !document.getElementById('youtube-player-mount').classList.contains('hidden');
-
-      if (isYoutube) {
-        const state = ytPlayerInstance.getPlayerState();
-        if (state === YT.PlayerState.PLAYING) {
-          ytPlayerInstance.pauseVideo();
-        } else {
-          ytPlayerInstance.playVideo();
-        }
-      } else if (mountVideo && !mountVideo.classList.contains('hidden')) {
-        if (mountVideo.paused) {
-          mountVideo.play().catch(e => console.warn("Autoplay block:", e));
-        } else {
-          mountVideo.pause();
-        }
-      }
-    };
-
-    window.seekVideoOffset = function(offsetSeconds) {
-      const mountVideo = document.getElementById('html5-video-mount');
-      const isYoutube = ytPlayerInstance && !document.getElementById('youtube-player-mount').classList.contains('hidden');
-
-      if (isYoutube) {
-        const cur = ytPlayerInstance.getCurrentTime() || 0;
-        const dest = Math.max(0, cur + offsetSeconds);
-        ytPlayerInstance.seekTo(dest, true);
-      } else if (mountVideo && !mountVideo.classList.contains('hidden')) {
-        mountVideo.currentTime = Math.max(0, mountVideo.currentTime + offsetSeconds);
-      }
-    };
-
     // --- TIME-BASED NOTE & PDF READING SESSION ---
     window.launchLectureStudySession = function(id, title, url) {
       if (!url || url.trim() === '') {
@@ -2324,7 +2516,7 @@
       
       const isRegistered = appState.completedItemsRegistry[id] === true;
       if (!isRegistered) {
-        showToast("Lecture watching session started! Stay active on video play to gain study XP.", "success");
+        showToast("Lecture watching session started! Watch attentively to earn continuous XP.", "success");
       } else {
         showToast("Review Mode: Lecture reopened.", "info");
       }
@@ -2463,14 +2655,37 @@
       // Monitor if the browser window loses focus
       window.addEventListener('blur', () => {
         if (appState.currentViewingPdfId) {
-          handleCheatingDeduction("Cheating warning: Exited study window. Progress invalidated!");
+          // Defocus triggers active screen blanking shield overlay
+          const blanket = document.getElementById('security-blanket-overlay');
+          if (blanket) blanket.classList.remove('hidden');
+          appState.lectureIsPlaying = false;
+          
+          if (ytPlayerInstance && typeof ytPlayerInstance.pauseVideo === 'function') {
+            try { ytPlayerInstance.pauseVideo(); } catch(e) {}
+          }
         }
       });
       
+      window.addEventListener('focus', () => {
+        if (appState.currentViewingPdfId) {
+          const blanket = document.getElementById('security-blanket-overlay');
+          if (blanket) blanket.classList.add('hidden');
+          if (appState.currentViewingPdfType === "Lecture") {
+            appState.lectureIsPlaying = true; // Auto-resume timer countdown once focused
+          }
+        }
+      });
+
       // Monitor if the user minimizes or changes tabs
       document.addEventListener('visibilitychange', () => {
         if (document.hidden && appState.currentViewingPdfId) {
-          handleCheatingDeduction("Cheating warning: Tab switched away. Progress invalidated!");
+          const blanket = document.getElementById('security-blanket-overlay');
+          if (blanket) blanket.classList.remove('hidden');
+          appState.lectureIsPlaying = false;
+
+          if (ytPlayerInstance && typeof ytPlayerInstance.pauseVideo === 'function') {
+            try { ytPlayerInstance.pauseVideo(); } catch(e) {}
+          }
         }
       });
     }
@@ -2487,9 +2702,14 @@
 
       // Pause and release media devices securely
       const mountVideo = document.getElementById('html5-video-mount');
+      const iframeMount = document.getElementById('html5-iframe-mount');
       if (mountVideo) {
         mountVideo.pause();
         mountVideo.src = "";
+      }
+      if (iframeMount) {
+        iframeMount.src = "";
+        iframeMount.classList.add('hidden');
       }
       if (ytPlayerInstance && typeof ytPlayerInstance.destroy === 'function') {
         try {
@@ -2539,7 +2759,6 @@
         appState.completedItemsRegistry[activeId] = true;
         
         let baseCompletionXp = 15;
-        // Check if watch session
         if (appState.currentViewingPdfType === "Lecture") {
           baseCompletionXp = 20;
         }
@@ -2559,10 +2778,6 @@
       cleanupInAppPdfView();
       renderChapterDetails(appState.currentSubject, appState.currentChapterId);
       renderSubjectsView();
-    };
-
-    window.terminateNoteSession = function() {
-      window.terminatePdfStudySession();
     };
 
     // --- PROCTORED ACTIVE OBSERVER LOCKS & PENALTIES ---
@@ -2645,6 +2860,7 @@
       handleFullscreenChange();
     }
 
+    // --- SYSTEM PENALTIES ---
     function triggerCheatingPenalty(reasonText) {
       updateUserXp(-50);
       showToast("PROCTOR EXAM BREACH: " + reasonText + " Penalty of -50 XP applied!", "error");
@@ -2841,6 +3057,7 @@
     // --- SECURED METADATA REALTIME PERSISTENCE ---
     async function updateUserXp(delta) {
       try {
+        const oldXp = appState.xp;
         appState.xp += delta;
         if (appState.xp < 0) appState.xp = 0;
         
@@ -2855,6 +3072,14 @@
         localStorage.setItem("science_ix_xp_" + appState.user.toLowerCase(), appState.xp);
         localStorage.setItem("science_ix_registry_" + appState.user.toLowerCase(), JSON.stringify(appState.completedItemsRegistry));
 
+        // Detect XP Milestones (crosses a multiple of 5 or 10)
+        const oldXpDiv5 = Math.floor(oldXp / 5);
+        const newXpDiv5 = Math.floor(appState.xp / 5);
+        if (newXpDiv5 > oldXpDiv5 && delta > 0) {
+          const currentMilestone = newXpDiv5 * 5;
+          triggerPartyPopper(`${currentMilestone} XP REACHED!`, "Keep leveling up your academic rank!");
+        }
+
         if (db && auth && auth.currentUser) {
           const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', appState.user.toLowerCase());
           await setDoc(studentDocRef, {
@@ -2866,13 +3091,11 @@
 
           const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', appState.user.toLowerCase());
           await setDoc(leaderDocRef, {
-            [appState.user.toLowerCase()]: {
-              id: appState.user.toLowerCase(),
-              name: appState.user,
-              streak: appState.streak,
-              xp: appState.xp,
-              avatar: appState.avatar
-            }
+            id: appState.user.toLowerCase(),
+            name: appState.user,
+            streak: appState.streak,
+            xp: appState.xp,
+            avatar: appState.avatar
           }, { merge: true });
         }
       } catch (e) {
@@ -3364,13 +3587,11 @@
 
           const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', appState.user.toLowerCase());
           await setDoc(leaderDocRef, {
-            [appState.user.toLowerCase()]: {
-              id: appState.user.toLowerCase(),
-              name: appState.user,
-              streak: appState.streak,
-              xp: appState.xp,
-              avatar: seed
-            }
+            id: appState.user.toLowerCase(),
+            name: appState.user,
+            streak: appState.streak,
+            xp: appState.xp,
+            avatar: seed
           }, { merge: true });
         }
       } catch (e) {
@@ -3502,13 +3723,11 @@
 
           const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', newKey);
           await setDoc(leaderDocRef, {
-            [newKey]: {
-              id: newKey,
-              name: newName,
-              streak: savedStreak,
-              xp: savedXp,
-              avatar: savedAvatar
-            }
+            id: newKey,
+            name: newName,
+            streak: savedStreak,
+            xp: savedXp,
+            avatar: savedAvatar
           }, { merge: true });
 
           const oldStudentRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', oldKey);
@@ -3531,6 +3750,14 @@
       renderLeaderboard();
       showToast("Name modified successfully!", "success");
     };
+
+    // BLOCK PRINT SCREEN SHORTCUTS & KEYSTROKES
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText('');
+        showToast("Screen captures are disabled on premium academy files.", "error");
+      }
+    });
 
     // --- GLOBAL SCOPE EXPOSURE CONTROLS ---
     window.openAvatarSelectorModal = openAvatarSelectorModal;
